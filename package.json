@@ -1,0 +1,39 @@
+{
+	"name": "r-assign",
+	"version": "1.0.0",
+	"description": "Object.assign() with super powers",
+	"keywords": [
+		"assign",
+		"object",
+		"transform"
+	],
+	"homepage": "https://github.com/micnic/r-assign",
+	"bugs": {
+		"url": "https://github.com/micnic/r-assign/issues"
+	},
+	"license": "MIT",
+	"author": {
+		"name": "Nicu Micleușanu",
+		"email": "micnic90@gmail.com",
+		"url": "https://github.com/micnic"
+	},
+	"main": "index",
+	"repository": "github:micnic/r-assign",
+	"files": [
+		"index.d.ts",
+		"index.js"
+	],
+	"types": "index.d.ts",
+	"scripts": {
+		"test": "tap -b test.js",
+		"test-cov-html": "npm test -- --coverage-report=html"
+	},
+	"devDependencies": {
+		"eslint": "7.x",
+		"tap": "14.x",
+		"typescript": "4.x"
+	},
+	"engines": {
+		"node": ">=6.0"
+	}
+}
