@@ -1,6 +1,6 @@
 {
 	"name": "r-assign",
-	"version": "1.0.0",
+	"version": "1.0.1",
 	"description": "Object.assign() with super powers",
 	"keywords": [
 		"assign",
@@ -25,8 +25,10 @@
 	],
 	"types": "index.d.ts",
 	"scripts": {
+		"prepublishOnly": "npm test && npm run ts-check",
 		"test": "tap -b test.js",
-		"test-cov-html": "npm test -- --coverage-report=html"
+		"test-cov-html": "npm test -- --coverage-report=html",
+		"ts-check": "tsc -p jsconfig.json"
 	},
 	"devDependencies": {
 		"eslint": "7.x",

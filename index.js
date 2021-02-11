@@ -1,12 +1,12 @@
 'use strict';
 
 /**
- * @typedef {import('r-assign').TransformSchema} TransformSchema
+ * @template S
+ * @typedef {import('r-assign').TransformResult<S>} TransformResult
  */
 
 /**
- * @template {TransformSchema} S
- * @typedef {{ [key in keyof S]: ReturnType<S[key]> }} TransformResult
+ * @typedef {import('r-assign').TransformSchema} TransformSchema
  */
 
 const { assign, create, prototype } = Object;
@@ -37,7 +37,6 @@ const rAssign = (schema, ...sources) => {
 		throw TypeError(invalidSchema);
 	}
 
-	/** @type {TransformResult<S>} */
 	const result = create(prototype);
 	const source = assign(create(prototype), ...sources);
 
