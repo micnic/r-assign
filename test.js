@@ -17,6 +17,17 @@ tap.test('Invalid schema', (test) => {
 	test.end();
 });
 
+tap.test('Schema with function that throws', (test) => {
+	test.throws(() => {
+		rAssign({
+			data: () => {
+				throw Error();
+			}
+		});
+	});
+	test.end();
+});
+
 tap.test('Schema with skipped property', (test) => {
 	test.match(rAssign({ data: () => undefined }), {});
 	test.end();

@@ -9,7 +9,7 @@
  * @typedef {import('r-assign').TransformSchema} TransformSchema
  */
 
-const { assign, create, prototype } = Object;
+const { assign, prototype } = Object;
 const { hasOwnProperty } = prototype;
 
 const invalidSchema = 'Invalid schema argument type, object expected';
@@ -37,8 +37,9 @@ const rAssign = (schema, ...sources) => {
 		throw TypeError(invalidSchema);
 	}
 
-	const result = create(prototype);
-	const source = assign(create(prototype), ...sources);
+	/** @type {any} */
+	const result = {};
+	const source = assign({}, ...sources);
 
 	// Loop through schema properties to select them
 	for (const key in schema) {
