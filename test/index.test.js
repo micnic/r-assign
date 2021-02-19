@@ -17,19 +17,8 @@ tap.test('Invalid schema', (test) => {
 	test.end();
 });
 
-tap.test('Schema with function that throws', (test) => {
-	test.throws(() => {
-		rAssign({
-			data: () => {
-				throw Error();
-			}
-		});
-	});
-	test.end();
-});
-
 tap.test('Schema with skipped property', (test) => {
-	test.match(rAssign({ data: () => undefined }), {});
+	test.match(rAssign({ data: () => {/* Return nothing */} }), {});
 	test.end();
 });
 
@@ -48,21 +37,29 @@ tap.test('Schema with inherited properties', (test) => {
 });
 
 tap.test('Schema with object applied', (test) => {
-	test.match(rAssign({ data: (value) => value }, { data: 'data' }), { data: 'data' });
+	test.match(rAssign({
+		data: (value) => value
+	}, { data: 'data' }), { data: 'data' });
 	test.end();
 });
 
 tap.test('Schema with object applied, property skipped', (test) => {
-	test.match(rAssign({ data: () => undefined }, { data: 'data' }), {});
+	test.match(rAssign({
+		data: () => {/* Return nothing */}
+	}, { data: 'data' }), {});
 	test.end();
 });
 
 tap.test('Schema with two objects applied', (test) => {
-	test.match(rAssign({ data: (value) => value }, { data: 'data' }, { data: 'data2' }), { data: 'data2' });
+	test.match(rAssign({
+		data: (value) => value
+	}, { data: 'data' }, { data: 'data2' }), { data: 'data2' });
 	test.end();
 });
 
 tap.test('Schema with two objects applied, property skipped', (test) => {
-	test.match(rAssign({ data: () => undefined }, { data: 'data' }, { data: 'data2' }), {});
+	test.match(rAssign({
+		data: () => {/* Return nothing */}
+	}, { data: 'data' }, { data: 'data2' }), {});
 	test.end();
 });
