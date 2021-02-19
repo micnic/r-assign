@@ -21,7 +21,8 @@
 	"repository": "github:micnic/r-assign",
 	"files": [
 		"index.d.ts",
-		"index.js"
+		"index.js",
+		"lib"
 	],
 	"types": "index.d.ts",
 	"scripts": {
