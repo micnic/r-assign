@@ -9,6 +9,7 @@ tap.test('No arguments', (test) => {
 	test.equal(getBoolean(), false);
 	test.equal(getBoolean(true), true);
 	test.equal(getBoolean(false), false);
+	test.equal(getBoolean(null), false);
 	test.end();
 });
 
@@ -18,6 +19,7 @@ tap.test('Default value provided', (test) => {
 	test.equal(getBoolean(), true);
 	test.equal(getBoolean(true), true);
 	test.equal(getBoolean(false), false);
+	test.equal(getBoolean(null), true);
 	test.end();
 });
 

@@ -8,5 +8,8 @@
 		"strict": true,
 		"target": "es6"
 	},
-	"include": ["index.js"]
+	"include": [
+		"index.js",
+		"lib"
+	]
 }

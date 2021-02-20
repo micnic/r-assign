@@ -8,6 +8,7 @@ tap.test('No arguments', (test) => {
 
 	test.equal(getString(), '');
 	test.equal(getString('data'), 'data');
+	test.equal(getString(null), '');
 	test.end();
 });
 
@@ -16,6 +17,7 @@ tap.test('Default value provided', (test) => {
 
 	test.equal(getString(), 'data');
 	test.equal(getString('data'), 'data');
+	test.equal(getString(null), 'data');
 	test.end();
 });
 
