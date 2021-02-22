@@ -1,11 +1,4 @@
-import useAny from 'r-assign/lib/use-any';
-import useBoolean from 'r-assign/lib/use-boolean';
-import useNumber from 'r-assign/lib/use-number';
-import useString from 'r-assign/lib/use-string';
-
-export {
-	useAny,
-	useBoolean,
-	useNumber,
-	useString
-};
+export * from 'r-assign/lib/any';
+export * from 'r-assign/lib/boolean';
+export * from 'r-assign/lib/number';
+export * from 'r-assign/lib/string';
