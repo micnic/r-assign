@@ -7,8 +7,10 @@ type RequiredKeys<T> = Omit<T, KeysOfType<T, undefined>>;
 type OptionalUndefined<T> = OptionalKeys<T> & RequiredKeys<T>;
 
 declare namespace rAssign {
+	type TransformFunction = (value: any, key: string, source: any) => any;
+
 	type TransformSchema = {
-		[key: string]: (value: any, key: string, source: any) => any;
+		[key: string]: TransformFunction;
 	};
 
 	type TransformResult<S extends TransformSchema> = OptionalUndefined<

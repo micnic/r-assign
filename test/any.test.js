@@ -13,7 +13,7 @@ tap.test('useAny', (test) => {
 	tap.test('No arguments', (t) => {
 		const getAny = useAny();
 
-		t.ok(typeof getAny() === 'undefined');
+		t.equal(typeof getAny(), 'undefined');
 		t.equal(getAny(null), null);
 		t.end();
 	});
