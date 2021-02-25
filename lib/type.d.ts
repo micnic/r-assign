@@ -18,7 +18,7 @@ declare function isTypeOf<T extends TypeChecker<any>>(
  */
 declare function useOptional<T extends TransformFunction>(
 	transform: T
-): (...args: Parameters<T>) => ReturnType<T> | undefined;
+): TransformFunction<ReturnType<T> | undefined>;
 
 /**
  * Creator of transform functions for union types values
@@ -26,6 +26,13 @@ declare function useOptional<T extends TransformFunction>(
 declare function useTypeOf<T extends TypeChecker<any>>(
 	initial: ExtractTypeGuard<T>,
 	types: T[]
-): (value: any) => ExtractTypeGuard<T>;
+): TransformFunction<ExtractTypeGuard<T>>;
 
-export { isTypeOf, useOptional, useTypeOf };
+/**
+ * Creator of transform functions for input validation
+ */
+declare function useValidation<T extends TypeChecker<any>>(
+	...types: T[]
+): TransformFunction<ExtractTypeGuard<T>>;
+
+export { isTypeOf, useOptional, useTypeOf, useValidation };
