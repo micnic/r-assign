@@ -19,5 +19,6 @@ test('rAssign lib exports', ({ end, ok }) => {
 	ok('validateAny' in lib);
 	ok('validateBoolean' in lib);
 	ok('validateNumber' in lib);
+	ok('validateString' in lib);
 	end();
 });

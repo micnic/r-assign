@@ -1,39 +1,39 @@
 'use strict';
 
-const tap = require('tap');
-const { isString, useString } = require('r-assign/lib/string');
+const { test } = require('tap');
+const { isString, useString, validateString } = require('r-assign/lib/string');
 
-tap.test('isString', (test) => {
-	test.ok(isString(''));
-	test.notOk(isString());
-	test.end();
+test('isString', ({ end, notOk, ok }) => {
+	notOk(isString());
+	ok(isString(''));
+	end();
 });
 
-tap.test('useString', (test) => {
-	tap.test('No arguments', (t) => {
-		const getString = useString();
+test('useString', ({ end, equals, throws }) => {
 
-		t.equal(getString(), '');
-		t.equal(getString('data'), 'data');
-		t.equal(getString(null), '');
-		t.end();
+	const getString = useString();
+
+	equals(getString(), '');
+	equals(getString('data'), 'data');
+	equals(getString(null), '');
+
+	const getStringData = useString('data');
+
+	equals(getStringData(), 'data');
+	equals(getStringData('data'), 'data');
+	equals(getStringData(null), 'data');
+
+	throws(() => {
+		useString(null);
 	});
 
-	tap.test('Default value provided', (t) => {
-		const getString = useString('data');
+	end();
+});
 
-		t.equal(getString(), 'data');
-		t.equal(getString('data'), 'data');
-		t.equal(getString(null), 'data');
-		t.end();
+test('validateString', ({ end, equals, throws }) => {
+	equals(validateString(''), '');
+	throws(() => {
+		validateString();
 	});
-
-	tap.test('Invalid default value provided', (t) => {
-		t.throws(() => {
-			useString(null);
-		});
-		t.end();
-	});
-
-	test.end();
+	end();
 });
