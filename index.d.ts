@@ -6,7 +6,7 @@ type OptionalKeys<T> = Partial<Pick<T, KeysOfType<T, undefined>>>;
 type RequiredKeys<T> = Omit<T, KeysOfType<T, undefined>>;
 type OptionalUndefined<T> = OptionalKeys<T> & RequiredKeys<T>;
 
-declare namespace rAssign {
+namespace rAssign {
 	type TransformFunction<T = any> = (
 		value: any,
 		key: string,
@@ -25,9 +25,9 @@ declare namespace rAssign {
 /**
  * Assign object properties and transform result based on the provided schema
  */
-declare function rAssign<S extends rAssign.TransformSchema>(
+const rAssign: <S extends rAssign.TransformSchema>(
 	schema: S,
 	...sources: any[]
-): OptionalUndefined<{ [key in keyof S]: ReturnType<S[key]> }>;
+) => OptionalUndefined<{ [key in keyof S]: ReturnType<S[key]> }>;
 
 export = rAssign;
