@@ -5,7 +5,7 @@
 	},
 	"extends": "eslint:recommended",
 	"parserOptions": {
-		"ecmaVersion": 2017
+		"ecmaVersion": 2020
 	},
 	"rules": {
 		"array-callback-return": "error",
@@ -83,7 +83,10 @@
 				"ignore": [
 					-1,
 					0,
-					1
+					1,
+					"-1n",
+					"0n",
+					"1n"
 				],
 				"detectObjects": true,
 				"enforceConst": true,
