@@ -1,42 +1,46 @@
 'use strict';
 
-const tap = require('tap');
-const { isBoolean, useBoolean } = require('r-assign/lib/boolean');
+const { test } = require('tap');
+const {
+	isBoolean,
+	useBoolean,
+	validateBoolean
+} = require('r-assign/lib/boolean');
 
-tap.test('isBoolean', (test) => {
-	test.ok(isBoolean(false));
-	test.ok(isBoolean(true));
-	test.notOk(isBoolean());
-	test.end();
+test('isBoolean', ({ end, notOk, ok }) => {
+	notOk(isBoolean());
+	ok(isBoolean(false));
+	ok(isBoolean(true));
+	end();
 });
 
-tap.test('useBoolean', (test) => {
-	tap.test('No arguments', (t) => {
-		const getBoolean = useBoolean();
+test('useBoolean', ({ end, equals, throws }) => {
 
-		t.equal(getBoolean(), false);
-		t.equal(getBoolean(true), true);
-		t.equal(getBoolean(false), false);
-		t.equal(getBoolean(null), false);
-		t.end();
+	const getBoolean = useBoolean();
+
+	equals(getBoolean(), false);
+	equals(getBoolean(false), false);
+	equals(getBoolean(true), true);
+	equals(getBoolean(null), false);
+
+	const getBooleanTrue = useBoolean(true);
+
+	equals(getBooleanTrue(), true);
+	equals(getBooleanTrue(false), false);
+	equals(getBooleanTrue(true), true);
+	equals(getBooleanTrue(null), true);
+
+	throws(() => {
+		useBoolean(null);
 	});
 
-	tap.test('Default value provided', (t) => {
-		const getBoolean = useBoolean(true);
+	end();
+});
 
-		t.equal(getBoolean(), true);
-		t.equal(getBoolean(true), true);
-		t.equal(getBoolean(false), false);
-		t.equal(getBoolean(null), true);
-		t.end();
+test('validateBoolean', ({ end, equals, throws }) => {
+	equals(validateBoolean(false), false);
+	throws(() => {
+		validateBoolean();
 	});
-
-	tap.test('Invalid default value provided', (t) => {
-		t.throws(() => {
-			useBoolean(null);
-		});
-		t.end();
-	});
-
-	test.end();
+	end();
 });
