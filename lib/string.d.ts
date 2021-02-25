@@ -10,7 +10,13 @@ const isString: (value: any) => value is string;
  */
 const useString: (initial?: string) => TransformFunction<string>;
 
+/**
+ * Transform function to validate string values
+ */
+const validateString: TransformFunction<string>;
+
 export {
 	isString,
-	useString
+	useString,
+	validateString
 };
