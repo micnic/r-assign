@@ -12,11 +12,13 @@ test('isAny', ({ end, notOk, ok }) => {
 test('useAny', ({ end, equals }) => {
 
 	const getAny = useAny();
-	const getAnyNull = useAny(null);
 
 	equals(typeof getAny(), 'undefined');
-	equals(getAnyNull(), null);
 	equals(getAny(null), null);
+
+	const getAnyNull = useAny(null);
+
+	equals(getAnyNull(), null);
 	equals(getAnyNull(null), null);
 	end();
 });
