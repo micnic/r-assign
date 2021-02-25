@@ -4,7 +4,12 @@ const tap = require('tap');
 const { isBoolean } = require('r-assign/lib/boolean');
 const { isNumber } = require('r-assign/lib/number');
 const { isString, useString } = require('r-assign/lib/string');
-const { isTypeOf, useOptional, useTypeOf } = require('r-assign/lib/type');
+const {
+	isTypeOf,
+	useOptional,
+	useTypeOf,
+	useValidation
+} = require('r-assign/lib/type');
 
 tap.test('isTypeOf', (test) => {
 	tap.test('Valid cases', (t) => {
@@ -76,6 +81,27 @@ tap.test('useTypeOf', (test) => {
 		});
 		t.throws(() => {
 			useTypeOf(null, [isString]);
+		});
+		t.end();
+	});
+
+	test.end();
+});
+
+tap.test('useValidation', (test) => {
+
+	tap.test('Valid cases', (t) => {
+		const validateString = useValidation(isString);
+
+		t.equal(validateString(''), '');
+		t.end();
+	});
+
+	tap.test('Invalid cases', (t) => {
+		const validateString = useValidation(isString);
+
+		t.throws(() => {
+			validateString(0);
 		});
 		t.end();
 	});
