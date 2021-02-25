@@ -10,7 +10,13 @@ const isNumber: (value: any) => value is number;
  */
 const useNumber: (initial?: number) => TransformFunction<number>;
 
+/**
+ * Transform function to validate number values
+ */
+const validateNumber: TransformFunction<number>;
+
 export {
 	isNumber,
-	useNumber
+	useNumber,
+	validateNumber
 };

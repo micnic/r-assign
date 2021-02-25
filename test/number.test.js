@@ -1,58 +1,60 @@
 'use strict';
 
-const tap = require('tap');
-const { isNumber, useNumber } = require('r-assign/lib/number');
+const { test } = require('tap');
+const { isNumber, useNumber, validateNumber } = require('r-assign/lib/number');
 
-tap.test('isNumber', (test) => {
-	test.ok(isNumber(0));
-	test.notOk(isNumber(NaN));
-	test.notOk(isNumber(Infinity));
-	test.notOk(isNumber(-Infinity));
-	test.notOk(isNumber());
-
-	test.end();
+test('isNumber', ({ end, notOk, ok }) => {
+	notOk(isNumber());
+	notOk(isNumber(NaN));
+	notOk(isNumber(Infinity));
+	notOk(isNumber(-Infinity));
+	ok(isNumber(0));
+	end();
 });
 
-tap.test('useNumber', (test) => {
-	tap.test('No arguments', (t) => {
-		const getNumber = useNumber();
+test('useNumber', ({ end, equals, throws }) => {
 
-		t.equal(getNumber(), 0);
-		t.equal(getNumber(1), 1);
-		t.equal(getNumber(null), 0);
-		t.equal(getNumber(NaN), 0);
-		t.equal(getNumber(Infinity), 0);
-		t.equal(getNumber(-Infinity), 0);
-		t.end();
+	const getNumber = useNumber();
+
+	equals(getNumber(), 0);
+	equals(getNumber(1), 1);
+	equals(getNumber(null), 0);
+	equals(getNumber(NaN), 0);
+	equals(getNumber(Infinity), 0);
+	equals(getNumber(-Infinity), 0);
+
+	const getNumberOne = useNumber(1);
+
+	equals(getNumberOne(), 1);
+	equals(getNumberOne(1), 1);
+	equals(getNumberOne(null), 1);
+	equals(getNumberOne(NaN), 1);
+	equals(getNumberOne(Infinity), 1);
+	equals(getNumberOne(-Infinity), 1);
+
+	throws(() => {
+		useNumber(null);
 	});
 
-	tap.test('Default value provided', (t) => {
-		const getNumber = useNumber(1);
-
-		t.equal(getNumber(), 1);
-		t.equal(getNumber(1), 1);
-		t.equal(getNumber(null), 1);
-		t.equal(getNumber(NaN), 1);
-		t.equal(getNumber(Infinity), 1);
-		t.equal(getNumber(-Infinity), 1);
-		t.end();
+	throws(() => {
+		useNumber(NaN);
 	});
 
-	tap.test('Invalid default value provided', (t) => {
-		t.throws(() => {
-			useNumber(null);
-		});
-		t.throws(() => {
-			useNumber(NaN);
-		});
-		t.throws(() => {
-			useNumber(Infinity);
-		});
-		t.throws(() => {
-			useNumber(-Infinity);
-		});
-		t.end();
+	throws(() => {
+		useNumber(Infinity);
 	});
 
-	test.end();
+	throws(() => {
+		useNumber(-Infinity);
+	});
+
+	end();
+});
+
+test('validateNumber', ({ end, equals, throws }) => {
+	equals(validateNumber(0), 0);
+	throws(() => {
+		validateNumber();
+	});
+	end();
 });
