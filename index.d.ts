@@ -8,9 +8,9 @@ type OptionalUndefined<T> = OptionalKeys<T> & RequiredKeys<T>;
 
 declare namespace rAssign {
 	type TransformFunction<T = any> = (
-		value?: any,
-		key?: string,
-		source?: any
+		value: any,
+		key: string,
+		source: any
 	) => T;
 
 	type TransformSchema = {

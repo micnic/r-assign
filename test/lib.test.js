@@ -16,5 +16,6 @@ tap.test('rAssign lib exports', (test) => {
 	test.ok('useString' in lib);
 	test.ok('useTypeOf' in lib);
 	test.ok('useValidation' in lib);
+	test.ok('validateAny' in lib);
 	test.end();
 });
