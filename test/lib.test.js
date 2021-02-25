@@ -1,22 +1,23 @@
 'use strict';
 
-const tap = require('tap');
+const { test } = require('tap');
 const lib = require('r-assign/lib');
 
-tap.test('rAssign lib exports', (test) => {
-	test.ok('isAny' in lib);
-	test.ok('isBoolean' in lib);
-	test.ok('isNumber' in lib);
-	test.ok('isString' in lib);
-	test.ok('isTypeOf' in lib);
-	test.ok('useAny' in lib);
-	test.ok('useBoolean' in lib);
-	test.ok('useNumber' in lib);
-	test.ok('useOptional' in lib);
-	test.ok('useString' in lib);
-	test.ok('useTypeOf' in lib);
-	test.ok('useValidation' in lib);
-	test.ok('validateAny' in lib);
-	test.ok('validateBoolean' in lib);
-	test.end();
+test('rAssign lib exports', ({ end, ok }) => {
+	ok('isBoolean' in lib);
+	ok('isAny' in lib);
+	ok('isNumber' in lib);
+	ok('isString' in lib);
+	ok('isTypeOf' in lib);
+	ok('useAny' in lib);
+	ok('useBoolean' in lib);
+	ok('useNumber' in lib);
+	ok('useOptional' in lib);
+	ok('useString' in lib);
+	ok('useTypeOf' in lib);
+	ok('useValidation' in lib);
+	ok('validateAny' in lib);
+	ok('validateBoolean' in lib);
+	ok('validateNumber' in lib);
+	end();
 });
