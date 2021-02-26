@@ -9,6 +9,7 @@ test('rAssign lib exports', ({ end, ok }) => {
 	ok('isAny' in lib);
 	ok('isNumber' in lib);
 	ok('isString' in lib);
+	ok('isSymbol' in lib);
 	ok('isTypeOf' in lib);
 	ok('useAny' in lib);
 	ok('useBigInt' in lib);
@@ -16,6 +17,7 @@ test('rAssign lib exports', ({ end, ok }) => {
 	ok('useNumber' in lib);
 	ok('useOptional' in lib);
 	ok('useString' in lib);
+	ok('useSymbol' in lib);
 	ok('useTypeOf' in lib);
 	ok('useValidation' in lib);
 	ok('validateAny' in lib);
@@ -23,5 +25,6 @@ test('rAssign lib exports', ({ end, ok }) => {
 	ok('validateBoolean' in lib);
 	ok('validateNumber' in lib);
 	ok('validateString' in lib);
+	ok('validateSymbol' in lib);
 	end();
 });
