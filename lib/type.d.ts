@@ -2,15 +2,15 @@ import type { TransformFunction } from 'r-assign';
 
 export type TypeChecker<T> = (value: any) => value is T;
 
-type ExtractTypeGuard<T extends TypeChecker<any>> =
+export type ExtractTypeGuard<T extends TypeChecker<any>> =
 	T extends TypeChecker<infer U> ? U : never;
 
 /**
  * Check for values of union types
  */
 const isTypeOf: <T extends TypeChecker<any>>(
-	value: any,
-	types: T[]
+	types: T[],
+	value?: any
 ) => value is ExtractTypeGuard<T>;
 
 /**
@@ -24,8 +24,8 @@ const useOptional: <T extends TransformFunction>(
  * Creator of transform functions for union types values
  */
 const useTypeOf: <T extends TypeChecker<any>>(
-	initial: ExtractTypeGuard<T>,
-	types: T[]
+	types: T[],
+	initial: ExtractTypeGuard<T>
 ) => TransformFunction<ExtractTypeGuard<T>>;
 
 /**
