@@ -13,20 +13,20 @@ const {
 
 test('isTypeOf', ({ end, notOk, ok, throws }) => {
 
-	ok(isTypeOf(true, [isBoolean]));
-	ok(isTypeOf(true, [isBoolean, isNumber]));
-	notOk(isTypeOf(true, [isNumber]));
+	ok(isTypeOf([isBoolean], true));
+	ok(isTypeOf([isBoolean, isNumber], true));
+	notOk(isTypeOf([isNumber], true));
 
 	throws(() => {
 		isTypeOf();
 	});
 
 	throws(() => {
-		isTypeOf(null, [null]);
+		isTypeOf([null], null);
 	});
 
 	throws(() => {
-		isTypeOf(null, [() => null]);
+		isTypeOf([() => null], null);
 	});
 
 	end();
@@ -50,7 +50,7 @@ test('useOptional', ({ end, equals, throws }) => {
 
 test('useTypeOf', ({ end, equals, throws }) => {
 
-	const getStringOrNumber = useTypeOf('', [isNumber, isString]);
+	const getStringOrNumber = useTypeOf([isNumber, isString], '');
 
 	equals(getStringOrNumber(), '');
 	equals(getStringOrNumber(0), 0);
@@ -63,15 +63,15 @@ test('useTypeOf', ({ end, equals, throws }) => {
 	});
 
 	throws(() => {
-		useTypeOf(null, [null]);
+		useTypeOf([null], null);
 	});
 
 	throws(() => {
-		useTypeOf(null, [() => null]);
+		useTypeOf([() => null], null);
 	});
 
 	throws(() => {
-		useTypeOf(null, [isString]);
+		useTypeOf([isString], null);
 	});
 
 	end();
