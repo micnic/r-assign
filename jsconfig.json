@@ -1,7 +1,7 @@
 {
 	"compilerOptions": {
 		"checkJs": true,
-		"lib": ["es6"],
+		"lib": ["es2020"],
 		"module": "commonjs",
 		"moduleResolution": "node",
 		"newLine": "lf",
