@@ -1,6 +1,6 @@
 import type { TransformFunction } from "r-assign";
 
-export type Primitive = bigint | boolean | number | symbol | string;
+export type Primitive = bigint | boolean | null | number | symbol | string;
 
 /**
  * Check for literal values

@@ -8,7 +8,15 @@ const {
 } = require('r-assign/lib/literal');
 
 test('isLiteral', ({ end, notOk, ok, throws }) => {
+
+	const symbol = Symbol();
+
+	ok(isLiteral(null, null));
+	ok(isLiteral(0n, 0n));
+	ok(isLiteral(false, false));
 	ok(isLiteral(0, 0));
+	ok(isLiteral('', ''));
+	ok(isLiteral(symbol, symbol));
 	notOk(isLiteral(0));
 
 	throws(() => {
