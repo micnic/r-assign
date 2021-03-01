@@ -8,13 +8,18 @@ test('rAssign lib exports', ({ end, ok }) => {
 	ok('isBigInt' in lib);
 	ok('isAny' in lib);
 	ok('isNumber' in lib);
+	ok('isObject' in lib);
 	ok('isString' in lib);
 	ok('isSymbol' in lib);
 	ok('isTypeOf' in lib);
 	ok('useAny' in lib);
+	ok('useArrayOf' in lib);
+	ok('useArrayOfValidation' in lib);
 	ok('useBigInt' in lib);
 	ok('useBoolean' in lib);
 	ok('useNumber' in lib);
+	ok('useObject' in lib);
+	ok('useObjectValidation' in lib);
 	ok('useOptional' in lib);
 	ok('useString' in lib);
 	ok('useSymbol' in lib);

@@ -18,7 +18,7 @@ const useArrayOf: <T extends TypeChecker<any>>(
 ) => TransformFunction<ExtractTypeGuard<T>[]>;
 
 /**
- * Creator of transform functions for input validation
+ * Creator of transform functions for array validation
  */
 const useArrayOfValidation: <T extends TypeChecker<any>>(
 	...types: T[]
