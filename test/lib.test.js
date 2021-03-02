@@ -4,9 +4,11 @@ const { test } = require('tap');
 const lib = require('r-assign/lib');
 
 test('rAssign lib exports', ({ end, ok }) => {
+	ok('isAny' in lib);
 	ok('isBoolean' in lib);
 	ok('isBigInt' in lib);
-	ok('isAny' in lib);
+	ok('isLiteral' in lib);
+	ok('isLiteralOf' in lib);
 	ok('isNumber' in lib);
 	ok('isObject' in lib);
 	ok('isString' in lib);
@@ -17,6 +19,10 @@ test('rAssign lib exports', ({ end, ok }) => {
 	ok('useArrayOfValidation' in lib);
 	ok('useBigInt' in lib);
 	ok('useBoolean' in lib);
+	ok('useLiteral' in lib);
+	ok('useLiteralOf' in lib);
+	ok('useLiteralOfValidation' in lib);
+	ok('useLiteralValidation' in lib);
 	ok('useNumber' in lib);
 	ok('useObject' in lib);
 	ok('useObjectValidation' in lib);
