@@ -1,6 +1,6 @@
 import type { TransformFunction } from 'r-assign';
 
-export type TypeChecker<T> = (value: any) => value is T;
+export type TypeChecker<T> = (value?: any) => value is T;
 
 export type ExtractTypeGuard<T extends TypeChecker<any>> =
 	T extends TypeChecker<infer U> ? U : never;
