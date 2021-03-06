@@ -10,7 +10,7 @@ export type Shape = {
  */
 const isObject: <S extends Shape>(
 	shape: S,
-	value?: any
+	value: any
 ) => value is { [key in keyof S]: ExtractTypeGuard<S[key]> };
 
 /**
@@ -28,8 +28,4 @@ const useObjectValidation: <S extends Shape>(
 	shape: S
 ) => TransformFunction<{ [key in keyof S]: ExtractTypeGuard<S[key]> }>;
 
-export {
-	isObject,
-	useObject,
-	useObjectValidation
-};
+export { isObject, useObject, useObjectValidation };
