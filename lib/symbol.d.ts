@@ -6,17 +6,17 @@ import type { TransformFunction } from 'r-assign';
 const isSymbol: (value: any) => value is symbol;
 
 /**
+ * Transform function to validate symbol values
+ */
+const parseSymbol: TransformFunction<symbol>;
+
+/**
  * Creator of transform functions for symbol values
  */
 const useSymbol: (initial?: symbol) => TransformFunction<symbol>;
 
-/**
- * Transform function to validate symbol values
- */
-const validateSymbol: TransformFunction<symbol>;
-
 export {
 	isSymbol,
-	useSymbol,
-	validateSymbol
+	parseSymbol,
+	useSymbol
 };

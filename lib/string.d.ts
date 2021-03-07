@@ -6,17 +6,17 @@ import type { TransformFunction } from 'r-assign';
 const isString: (value: any) => value is string;
 
 /**
+ * Transform function to validate string values
+ */
+const parseString: TransformFunction<string>;
+
+/**
  * Creator of transform functions for string values
  */
 const useString: (initial?: string) => TransformFunction<string>;
 
-/**
- * Transform function to validate string values
- */
-const validateString: TransformFunction<string>;
-
 export {
 	isString,
-	useString,
-	validateString
+	parseString,
+	useString
 };

@@ -4,13 +4,21 @@ const { test } = require('tap');
 const {
 	isBoolean,
 	useBoolean,
-	validateBoolean
+	parseBoolean
 } = require('r-assign/lib/boolean');
 
 test('isBoolean', ({ end, notOk, ok }) => {
 	notOk(isBoolean());
 	ok(isBoolean(false));
 	ok(isBoolean(true));
+	end();
+});
+
+test('parseBoolean', ({ end, equals, throws }) => {
+	equals(parseBoolean(false), false);
+	throws(() => {
+		parseBoolean();
+	});
 	end();
 });
 
@@ -34,13 +42,5 @@ test('useBoolean', ({ end, equals, throws }) => {
 		useBoolean(null);
 	});
 
-	end();
-});
-
-test('validateBoolean', ({ end, equals, throws }) => {
-	equals(validateBoolean(false), false);
-	throws(() => {
-		validateBoolean();
-	});
 	end();
 });

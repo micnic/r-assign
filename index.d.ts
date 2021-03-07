@@ -28,6 +28,6 @@ namespace rAssign {
 const rAssign: <S extends rAssign.TransformSchema>(
 	schema: S,
 	...sources: any[]
-) => OptionalUndefined<{ [key in keyof S]: ReturnType<S[key]> }>;
+) => rAssign.TransformResult<S>;
 
 export = rAssign;

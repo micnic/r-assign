@@ -6,17 +6,17 @@ import type { TransformFunction } from 'r-assign';
 const isNumber: (value: any) => value is number;
 
 /**
+ * Transform function to validate number values
+ */
+const parseNumber: TransformFunction<number>;
+
+/**
  * Creator of transform functions for finite number values
  */
 const useNumber: (initial?: number) => TransformFunction<number>;
 
-/**
- * Transform function to validate number values
- */
-const validateNumber: TransformFunction<number>;
-
 export {
 	isNumber,
-	useNumber,
-	validateNumber
+	parseNumber,
+	useNumber
 };

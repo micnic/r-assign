@@ -1,11 +1,19 @@
 'use strict';
 
 const { test } = require('tap');
-const { isString, useString, validateString } = require('r-assign/lib/string');
+const { isString, useString, parseString } = require('r-assign/lib/string');
 
 test('isString', ({ end, notOk, ok }) => {
 	notOk(isString());
 	ok(isString(''));
+	end();
+});
+
+test('parseString', ({ end, equals, throws }) => {
+	equals(parseString(''), '');
+	throws(() => {
+		parseString();
+	});
 	end();
 });
 
@@ -27,13 +35,5 @@ test('useString', ({ end, equals, throws }) => {
 		useString(null);
 	});
 
-	end();
-});
-
-test('validateString', ({ end, equals, throws }) => {
-	equals(validateString(''), '');
-	throws(() => {
-		validateString();
-	});
 	end();
 });

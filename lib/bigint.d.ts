@@ -6,17 +6,17 @@ import type { TransformFunction } from 'r-assign';
 const isBigInt: (value: any) => value is bigint;
 
 /**
+ * Transform function to validate bigint values
+ */
+const parseBigInt: TransformFunction<bigint>;
+
+/**
  * Creator of transform functions for bigint values
  */
 const useBigInt: (initial?: bigint) => TransformFunction<bigint>;
 
-/**
- * Transform function to validate bigint values
- */
-const validateBigInt: TransformFunction<big>;
-
 export {
 	isBigInt,
-	useBigInt,
-	validateBigInt
+	parseBigInt,
+	useBigInt
 };

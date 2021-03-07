@@ -6,17 +6,17 @@ import type { TransformFunction } from 'r-assign';
 const isAny: (value: any) => value is Exclude<any, undefined>;
 
 /**
+ * Transform function to validate non-undefined values
+ */
+const parseAny: TransformFunction;
+
+/**
  * Creator of transform functions for non-undefined values
  */
 const useAny: (initial?: any) => TransformFunction;
 
-/**
- * Transform function to validate non-undefined values
- */
-const validateAny: TransformFunction;
-
 export {
 	isAny,
+	parseAny,
 	useAny,
-	validateAny
 };

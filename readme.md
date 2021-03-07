@@ -121,7 +121,7 @@ const skipOne = (value) => {
     return result;
 };
 
-const validateNumber = (value) => {
+const parseNumber = (value) => {
 
     if (typeof value !== 'number') {
         throw new Error('Value expected to be a number');
@@ -202,7 +202,7 @@ rAssign({
 // Validate a property and throw an error if constraint is not satisfied
 rAssign({
     id: getString,
-    index: validateNumber,
+    index: parseNumber,
     visible: getBoolean,
     name: getString
 }, invalidEntry);

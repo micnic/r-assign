@@ -8,3 +8,4 @@ export * from 'r-assign/lib/object';
 export * from 'r-assign/lib/string';
 export * from 'r-assign/lib/symbol';
 export * from 'r-assign/lib/type';
+export * from 'r-assign/lib/union';
