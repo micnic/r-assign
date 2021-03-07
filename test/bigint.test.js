@@ -4,13 +4,21 @@ const { test } = require('tap');
 const {
 	isBigInt,
 	useBigInt,
-	validateBigInt
+	parseBigInt
 } = require('r-assign/lib/bigint');
 
 test('isBigInt', ({ end, notOk, ok }) => {
 	notOk(isBigInt());
 	notOk(isBigInt(0));
 	ok(isBigInt(0n));
+	end();
+});
+
+test('parseBigInt', ({ end, equals, throws }) => {
+	equals(parseBigInt(0n), 0n);
+	throws(() => {
+		parseBigInt();
+	});
 	end();
 });
 
@@ -34,13 +42,5 @@ test('useBigInt', ({ end, equals, throws }) => {
 		useBigInt(0);
 	});
 
-	end();
-});
-
-test('validateBigInt', ({ end, equals, throws }) => {
-	equals(validateBigInt(0n), 0n);
-	throws(() => {
-		validateBigInt();
-	});
 	end();
 });

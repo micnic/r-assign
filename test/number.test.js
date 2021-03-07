@@ -1,7 +1,7 @@
 'use strict';
 
 const { test } = require('tap');
-const { isNumber, useNumber, validateNumber } = require('r-assign/lib/number');
+const { isNumber, useNumber, parseNumber } = require('r-assign/lib/number');
 
 test('isNumber', ({ end, notOk, ok }) => {
 	notOk(isNumber());
@@ -9,6 +9,14 @@ test('isNumber', ({ end, notOk, ok }) => {
 	notOk(isNumber(Infinity));
 	notOk(isNumber(-Infinity));
 	ok(isNumber(0));
+	end();
+});
+
+test('parseNumber', ({ end, equals, throws }) => {
+	equals(parseNumber(0), 0);
+	throws(() => {
+		parseNumber();
+	});
 	end();
 });
 
@@ -48,13 +56,5 @@ test('useNumber', ({ end, equals, throws }) => {
 		useNumber(-Infinity);
 	});
 
-	end();
-});
-
-test('validateNumber', ({ end, equals, throws }) => {
-	equals(validateNumber(0), 0);
-	throws(() => {
-		validateNumber();
-	});
 	end();
 });

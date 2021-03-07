@@ -10,6 +10,13 @@ const isArrayOf: <T extends TypeChecker<any>>(
 ) => value is ExtractTypeGuard<T>[];
 
 /**
+ * Creator of transform functions for array validation
+ */
+const parseArrayOf: <T extends TypeChecker<any>>(
+	...types: T[]
+) => TransformFunction<ExtractTypeGuard<T>[]>;
+
+/**
  * Creator of transform functions for array values
  */
 const useArrayOf: <T extends TypeChecker<any>>(
@@ -17,15 +24,8 @@ const useArrayOf: <T extends TypeChecker<any>>(
 	initial?: ExtractTypeGuard<T>
 ) => TransformFunction<ExtractTypeGuard<T>[]>;
 
-/**
- * Creator of transform functions for array validation
- */
-const useArrayOfValidation: <T extends TypeChecker<any>>(
-	...types: T[]
-) => TransformFunction<ExtractTypeGuard<T>[]>;
-
 export {
 	isArrayOf,
-	useArrayOf,
-	useArrayOfValidation
+	parseArrayOf,
+	useArrayOf
 };

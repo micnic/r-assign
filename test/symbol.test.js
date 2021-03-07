@@ -1,11 +1,22 @@
 'use strict';
 
 const { test } = require('tap');
-const { isSymbol, useSymbol, validateSymbol } = require('r-assign/lib/symbol');
+const { isSymbol, useSymbol, parseSymbol } = require('r-assign/lib/symbol');
 
 test('isSymbol', ({ end, notOk, ok }) => {
 	notOk(isSymbol());
 	ok(isSymbol(Symbol()));
+	end();
+});
+
+test('parseSymbol', ({ end, equals, throws }) => {
+
+	const symbol = Symbol();
+
+	equals(parseSymbol(symbol), symbol);
+	throws(() => {
+		parseSymbol();
+	});
 	end();
 });
 
@@ -28,16 +39,5 @@ test('useString', ({ end, equals, matches, throws }) => {
 		useSymbol(null);
 	});
 
-	end();
-});
-
-test('validateSymbol', ({ end, equals, throws }) => {
-
-	const symbol = Symbol();
-
-	equals(validateSymbol(symbol), symbol);
-	throws(() => {
-		validateSymbol();
-	});
 	end();
 });

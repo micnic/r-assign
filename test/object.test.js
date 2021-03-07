@@ -2,86 +2,86 @@
 
 const { test } = require('tap');
 const {
-	isObject,
-	useObject,
-	useObjectValidation
+	isObjectOf,
+	useObjectOf,
+	parseObjectOf
 } = require('r-assign/lib/object');
 const { isBoolean } = require('r-assign/lib/boolean');
 const { isNumber } = require('r-assign/lib/number');
 const { isString } = require('r-assign/lib/string');
 
-test('isObject', ({ end, notOk, ok, throws }) => {
+test('isObjectOf', ({ end, notOk, ok, throws }) => {
 
-	ok(isObject({ boolean: isBoolean }, { boolean: false }));
-	ok(isObject({
+	ok(isObjectOf({ boolean: isBoolean }, { boolean: false }));
+	ok(isObjectOf({
 		number: isNumber,
 		string: isString
 	}, { boolean: false, number: 0, string: '' }));
-	notOk(isObject({ boolean: isBoolean }, null));
-	notOk(isObject({ boolean: isBoolean }, { boolean: 0 }));
+	notOk(isObjectOf({ boolean: isBoolean }, null));
+	notOk(isObjectOf({ boolean: isBoolean }, { boolean: 0 }));
 
 	throws(() => {
-		isObject();
+		isObjectOf();
 	});
 
 	throws(() => {
-		isObject(null);
+		isObjectOf(null);
 	});
 
 	throws(() => {
-		isObject(0);
+		isObjectOf(0);
 	});
 
 	end();
 });
 
-test('useObject', ({ end, matches, throws }) => {
+test('parseObjectOf', ({ end, matches, throws }) => {
 
-	const getObjectABC = useObject({ abc: isString }, { abc: '' });
+	const validateObjectABC = parseObjectOf({ abc: isString });
+
+	matches(validateObjectABC({ abc: '' }), { abc: '' });
+
+	throws(() => {
+		validateObjectABC();
+	});
+
+	end();
+});
+
+test('useObjectOf', ({ end, matches, throws }) => {
+
+	const getObjectABC = useObjectOf({ abc: isString }, { abc: '' });
 
 	matches(getObjectABC(), { abc: '' });
 	matches(getObjectABC({ abc: '' }), { abc: '' });
 	matches(getObjectABC({ abc: 'abc' }), { abc: 'abc' });
 
 	throws(() => {
-		useObject();
+		useObjectOf();
 	});
 
 	throws(() => {
-		useObject(null);
+		useObjectOf(null);
 	});
 
 	throws(() => {
-		useObject(0);
+		useObjectOf(0);
 	});
 
 	throws(() => {
-		useObject({ abc: isString });
+		useObjectOf({ abc: isString });
 	});
 
 	throws(() => {
-		useObject({ abc: isString }, {});
+		useObjectOf({ abc: isString }, {});
 	});
 
 	throws(() => {
-		useObject({ abc: null }, {});
+		useObjectOf({ abc: null }, {});
 	});
 
 	throws(() => {
-		useObject({ abc: () => null }, {});
-	});
-
-	end();
-});
-
-test('useObjectValidation', ({ end, matches, throws }) => {
-
-	const validateObjectABC = useObjectValidation({ abc: isString });
-
-	matches(validateObjectABC({ abc: '' }), { abc: '' });
-
-	throws(() => {
-		validateObjectABC();
+		useObjectOf({ abc: () => null }, {});
 	});
 
 	end();

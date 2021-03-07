@@ -4,7 +4,7 @@ const { test } = require('tap');
 const {
 	isArrayOf,
 	useArrayOf,
-	useArrayOfValidation
+	parseArrayOf
 } = require('r-assign/lib/array');
 const { isBoolean } = require('r-assign/lib/boolean');
 const { isNumber } = require('r-assign/lib/number');
@@ -27,6 +27,19 @@ test('isArrayOf', ({ end, notOk, ok, throws }) => {
 
 	throws(() => {
 		isArrayOf([() => null], null);
+	});
+
+	end();
+});
+
+test('parseArrayOf', ({ end, matches, throws }) => {
+
+	const validateArrayOfString = parseArrayOf(isString);
+
+	matches(validateArrayOfString(['']), ['']);
+
+	throws(() => {
+		validateArrayOfString(null);
 	});
 
 	end();
@@ -55,19 +68,6 @@ test('useArrayOf', ({ end, matches, throws }) => {
 
 	throws(() => {
 		useArrayOf([isString], null);
-	});
-
-	end();
-});
-
-test('useArrayOfValidation', ({ end, matches, throws }) => {
-
-	const validateArrayOfString = useArrayOfValidation(isString);
-
-	matches(validateArrayOfString(['']), ['']);
-
-	throws(() => {
-		validateArrayOfString(null);
 	});
 
 	end();
