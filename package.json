@@ -3,9 +3,18 @@
 	"version": "1.0.2",
 	"description": "Object.assign() with super powers",
 	"keywords": [
+		"assert",
 		"assign",
+		"filter",
+		"keys",
+		"map",
+		"mapper",
+		"mapping",
 		"object",
-		"transform"
+		"schema",
+		"transform",
+		"validate",
+		"validation"
 	],
 	"homepage": "https://github.com/micnic/r-assign",
 	"bugs": {
