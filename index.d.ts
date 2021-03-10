@@ -13,8 +13,8 @@ namespace rAssign {
 		source: any
 	) => T;
 
-	type TransformSchema = {
-		[key: string]: TransformFunction;
+	type TransformSchema<T = any> = {
+		[key in keyof T]: TransformFunction<T[key]>;
 	};
 
 	type TransformResult<S extends TransformSchema> = OptionalUndefined<
