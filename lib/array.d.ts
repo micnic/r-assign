@@ -1,10 +1,10 @@
 import type { TransformFunction } from 'r-assign';
-import type { ExtractTypeGuard, TypeChecker } from 'r-assign/lib/type';
+import type { ExtractTypeGuard, TypeChecker } from 'r-assign/lib/union';
 
 /**
  * Check for array values
  */
-const isArrayOf: <T extends TypeChecker<any>>(
+declare const isArrayOf: <T extends TypeChecker<any>>(
 	types: T[],
 	value: any
 ) => value is ExtractTypeGuard<T>[];
@@ -12,20 +12,16 @@ const isArrayOf: <T extends TypeChecker<any>>(
 /**
  * Creator of transform functions for array validation
  */
-const parseArrayOf: <T extends TypeChecker<any>>(
+declare const parseArrayOf: <T extends TypeChecker<any>>(
 	...types: T[]
 ) => TransformFunction<ExtractTypeGuard<T>[]>;
 
 /**
  * Creator of transform functions for array values
  */
-const useArrayOf: <T extends TypeChecker<any>>(
+declare const useArrayOf: <T extends TypeChecker<any>>(
 	types: T[],
 	initial?: ExtractTypeGuard<T>
 ) => TransformFunction<ExtractTypeGuard<T>[]>;
 
-export {
-	isArrayOf,
-	parseArrayOf,
-	useArrayOf
-};
+export { isArrayOf, parseArrayOf, useArrayOf };
