@@ -2,9 +2,12 @@ type KeysOfType<T, U> = {
 	[key in keyof T]: U extends T[key] ? key : never;
 }[keyof T];
 
-type OptionalKeys<T> = Partial<Pick<T, KeysOfType<T, undefined>>>;
-type RequiredKeys<T> = Omit<T, KeysOfType<T, undefined>>;
-type OptionalUndefined<T> = OptionalKeys<T> & RequiredKeys<T>;
+type OptionalPartial<T, K extends keyof T> = Partial<Pick<T, K>> &
+	Omit<T, K> extends infer R
+	? { [P in keyof R]: R[P] }
+	: never;
+
+type OptionalUndefined<T> = OptionalPartial<T, KeysOfType<T, undefined>>;
 
 declare namespace rAssign {
 	type TransformFunction<T = any> = (
@@ -28,6 +31,6 @@ declare namespace rAssign {
 declare const rAssign: <S extends rAssign.TransformSchema>(
 	schema: S,
 	...sources: any[]
-) => OptionalUndefined<{ [key in keyof S]: ReturnType<S[key]> }>;
+) => rAssign.TransformResult<S>;
 
 export = rAssign;

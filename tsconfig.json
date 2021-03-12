@@ -1,6 +1,7 @@
 {
 	"compilerOptions": {
 		"checkJs": true,
+		"esModuleInterop": true,
 		"lib": ["es2020"],
 		"module": "commonjs",
 		"moduleResolution": "node",
