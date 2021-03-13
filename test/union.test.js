@@ -5,10 +5,39 @@ const { isBoolean } = require('r-assign/lib/boolean');
 const { isNumber } = require('r-assign/lib/number');
 const { isString } = require('r-assign/lib/string');
 const {
+	getUnionOf,
 	isUnionOf,
-	parseUnionOf,
-	useUnionOf
+	parseUnionOf
 } = require('r-assign/lib/union');
+
+test('getUnionOf', ({ end, equals, throws }) => {
+
+	const getStringOrNumber = getUnionOf([isNumber, isString], '');
+
+	equals(getStringOrNumber(), '');
+	equals(getStringOrNumber(0), 0);
+	equals(getStringOrNumber(1), 1);
+	equals(getStringOrNumber(''), '');
+	equals(getStringOrNumber('data'), 'data');
+
+	throws(() => {
+		getUnionOf();
+	});
+
+	throws(() => {
+		getUnionOf([null], null);
+	});
+
+	throws(() => {
+		getUnionOf([() => null], null);
+	});
+
+	throws(() => {
+		getUnionOf([isString], null);
+	});
+
+	end();
+});
 
 test('isUnionOf', ({ end, notOk, ok, throws }) => {
 
@@ -39,35 +68,6 @@ test('parseUnionOf', ({ end, equals, throws }) => {
 
 	throws(() => {
 		parseString(null);
-	});
-
-	end();
-});
-
-test('useUnionOf', ({ end, equals, throws }) => {
-
-	const getStringOrNumber = useUnionOf([isNumber, isString], '');
-
-	equals(getStringOrNumber(), '');
-	equals(getStringOrNumber(0), 0);
-	equals(getStringOrNumber(1), 1);
-	equals(getStringOrNumber(''), '');
-	equals(getStringOrNumber('data'), 'data');
-
-	throws(() => {
-		useUnionOf();
-	});
-
-	throws(() => {
-		useUnionOf([null], null);
-	});
-
-	throws(() => {
-		useUnionOf([() => null], null);
-	});
-
-	throws(() => {
-		useUnionOf([isString], null);
 	});
 
 	end();

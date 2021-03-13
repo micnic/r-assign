@@ -1,4 +1,9 @@
-import type { TransformFunction } from 'r-assign';
+import type { TransformFunction } from "r-assign";
+
+/**
+ * Creator of transform functions for string values
+ */
+declare const getString: (initial?: string) => TransformFunction<string>;
 
 /**
  * Check for string values
@@ -10,13 +15,4 @@ declare const isString: (value: any) => value is string;
  */
 declare const parseString: TransformFunction<string>;
 
-/**
- * Creator of transform functions for string values
- */
-declare const useString: (initial?: string) => TransformFunction<string>;
-
-export {
-	isString,
-	parseString,
-	useString
-};
+export { getString, isString, parseString };

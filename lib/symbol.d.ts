@@ -1,6 +1,11 @@
 import type { TransformFunction } from 'r-assign';
 
 /**
+ * Creator of transform functions for symbol values
+ */
+declare const getSymbol: (initial?: symbol) => TransformFunction<symbol>;
+
+/**
  * Check for symbol values
  */
 declare const isSymbol: (value: any) => value is symbol;
@@ -10,13 +15,8 @@ declare const isSymbol: (value: any) => value is symbol;
  */
 declare const parseSymbol: TransformFunction<symbol>;
 
-/**
- * Creator of transform functions for symbol values
- */
-declare const useSymbol: (initial?: symbol) => TransformFunction<symbol>;
-
 export {
+	getSymbol,
 	isSymbol,
-	parseSymbol,
-	useSymbol
+	parseSymbol
 };

@@ -2,10 +2,33 @@
 
 const { test } = require('tap');
 const {
+	getBigInt,
 	isBigInt,
-	useBigInt,
 	parseBigInt
 } = require('r-assign/lib/bigint');
+
+test('getBigInt', ({ end, equals, throws }) => {
+
+	const getBigIntNoDefault = getBigInt();
+
+	equals(getBigIntNoDefault(), 0n);
+	equals(getBigIntNoDefault(0n), 0n);
+	equals(getBigIntNoDefault(1n), 1n);
+	equals(getBigIntNoDefault(0), 0n);
+
+	const getBigIntOne = getBigInt(1n);
+
+	equals(getBigIntOne(), 1n);
+	equals(getBigIntOne(0n), 0n);
+	equals(getBigIntOne(1n), 1n);
+	equals(getBigIntOne(0), 1n);
+
+	throws(() => {
+		getBigInt(0);
+	});
+
+	end();
+});
 
 test('isBigInt', ({ end, notOk, ok }) => {
 	notOk(isBigInt());
@@ -19,28 +42,5 @@ test('parseBigInt', ({ end, equals, throws }) => {
 	throws(() => {
 		parseBigInt();
 	});
-	end();
-});
-
-test('useBigInt', ({ end, equals, throws }) => {
-
-	const getBigInt = useBigInt();
-
-	equals(getBigInt(), 0n);
-	equals(getBigInt(0n), 0n);
-	equals(getBigInt(1n), 1n);
-	equals(getBigInt(0), 0n);
-
-	const getBigIntOne = useBigInt(1n);
-
-	equals(getBigIntOne(), 1n);
-	equals(getBigIntOne(0n), 0n);
-	equals(getBigIntOne(1n), 1n);
-	equals(getBigIntOne(0), 1n);
-
-	throws(() => {
-		useBigInt(0);
-	});
-
 	end();
 });

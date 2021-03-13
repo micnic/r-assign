@@ -1,6 +1,11 @@
 import type { TransformFunction } from 'r-assign';
 
 /**
+ * Creator of transform functions for boolean values
+ */
+declare const getBoolean: (initial?: boolean) => TransformFunction<boolean>;
+
+/**
  * Check for boolean values
  */
 declare const isBoolean: (value: any) => value is boolean;
@@ -10,9 +15,4 @@ declare const isBoolean: (value: any) => value is boolean;
  */
 declare const parseBoolean: TransformFunction<boolean>;
 
-/**
- * Creator of transform functions for boolean values
- */
-declare const useBoolean: (initial?: boolean) => TransformFunction<boolean>;
-
-export { isBoolean, parseBoolean, useBoolean };
+export { getBoolean, isBoolean, parseBoolean };

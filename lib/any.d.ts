@@ -1,6 +1,11 @@
 import type { TransformFunction } from 'r-assign';
 
 /**
+ * Creator of transform functions for non-undefined values
+ */
+declare const getAny: (initial?: any) => TransformFunction;
+
+/**
  * Check for non-undefined values
  */
 declare const isAny: (value: any) => value is Exclude<any, undefined>;
@@ -10,9 +15,4 @@ declare const isAny: (value: any) => value is Exclude<any, undefined>;
  */
 declare const parseAny: TransformFunction;
 
-/**
- * Creator of transform functions for non-undefined values
- */
-declare const useAny: (initial?: any) => TransformFunction;
-
-export { isAny, parseAny, useAny };
+export { getAny, isAny, parseAny };
