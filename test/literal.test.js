@@ -2,10 +2,25 @@
 
 const { test } = require('tap');
 const {
+	getLiteral,
 	isLiteral,
-	useLiteral,
 	parseLiteral
 } = require('r-assign/lib/literal');
+
+test('getLiteral', ({ end, equals, throws }) => {
+
+	const getLiteralNull = getLiteral(null);
+
+	equals(getLiteralNull(), null);
+	equals(getLiteralNull(null), null);
+	equals(getLiteralNull(0), null);
+
+	throws(() => {
+		getLiteral();
+	});
+
+	end();
+});
 
 test('isLiteral', ({ end, notOk, ok, throws }) => {
 
@@ -34,21 +49,6 @@ test('parseLiteral', ({ end, equals, throws }) => {
 
 	throws(() => {
 		getLiteralFalse();
-	});
-
-	end();
-});
-
-test('useLiteral', ({ end, equals, throws }) => {
-
-	const getLiteralNull = useLiteral(null);
-
-	equals(getLiteralNull(), null);
-	equals(getLiteralNull(null), null);
-	equals(getLiteralNull(0), null);
-
-	throws(() => {
-		useLiteral();
 	});
 
 	end();

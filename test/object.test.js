@@ -3,12 +3,51 @@
 const { test } = require('tap');
 const {
 	isObjectOf,
-	useObjectOf,
+	getObjectOf,
 	parseObjectOf
 } = require('r-assign/lib/object');
 const { isBoolean } = require('r-assign/lib/boolean');
 const { isNumber } = require('r-assign/lib/number');
 const { isString } = require('r-assign/lib/string');
+
+test('getObjectOf', ({ end, matches, throws }) => {
+
+	const getObjectABC = getObjectOf({ abc: isString }, { abc: '' });
+
+	matches(getObjectABC(), { abc: '' });
+	matches(getObjectABC({ abc: '' }), { abc: '' });
+	matches(getObjectABC({ abc: 'abc' }), { abc: 'abc' });
+
+	throws(() => {
+		getObjectOf();
+	});
+
+	throws(() => {
+		getObjectOf(null);
+	});
+
+	throws(() => {
+		getObjectOf(0);
+	});
+
+	throws(() => {
+		getObjectOf({ abc: isString });
+	});
+
+	throws(() => {
+		getObjectOf({ abc: isString }, {});
+	});
+
+	throws(() => {
+		getObjectOf({ abc: null }, {});
+	});
+
+	throws(() => {
+		getObjectOf({ abc: () => null }, {});
+	});
+
+	end();
+});
 
 test('isObjectOf', ({ end, notOk, ok, throws }) => {
 
@@ -43,45 +82,6 @@ test('parseObjectOf', ({ end, matches, throws }) => {
 
 	throws(() => {
 		validateObjectABC();
-	});
-
-	end();
-});
-
-test('useObjectOf', ({ end, matches, throws }) => {
-
-	const getObjectABC = useObjectOf({ abc: isString }, { abc: '' });
-
-	matches(getObjectABC(), { abc: '' });
-	matches(getObjectABC({ abc: '' }), { abc: '' });
-	matches(getObjectABC({ abc: 'abc' }), { abc: 'abc' });
-
-	throws(() => {
-		useObjectOf();
-	});
-
-	throws(() => {
-		useObjectOf(null);
-	});
-
-	throws(() => {
-		useObjectOf(0);
-	});
-
-	throws(() => {
-		useObjectOf({ abc: isString });
-	});
-
-	throws(() => {
-		useObjectOf({ abc: isString }, {});
-	});
-
-	throws(() => {
-		useObjectOf({ abc: null }, {});
-	});
-
-	throws(() => {
-		useObjectOf({ abc: () => null }, {});
 	});
 
 	end();

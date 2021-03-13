@@ -13,6 +13,14 @@ declare const validateTypes: <T extends TypeChecker<any>>(
 ) => void;
 
 /**
+ * Creator of transform functions for union types values
+ */
+declare const getUnionOf: <T extends TypeChecker<any>>(
+	types: T[],
+	initial: ExtractTypeGuard<T>
+) => TransformFunction<ExtractTypeGuard<T>>;
+
+/**
  * Check for values of union types
  */
 declare const isUnionOf: <T extends TypeChecker<any>>(
@@ -27,12 +35,4 @@ declare const parseUnionOf: <T extends TypeChecker<any>>(
 	...types: T[]
 ) => TransformFunction<ExtractTypeGuard<T>>;
 
-/**
- * Creator of transform functions for union types values
- */
-declare const useUnionOf: <T extends TypeChecker<any>>(
-	types: T[],
-	initial: ExtractTypeGuard<T>
-) => TransformFunction<ExtractTypeGuard<T>>;
-
-export { isUnionOf, parseUnionOf, useUnionOf, validateTypes };
+export { getUnionOf, isUnionOf, parseUnionOf, validateTypes };

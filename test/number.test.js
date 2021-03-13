@@ -1,7 +1,46 @@
 'use strict';
 
 const { test } = require('tap');
-const { isNumber, useNumber, parseNumber } = require('r-assign/lib/number');
+const { getNumber, isNumber, parseNumber } = require('r-assign/lib/number');
+
+test('getNumber', ({ end, equals, throws }) => {
+
+	const getNumberNoDefault = getNumber();
+
+	equals(getNumberNoDefault(), 0);
+	equals(getNumberNoDefault(1), 1);
+	equals(getNumberNoDefault(null), 0);
+	equals(getNumberNoDefault(NaN), 0);
+	equals(getNumberNoDefault(Infinity), 0);
+	equals(getNumberNoDefault(-Infinity), 0);
+
+	const getNumberOne = getNumber(1);
+
+	equals(getNumberOne(), 1);
+	equals(getNumberOne(1), 1);
+	equals(getNumberOne(null), 1);
+	equals(getNumberOne(NaN), 1);
+	equals(getNumberOne(Infinity), 1);
+	equals(getNumberOne(-Infinity), 1);
+
+	throws(() => {
+		getNumber(null);
+	});
+
+	throws(() => {
+		getNumber(NaN);
+	});
+
+	throws(() => {
+		getNumber(Infinity);
+	});
+
+	throws(() => {
+		getNumber(-Infinity);
+	});
+
+	end();
+});
 
 test('isNumber', ({ end, notOk, ok }) => {
 	notOk(isNumber());
@@ -17,44 +56,5 @@ test('parseNumber', ({ end, equals, throws }) => {
 	throws(() => {
 		parseNumber();
 	});
-	end();
-});
-
-test('useNumber', ({ end, equals, throws }) => {
-
-	const getNumber = useNumber();
-
-	equals(getNumber(), 0);
-	equals(getNumber(1), 1);
-	equals(getNumber(null), 0);
-	equals(getNumber(NaN), 0);
-	equals(getNumber(Infinity), 0);
-	equals(getNumber(-Infinity), 0);
-
-	const getNumberOne = useNumber(1);
-
-	equals(getNumberOne(), 1);
-	equals(getNumberOne(1), 1);
-	equals(getNumberOne(null), 1);
-	equals(getNumberOne(NaN), 1);
-	equals(getNumberOne(Infinity), 1);
-	equals(getNumberOne(-Infinity), 1);
-
-	throws(() => {
-		useNumber(null);
-	});
-
-	throws(() => {
-		useNumber(NaN);
-	});
-
-	throws(() => {
-		useNumber(Infinity);
-	});
-
-	throws(() => {
-		useNumber(-Infinity);
-	});
-
 	end();
 });

@@ -2,10 +2,33 @@
 
 const { test } = require('tap');
 const {
+	getBoolean,
 	isBoolean,
-	useBoolean,
 	parseBoolean
 } = require('r-assign/lib/boolean');
+
+test('getBoolean', ({ end, equals, throws }) => {
+
+	const getBooleanNoDefault = getBoolean();
+
+	equals(getBooleanNoDefault(), false);
+	equals(getBooleanNoDefault(false), false);
+	equals(getBooleanNoDefault(true), true);
+	equals(getBooleanNoDefault(null), false);
+
+	const getBooleanTrue = getBoolean(true);
+
+	equals(getBooleanTrue(), true);
+	equals(getBooleanTrue(false), false);
+	equals(getBooleanTrue(true), true);
+	equals(getBooleanTrue(null), true);
+
+	throws(() => {
+		getBoolean(null);
+	});
+
+	end();
+});
 
 test('isBoolean', ({ end, notOk, ok }) => {
 	notOk(isBoolean());
@@ -19,28 +42,5 @@ test('parseBoolean', ({ end, equals, throws }) => {
 	throws(() => {
 		parseBoolean();
 	});
-	end();
-});
-
-test('useBoolean', ({ end, equals, throws }) => {
-
-	const getBoolean = useBoolean();
-
-	equals(getBoolean(), false);
-	equals(getBoolean(false), false);
-	equals(getBoolean(true), true);
-	equals(getBoolean(null), false);
-
-	const getBooleanTrue = useBoolean(true);
-
-	equals(getBooleanTrue(), true);
-	equals(getBooleanTrue(false), false);
-	equals(getBooleanTrue(true), true);
-	equals(getBooleanTrue(null), true);
-
-	throws(() => {
-		useBoolean(null);
-	});
-
 	end();
 });

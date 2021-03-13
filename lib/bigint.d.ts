@@ -1,6 +1,11 @@
 import type { TransformFunction } from 'r-assign';
 
 /**
+ * Creator of transform functions for bigint values
+ */
+declare const getBigInt: (initial?: bigint) => TransformFunction<bigint>;
+
+/**
  * Check for bigint values
  */
 declare const isBigInt: (value: any) => value is bigint;
@@ -10,9 +15,4 @@ declare const isBigInt: (value: any) => value is bigint;
  */
 declare const parseBigInt: TransformFunction<bigint>;
 
-/**
- * Creator of transform functions for bigint values
- */
-declare const useBigInt: (initial?: bigint) => TransformFunction<bigint>;
-
-export { isBigInt, parseBigInt, useBigInt };
+export { getBigInt, isBigInt, parseBigInt };

@@ -1,6 +1,11 @@
 import type { TransformFunction } from 'r-assign';
 
 /**
+ * Creator of transform functions for finite number values
+ */
+declare const getNumber: (initial?: number) => TransformFunction<number>;
+
+/**
  * Check for finite number values
  */
 declare const isNumber: (value: any) => value is number;
@@ -10,9 +15,4 @@ declare const isNumber: (value: any) => value is number;
  */
 declare const parseNumber: TransformFunction<number>;
 
-/**
- * Creator of transform functions for finite number values
- */
-declare const useNumber: (initial?: number) => TransformFunction<number>;
-
-export { isNumber, parseNumber, useNumber };
+export { getNumber, isNumber, parseNumber };

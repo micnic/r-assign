@@ -1,14 +1,14 @@
 'use strict';
 
 const { test } = require('tap');
-const { useString } = require('r-assign/lib/string');
+const { getString } = require('r-assign/lib/string');
 const {
-	useOptional
+	getOptional
 } = require('r-assign/lib/type');
 
-test('useOptional', ({ end, equals, throws }) => {
+test('getOptional', ({ end, equals, throws }) => {
 
-	const getOptionalString = useOptional(useString());
+	const getOptionalString = getOptional(getString());
 
 	equals(typeof getOptionalString(), 'undefined');
 	equals(getOptionalString(''), '');
@@ -16,7 +16,7 @@ test('useOptional', ({ end, equals, throws }) => {
 	equals(getOptionalString(null), '');
 
 	throws(() => {
-		useOptional();
+		getOptional();
 	});
 
 	end();
