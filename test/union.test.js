@@ -33,7 +33,7 @@ test('getUnionOf', ({ end, equals, throws }) => {
 	});
 
 	throws(() => {
-		getUnionOf([isString], null);
+		getUnionOf([isNumber, isString], null);
 	});
 
 	end();
@@ -41,20 +41,24 @@ test('getUnionOf', ({ end, equals, throws }) => {
 
 test('isUnionOf', ({ end, notOk, ok, throws }) => {
 
-	ok(isUnionOf([isBoolean], true));
-	ok(isUnionOf([isBoolean, isNumber], true));
-	notOk(isUnionOf([isNumber], true));
+	ok(isUnionOf([isBoolean, isNumber])(true));
+	ok(isUnionOf([isBoolean, isNumber])(0));
+	notOk(isUnionOf([isBoolean, isNumber])(''));
 
 	throws(() => {
 		isUnionOf();
 	});
 
 	throws(() => {
-		isUnionOf([null], null);
+		isUnionOf([]);
 	});
 
 	throws(() => {
-		isUnionOf([() => null], null);
+		isUnionOf([null, null]);
+	});
+
+	throws(() => {
+		isUnionOf([() => null, () => null]);
 	});
 
 	end();
@@ -62,12 +66,12 @@ test('isUnionOf', ({ end, notOk, ok, throws }) => {
 
 test('parseUnionOf', ({ end, equals, throws }) => {
 
-	const parseString = parseUnionOf(isString);
+	const parseStringOrNumber = parseUnionOf([isString, isNumber]);
 
-	equals(parseString(''), '');
+	equals(parseStringOrNumber(''), '');
 
 	throws(() => {
-		parseString(null);
+		parseStringOrNumber(null);
 	});
 
 	end();

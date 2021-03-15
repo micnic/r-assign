@@ -1,4 +1,5 @@
 import type { TransformFunction } from 'r-assign';
+import type { TypeGuard } from 'r-assign/lib/union';
 
 export type Primitive = bigint | boolean | null | number | symbol | string;
 
@@ -13,9 +14,8 @@ declare const getLiteral: <T extends Primitive>(
  * Check for literal values
  */
 declare const isLiteral: <T extends Primitive>(
-	literal: T,
-	value?: any
-) => value is T;
+	literal: T
+) => TypeGuard<T>;
 
 /**
  * Creator of transform functions for literal validation

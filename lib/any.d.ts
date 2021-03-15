@@ -1,4 +1,5 @@
 import type { TransformFunction } from 'r-assign';
+import type { TypeGuard } from 'r-assign/lib/union';
 
 /**
  * Creator of transform functions for non-undefined values
@@ -8,7 +9,7 @@ declare const getAny: (initial?: any) => TransformFunction;
 /**
  * Check for non-undefined values
  */
-declare const isAny: (value: any) => value is Exclude<any, undefined>;
+declare const isAny: TypeGuard;
 
 /**
  * Transform function to validate non-undefined values

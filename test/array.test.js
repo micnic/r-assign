@@ -12,7 +12,7 @@ const { isString } = require('r-assign/lib/string');
 
 test('getArrayOf', ({ end, matches, throws }) => {
 
-	const getArrayOfString = getArrayOf([isString]);
+	const getArrayOfString = getArrayOf(isString);
 
 	matches(getArrayOfString(), []);
 	matches(getArrayOfString(null), []);
@@ -24,15 +24,15 @@ test('getArrayOf', ({ end, matches, throws }) => {
 	});
 
 	throws(() => {
-		getArrayOf([null], null);
+		getArrayOf(null, null);
 	});
 
 	throws(() => {
-		getArrayOf([() => null], null);
+		getArrayOf(() => null, null);
 	});
 
 	throws(() => {
-		getArrayOf([isString], null);
+		getArrayOf(isString, null);
 	});
 
 	end();
@@ -40,21 +40,20 @@ test('getArrayOf', ({ end, matches, throws }) => {
 
 test('isArrayOf', ({ end, notOk, ok, throws }) => {
 
-	ok(isArrayOf([isBoolean], []));
-	ok(isArrayOf([isBoolean], [true]));
-	ok(isArrayOf([isBoolean, isNumber], [true, 1]));
-	notOk(isArrayOf([isNumber]));
+	ok(isArrayOf(isBoolean)([]));
+	ok(isArrayOf(isBoolean)([true]));
+	notOk(isArrayOf(isNumber)());
 
 	throws(() => {
 		isArrayOf();
 	});
 
 	throws(() => {
-		isArrayOf([null], null);
+		isArrayOf(null, null);
 	});
 
 	throws(() => {
-		isArrayOf([() => null], null);
+		isArrayOf(() => null, null);
 	});
 
 	end();
