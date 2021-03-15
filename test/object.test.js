@@ -51,13 +51,13 @@ test('getObjectOf', ({ end, matches, throws }) => {
 
 test('isObjectOf', ({ end, notOk, ok, throws }) => {
 
-	ok(isObjectOf({ boolean: isBoolean }, { boolean: false }));
+	ok(isObjectOf({ boolean: isBoolean })({ boolean: false }));
 	ok(isObjectOf({
 		number: isNumber,
 		string: isString
-	}, { boolean: false, number: 0, string: '' }));
-	notOk(isObjectOf({ boolean: isBoolean }, null));
-	notOk(isObjectOf({ boolean: isBoolean }, { boolean: 0 }));
+	})({ boolean: false, number: 0, string: '' }));
+	notOk(isObjectOf({ boolean: isBoolean })(null));
+	notOk(isObjectOf({ boolean: isBoolean })({ boolean: 0 }));
 
 	throws(() => {
 		isObjectOf();

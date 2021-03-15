@@ -4,7 +4,7 @@ const { test } = require('tap');
 const { getString } = require('r-assign/lib/string');
 const {
 	getOptional
-} = require('r-assign/lib/type');
+} = require('r-assign/lib/optional');
 
 test('getOptional', ({ end, equals, throws }) => {
 

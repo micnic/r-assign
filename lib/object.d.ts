@@ -6,6 +6,14 @@ export type Shape = {
 };
 
 /**
+ * Creator of transform functions for object values
+ */
+declare const getObjectOf: <S extends Shape>(
+	shape: S,
+	initial: { [key in keyof S]: ExtractTypeGuard<S[key]> }
+) => TransformFunction<{ [key in keyof S]: ExtractTypeGuard<S[key]> }>;
+
+/**
  * Check for object values
  */
 declare const isObjectOf: <S extends Shape>(
@@ -19,12 +27,4 @@ declare const parseObjectOf: <S extends Shape>(
 	shape: S
 ) => TransformFunction<{ [key in keyof S]: ExtractTypeGuard<S[key]> }>;
 
-/**
- * Creator of transform functions for object values
- */
-declare const useObjectOf: <S extends Shape>(
-	shape: S,
-	initial: { [key in keyof S]: ExtractTypeGuard<S[key]> }
-) => TransformFunction<{ [key in keyof S]: ExtractTypeGuard<S[key]> }>;
-
-export { isObjectOf, parseObjectOf, useObjectOf };
+export { getObjectOf, isObjectOf, parseObjectOf };
