@@ -16,11 +16,11 @@ declare namespace rAssign {
 		source: any
 	) => T;
 
-	type TransformSchema<T = any> = {
+	type TransformSchema<T> = {
 		[key in keyof T]: TransformFunction<T[key]>;
 	};
 
-	type TransformResult<S extends TransformSchema> = OptionalUndefined<
+	type TransformResult<S extends TransformSchema<any>> = OptionalUndefined<
 		{ [key in keyof S]: ReturnType<S[key]> }
 	>;
 }
@@ -28,7 +28,7 @@ declare namespace rAssign {
 /**
  * Assign object properties and transform result based on the provided schema
  */
-declare const rAssign: <S extends rAssign.TransformSchema>(
+declare const rAssign: <S extends rAssign.TransformSchema<any>>(
 	schema: S,
 	...sources: any[]
 ) => rAssign.TransformResult<S>;
