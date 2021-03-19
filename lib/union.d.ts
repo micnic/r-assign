@@ -8,7 +8,7 @@ export type ExtractTypeGuard<T extends TypeGuard> = T extends TypeGuard<infer U>
 
 export type Union<T = any> = [TypeGuard<T>, TypeGuard<T>, ...TypeGuard<T>[]];
 
-export type ExtractTypeUnion<T extends Union> = T extends Union<infer U>
+export type ExtractUnion<T extends Union> = T extends Union<infer U>
 	? U
 	: never;
 
@@ -17,21 +17,21 @@ export type ExtractTypeUnion<T extends Union> = T extends Union<infer U>
  */
 declare const getUnionOf: <U extends Union>(
 	union: U,
-	initial: ExtractTypeUnion<U>
-) => TransformFunction<ExtractTypeUnion<U>>;
+	initial: ExtractUnion<U>
+) => TransformFunction<ExtractUnion<U>>;
 
 /**
  * Check for values of union types
  */
 declare const isUnionOf: <U extends Union>(
 	union: U
-) => TypeGuard<ExtractTypeUnion<U>>;
+) => TypeGuard<ExtractUnion<U>>;
 
 /**
  * Creator of transform functions for validating union types
  */
 declare const parseUnionOf: <U extends Union>(
 	union: U
-) => TransformFunction<ExtractTypeUnion<U>>;
+) => TransformFunction<ExtractUnion<U>>;
 
 export { getUnionOf, isUnionOf, parseUnionOf };

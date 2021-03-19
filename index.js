@@ -6,7 +6,8 @@
  */
 
 /**
- * @typedef {import('r-assign').TransformSchema} TransformSchema
+ * @template T
+ * @typedef {import('r-assign').TransformSchema<T>} TransformSchema
  */
 
 const { assign, prototype } = Object;
@@ -25,7 +26,7 @@ const invalidSchemaProperty = (key) => {
 
 /**
  * Assign object properties and transform result based on the provided schema
- * @template {TransformSchema} S
+ * @template {TransformSchema<any>} S
  * @param {S} schema
  * @param {any[]} sources
  * @returns {TransformResult<S>}
