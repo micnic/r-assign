@@ -54,6 +54,10 @@ test('isUnionOf', ({ end, notOk, ok, throws }) => {
 	});
 
 	throws(() => {
+		isUnionOf([null]);
+	});
+
+	throws(() => {
 		isUnionOf([null, null]);
 	});
 
