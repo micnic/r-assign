@@ -8,6 +8,8 @@ test('rAssign lib exports', ({ end, ok }) => {
 	ok('getArrayOf' in lib);
 	ok('getBigInt' in lib);
 	ok('getBoolean' in lib);
+	ok('getInstanceOf' in lib);
+	ok('getIntersectionOf' in lib);
 	ok('getLiteral' in lib);
 	ok('getNumber' in lib);
 	ok('getObjectOf' in lib);
@@ -19,6 +21,8 @@ test('rAssign lib exports', ({ end, ok }) => {
 	ok('isArrayOf' in lib);
 	ok('isBigInt' in lib);
 	ok('isBoolean' in lib);
+	ok('isInstanceOf' in lib);
+	ok('isIntersectionOf' in lib);
 	ok('isLiteral' in lib);
 	ok('isNumber' in lib);
 	ok('isObjectOf' in lib);
@@ -29,6 +33,8 @@ test('rAssign lib exports', ({ end, ok }) => {
 	ok('parseArrayOf' in lib);
 	ok('parseBigInt' in lib);
 	ok('parseBoolean' in lib);
+	ok('parseInstanceOf' in lib);
+	ok('parseIntersectionOf' in lib);
 	ok('parseLiteral' in lib);
 	ok('parseNumber' in lib);
 	ok('parseObjectOf' in lib);

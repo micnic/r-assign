@@ -2,6 +2,7 @@ export * from 'r-assign/lib/any';
 export * from 'r-assign/lib/array';
 export * from 'r-assign/lib/bigint';
 export * from 'r-assign/lib/boolean';
+export * from 'r-assign/lib/instance';
 export * from 'r-assign/lib/intersection';
 export * from 'r-assign/lib/literal';
 export * from 'r-assign/lib/number';
