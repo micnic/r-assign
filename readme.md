@@ -6,12 +6,22 @@
 [![node version](https://img.shields.io/node/v/r-assign.svg?style=flat-square)](https://www.npmjs.com/package/r-assign)
 [![license](https://img.shields.io/npm/l/r-assign.svg?style=flat-square)](https://www.npmjs.com/package/r-assign)
 
-`Object.assign()` with a transform feature for filtering and mapping object
-properties.
+`Object.assign()` with a transforming feature for filtering, mapping, and
+validating object properties.
+
+Reasons to use `r-assign`:
+- TypeScript support (more TS features will be added in upcoming releases)
+- Functional approach
+- Expressive in defining complex schemas
+- Flexible to create custom transforming functional
+- Helpful at preventing undesired values (like `NaN` when working with numbers)
 
 ## Install
 
 `npm i r-assign`
+
+To take advantage of all TypeScript features in `r-assign` use latest versions
+and configure the TypeScript compiler with `strict` mode enabled.
 
 ### ESM import
 
@@ -28,33 +38,33 @@ const rAssign = require('r-assign');
 ## Usage
 
 ```ts
-type TransformSchema = {
-    [key: string]: (value: any, key: string, source: any) => any;
+type TransformSchema<T = any> = {
+    [key: string]: (value: any, key: string, source: any) => T;
 };
 
 rAssign(schema: TransformSchema, ...sources: any[]): any;
 
-// Note: The actual TypeScript definition is a bit more complex, here is
-//       displayed a simplified one for a easier understanding of the function
-//       signature and schema structure.
+// Note: The actual TypeScript definition is a bit more complex. Here is
+//       displayed a simplified definition for an easier understanding of the
+//       function signature and schema structure.
 ```
 
 `r-assign` exports a function that accepts a `schema` object as the first
 argument that defines the structure of the result by merging and transforming of
-any `source` objects provided as the next arguments.
+any `source` objects provided as the following arguments.
 
-The `schema` argument is an user-defined object with properties as functions
-that return a value based on the provided input from 3 arguments: the `value`
-from the source, the `key` of the value and the `source` itself. The returned
-value from the function will be part of the resulting object, If the returned
-value is `undefined` then the property is skipped and will not appear in the
-resulting object. If any of the of the functions from the `schema` throw the
-`r-assign` function will also throw.
+The `schema` argument is a user-defined object with properties as functions that
+return a value based on the provided input from 3 arguments:
 
-Note: This package does not include any pre-made transform functions, users have
-to define themselves and use them. This is valid at least for the initial
-release, based on users feedback pre-made transform functions might be added in
-future releases.
+`(value: any, key: string, source: any) => any`
+
+- the `value` from the source
+- the `key` of the value
+- the `source` itself
+
+The returned value from the function will be part of the resulting object,
+`undefined` values are skipped. The `r-assign` function will throw when any of
+the provided functions from the `schema` throws.
 
 <img src="diagram.svg"/>
 
