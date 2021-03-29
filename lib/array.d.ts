@@ -20,7 +20,7 @@ declare const isArrayOf: <T extends TypeGuard>(
  * Creator of transform functions for array validation
  */
 declare const parseArrayOf: <T extends TypeGuard>(
-	types: T
+	type: T
 ) => TransformFunction<ExtractTypeGuard<T>[]>;
 
 export { getArrayOf, isArrayOf, parseArrayOf };

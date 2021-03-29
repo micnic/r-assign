@@ -9,7 +9,7 @@ type UnionToIntersection<U> = (U extends any ? (k: U) => void : never) extends (
 	? I
 	: never;
 
-export type ExtractIntersection<
+export type InferIntersection<
 	T extends Intersection
 > = T extends Intersection<infer U> ? UnionToIntersection<U> : never;
 
@@ -18,21 +18,21 @@ export type ExtractIntersection<
  */
 declare const getIntersectionOf: <I extends Intersection>(
 	intersection: I,
-	initial: ExtractIntersection<I>
-) => TransformFunction<ExtractIntersection<I>>;
+	initial: InferIntersection<I>
+) => TransformFunction<InferIntersection<I>>;
 
 /**
  * Check for values of intersection types
  */
 declare const isIntersectionOf: <I extends Intersection>(
 	intersection: I
-) => TypeGuard<ExtractIntersection<I>>;
+) => TypeGuard<InferIntersection<I>>;
 
 /**
  * Creator of transform functions for validating intersection types
  */
 declare const parseIntersectionOf: <I extends Intersection>(
 	intersection: I
-) => TransformFunction<ExtractIntersection<I>>;
+) => TransformFunction<InferIntersection<I>>;
 
 export { getIntersectionOf, isIntersectionOf, parseIntersectionOf };

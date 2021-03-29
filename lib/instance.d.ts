@@ -26,7 +26,7 @@ declare const isInstanceOf: <T extends Instance>(
  * Creator of transform functions for instance validation
  */
 declare const parseInstanceOf: <T extends Instance>(
-	types: T
+	type: T
 ) => TransformFunction<ExtractInstance<T>>;
 
 export { getInstanceOf, isInstanceOf, parseInstanceOf };

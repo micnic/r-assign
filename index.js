@@ -2,7 +2,7 @@
 
 /**
  * @template S
- * @typedef {import('r-assign').TransformResult<S>} TransformResult
+ * @typedef {import('r-assign').InferType<S>} InferType
  */
 
 /**
@@ -29,7 +29,7 @@ const invalidSchemaProperty = (key) => {
  * @template {TransformSchema<any>} S
  * @param {S} schema
  * @param {any[]} sources
- * @returns {TransformResult<S>}
+ * @returns {InferType<S>}
  */
 const rAssign = (schema, ...sources) => {
 
