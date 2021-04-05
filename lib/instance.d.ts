@@ -1,9 +1,9 @@
 import type { TransformFunction } from 'r-assign';
-import type { ExtractTypeGuard, TypeGuard } from 'r-assign/lib/union';
+import type { TypeGuard } from 'r-assign/lib/union';
 
 export type Instance<T = any> = new (...args: any[]) => T;
 
-export type ExtractInstance<T extends Instance> = T extends Instance<infer I>
+export type InferInstance<T extends Instance> = T extends Instance<infer I>
 	? I
 	: never;
 
@@ -12,21 +12,21 @@ export type ExtractInstance<T extends Instance> = T extends Instance<infer I>
  */
 declare const getInstanceOf: <T extends Instance>(
 	type: T,
-	initial: ExtractInstance<T>
-) => TransformFunction<ExtractInstance<T>>;
+	initial: InferInstance<T>
+) => TransformFunction<InferInstance<T>>;
 
 /**
  * Check for instance values
  */
 declare const isInstanceOf: <T extends Instance>(
 	type: T
-) => TypeGuard<ExtractInstance<T>>;
+) => TypeGuard<InferInstance<T>>;
 
 /**
  * Creator of transform functions for instance validation
  */
 declare const parseInstanceOf: <T extends Instance>(
 	type: T
-) => TransformFunction<ExtractInstance<T>>;
+) => TransformFunction<InferInstance<T>>;
 
 export { getInstanceOf, isInstanceOf, parseInstanceOf };

@@ -1,5 +1,5 @@
 import type { TransformFunction } from 'r-assign';
-import type { ExtractTypeGuard, TypeGuard } from 'r-assign/lib/union';
+import type { InferTypeGuard, TypeGuard } from 'r-assign/lib/union';
 
 /**
  * Creator of transform functions for optional values
@@ -13,13 +13,13 @@ declare const getOptional: <T extends TransformFunction>(
  */
 declare const isOptional: <T extends TypeGuard>(
 	type: T
-) => TypeGuard<ExtractTypeGuard<T> | undefined>;
+) => TypeGuard<InferTypeGuard<T> | undefined>;
 
 /**
  * Creator of transform functions for array validation
  */
 declare const parseOptional: <T extends TypeGuard>(
 	type: T
-) => TransformFunction<ExtractTypeGuard<T> | undefined>;
+) => TransformFunction<InferTypeGuard<T> | undefined>;
 
 export { getOptional, isOptional, parseOptional };

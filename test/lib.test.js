@@ -14,6 +14,7 @@ test('rAssign lib exports', ({ end, ok }) => {
 	ok('getNumber' in lib);
 	ok('getObjectOf' in lib);
 	ok('getOptional' in lib);
+	ok('getStrictObjectOf' in lib);
 	ok('getString' in lib);
 	ok('getSymbol' in lib);
 	ok('getUnionOf' in lib);
@@ -26,6 +27,8 @@ test('rAssign lib exports', ({ end, ok }) => {
 	ok('isLiteral' in lib);
 	ok('isNumber' in lib);
 	ok('isObjectOf' in lib);
+	ok('isOptional' in lib);
+	ok('isStrictObjectOf' in lib);
 	ok('isString' in lib);
 	ok('isSymbol' in lib);
 	ok('isUnionOf' in lib);
@@ -38,6 +41,8 @@ test('rAssign lib exports', ({ end, ok }) => {
 	ok('parseLiteral' in lib);
 	ok('parseNumber' in lib);
 	ok('parseObjectOf' in lib);
+	ok('parseOptional' in lib);
+	ok('parseStrictObjectOf' in lib);
 	ok('parseString' in lib);
 	ok('parseSymbol' in lib);
 	ok('parseUnionOf' in lib);
