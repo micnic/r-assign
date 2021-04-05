@@ -2,7 +2,7 @@ import type { TransformFunction } from 'r-assign';
 
 export type TypeGuard<T = any> = (value?: any) => value is T;
 
-export type ExtractTypeGuard<T extends TypeGuard> = T extends TypeGuard<infer U>
+export type InferTypeGuard<T extends TypeGuard> = T extends TypeGuard<infer U>
 	? U
 	: never;
 
