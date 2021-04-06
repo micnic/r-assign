@@ -24,8 +24,7 @@ test('getObjectOf', ({ end, matches, throws }) => {
 		abc: 'abc',
 		def: 'def'
 	}), {
-		abc: 'abc',
-		def: 'def'
+		abc: 'abc'
 	});
 
 	throws(() => {
