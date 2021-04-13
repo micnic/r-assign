@@ -5,6 +5,7 @@ const lib = require('r-assign/lib');
 
 test('rAssign lib exports', ({ end, ok }) => {
 	ok('getAny' in lib);
+	ok('getAnyNumber' in lib);
 	ok('getArrayOf' in lib);
 	ok('getBigInt' in lib);
 	ok('getBoolean' in lib);
@@ -19,6 +20,7 @@ test('rAssign lib exports', ({ end, ok }) => {
 	ok('getSymbol' in lib);
 	ok('getUnionOf' in lib);
 	ok('isAny' in lib);
+	ok('isAnyNumber' in lib);
 	ok('isArrayOf' in lib);
 	ok('isBigInt' in lib);
 	ok('isBoolean' in lib);
@@ -33,6 +35,7 @@ test('rAssign lib exports', ({ end, ok }) => {
 	ok('isSymbol' in lib);
 	ok('isUnionOf' in lib);
 	ok('parseAny' in lib);
+	ok('parseAnyNumber' in lib);
 	ok('parseArrayOf' in lib);
 	ok('parseBigInt' in lib);
 	ok('parseBoolean' in lib);
