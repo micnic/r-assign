@@ -1,6 +1,6 @@
 'use strict';
 
-const { test } = require('tap');
+const { test, equals, notOk, ok, throws } = require('tap');
 const {
 	getAnyNumber,
 	getNumber,
@@ -10,7 +10,7 @@ const {
 	parseNumber
 } = require('r-assign/lib/number');
 
-test('getAnyNumber', ({ end, equals, ok, throws }) => {
+test('getAnyNumber', ({ end }) => {
 
 	const getNumberNoDefault = getAnyNumber();
 
@@ -55,7 +55,7 @@ test('getAnyNumber', ({ end, equals, ok, throws }) => {
 	end();
 });
 
-test('getNumber', ({ end, equals, throws }) => {
+test('getNumber', ({ end }) => {
 
 	const getNumberNoDefault = getNumber();
 
@@ -94,7 +94,7 @@ test('getNumber', ({ end, equals, throws }) => {
 	end();
 });
 
-test('isAnyNumber', ({ end, notOk, ok }) => {
+test('isAnyNumber', ({ end }) => {
 	notOk(isAnyNumber());
 	ok(isAnyNumber(NaN));
 	ok(isAnyNumber(Infinity));
@@ -103,7 +103,7 @@ test('isAnyNumber', ({ end, notOk, ok }) => {
 	end();
 });
 
-test('isNumber', ({ end, notOk, ok }) => {
+test('isNumber', ({ end }) => {
 	notOk(isNumber());
 	notOk(isNumber(NaN));
 	notOk(isNumber(Infinity));
@@ -112,7 +112,7 @@ test('isNumber', ({ end, notOk, ok }) => {
 	end();
 });
 
-test('parseAnyNumber', ({ end, equals, ok, throws }) => {
+test('parseAnyNumber', ({ end }) => {
 	equals(parseAnyNumber(0), 0);
 	ok(Number.isNaN(parseAnyNumber(NaN)));
 	equals(parseAnyNumber(Infinity), Infinity);
@@ -125,7 +125,7 @@ test('parseAnyNumber', ({ end, equals, ok, throws }) => {
 	end();
 });
 
-test('parseNumber', ({ end, equals, throws }) => {
+test('parseNumber', ({ end }) => {
 	equals(parseNumber(0), 0);
 
 	throws(() => {

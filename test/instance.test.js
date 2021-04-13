@@ -1,13 +1,13 @@
 'use strict';
 
-const { test } = require('tap');
+const { test, matches, notOk, ok, throws } = require('tap');
 const {
 	getInstanceOf,
 	isInstanceOf,
 	parseInstanceOf
 } = require('r-assign/lib/instance');
 
-test('getInstanceOf', ({ end, matches, throws }) => {
+test('getInstanceOf', ({ end }) => {
 
 	const getDate = getInstanceOf(Date, new Date());
 
@@ -21,7 +21,7 @@ test('getInstanceOf', ({ end, matches, throws }) => {
 	end();
 });
 
-test('isInstanceOf', ({ end, notOk, ok, throws }) => {
+test('isInstanceOf', ({ end }) => {
 
 	const isDate = isInstanceOf(Date);
 
@@ -35,7 +35,7 @@ test('isInstanceOf', ({ end, notOk, ok, throws }) => {
 	end();
 });
 
-test('parseInstanceOf', ({ end, matches, throws }) => {
+test('parseInstanceOf', ({ end }) => {
 
 	const parseDate = parseInstanceOf(Date);
 

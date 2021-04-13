@@ -1,6 +1,6 @@
 'use strict';
 
-const { test } = require('tap');
+const { test, matches, notOk, ok, throws } = require('tap');
 const {
 	getObjectOf,
 	getStrictObjectOf,
@@ -13,7 +13,7 @@ const { isBoolean } = require('r-assign/lib/boolean');
 const { isNumber } = require('r-assign/lib/number');
 const { isString } = require('r-assign/lib/string');
 
-test('getObjectOf', ({ end, matches, throws }) => {
+test('getObjectOf', ({ end }) => {
 
 	const getObjectABC = getObjectOf({ abc: isString }, { abc: '' });
 
@@ -58,7 +58,7 @@ test('getObjectOf', ({ end, matches, throws }) => {
 	end();
 });
 
-test('getStrictObjectOf', ({ end, matches, throws }) => {
+test('getStrictObjectOf', ({ end }) => {
 
 	const getObjectABC = getStrictObjectOf({ abc: isString }, { abc: '' });
 
@@ -102,7 +102,7 @@ test('getStrictObjectOf', ({ end, matches, throws }) => {
 	end();
 });
 
-test('isObjectOf', ({ end, notOk, ok, throws }) => {
+test('isObjectOf', ({ end }) => {
 
 	ok(isObjectOf({ boolean: isBoolean })({ boolean: false }));
 	ok(isObjectOf({
@@ -127,7 +127,7 @@ test('isObjectOf', ({ end, notOk, ok, throws }) => {
 	end();
 });
 
-test('isStrictObjectOf', ({ end, notOk, ok, throws }) => {
+test('isStrictObjectOf', ({ end }) => {
 
 	ok(isStrictObjectOf({ boolean: isBoolean })({ boolean: false }));
 	notOk(isStrictObjectOf({
@@ -152,7 +152,7 @@ test('isStrictObjectOf', ({ end, notOk, ok, throws }) => {
 	end();
 });
 
-test('parseObjectOf', ({ end, matches, throws }) => {
+test('parseObjectOf', ({ end }) => {
 
 	const validateObjectABC = parseObjectOf({ abc: isString });
 
@@ -172,7 +172,7 @@ test('parseObjectOf', ({ end, matches, throws }) => {
 	end();
 });
 
-test('parseStrictObjectOf', ({ end, matches, throws }) => {
+test('parseStrictObjectOf', ({ end }) => {
 
 	const validateObjectABC = parseStrictObjectOf({ abc: isString });
 

@@ -1,13 +1,13 @@
 'use strict';
 
-const { test } = require('tap');
+const { test, equals, notOk, ok, throws } = require('tap');
 const {
 	getBoolean,
 	isBoolean,
 	parseBoolean
 } = require('r-assign/lib/boolean');
 
-test('getBoolean', ({ end, equals, throws }) => {
+test('getBoolean', ({ end }) => {
 
 	const getBooleanNoDefault = getBoolean();
 
@@ -30,14 +30,14 @@ test('getBoolean', ({ end, equals, throws }) => {
 	end();
 });
 
-test('isBoolean', ({ end, notOk, ok }) => {
+test('isBoolean', ({ end }) => {
 	notOk(isBoolean());
 	ok(isBoolean(false));
 	ok(isBoolean(true));
 	end();
 });
 
-test('parseBoolean', ({ end, equals, throws }) => {
+test('parseBoolean', ({ end }) => {
 	equals(parseBoolean(false), false);
 	throws(() => {
 		parseBoolean();

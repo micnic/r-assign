@@ -1,6 +1,6 @@
 'use strict';
 
-const { test } = require('tap');
+const { test, equals, notOk, ok, throws } = require('tap');
 const { isBoolean } = require('r-assign/lib/boolean');
 const { isNumber } = require('r-assign/lib/number');
 const { isString } = require('r-assign/lib/string');
@@ -10,7 +10,7 @@ const {
 	parseUnionOf
 } = require('r-assign/lib/union');
 
-test('getUnionOf', ({ end, equals, throws }) => {
+test('getUnionOf', ({ end }) => {
 
 	const getStringOrNumber = getUnionOf([isNumber, isString], '');
 
@@ -39,7 +39,7 @@ test('getUnionOf', ({ end, equals, throws }) => {
 	end();
 });
 
-test('isUnionOf', ({ end, notOk, ok, throws }) => {
+test('isUnionOf', ({ end }) => {
 
 	ok(isUnionOf([isBoolean, isNumber])(true));
 	ok(isUnionOf([isBoolean, isNumber])(0));
@@ -68,7 +68,7 @@ test('isUnionOf', ({ end, notOk, ok, throws }) => {
 	end();
 });
 
-test('parseUnionOf', ({ end, equals, throws }) => {
+test('parseUnionOf', ({ end }) => {
 
 	const parseStringOrNumber = parseUnionOf([isString, isNumber]);
 

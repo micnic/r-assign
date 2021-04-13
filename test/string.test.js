@@ -1,9 +1,9 @@
 'use strict';
 
-const { test } = require('tap');
+const { test, equals, notOk, ok, throws } = require('tap');
 const { getString, isString, parseString } = require('r-assign/lib/string');
 
-test('getString', ({ end, equals, throws }) => {
+test('getString', ({ end }) => {
 
 	const getStringNoDefault = getString();
 
@@ -24,13 +24,13 @@ test('getString', ({ end, equals, throws }) => {
 	end();
 });
 
-test('isString', ({ end, notOk, ok }) => {
+test('isString', ({ end }) => {
 	notOk(isString());
 	ok(isString(''));
 	end();
 });
 
-test('parseString', ({ end, equals, throws }) => {
+test('parseString', ({ end }) => {
 	equals(parseString(''), '');
 	throws(() => {
 		parseString();
