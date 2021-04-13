@@ -163,6 +163,12 @@ test('parseObjectOf', ({ end, matches, throws }) => {
 		validateObjectABC();
 	});
 
+	const validateObjectABCWithPrototype = parseObjectOf(Object.create({
+		abc: isString
+	}));
+
+	matches(validateObjectABCWithPrototype({}), {});
+
 	end();
 });
 
