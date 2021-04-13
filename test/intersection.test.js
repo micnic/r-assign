@@ -1,6 +1,6 @@
 'use strict';
 
-const { test } = require('tap');
+const { test, matches, notOk, ok, throws } = require('tap');
 const { isBoolean } = require('r-assign/lib/boolean');
 const { isNumber } = require('r-assign/lib/number');
 const { isObjectOf } = require('r-assign/lib/object');
@@ -11,7 +11,7 @@ const {
 	parseIntersectionOf
 } = require('r-assign/lib/intersection');
 
-test('getIntersectionOf', ({ end, matches, throws }) => {
+test('getIntersectionOf', ({ end }) => {
 
 	const getIntersectionOfNumberString = getIntersectionOf([isObjectOf({
 		number: isNumber
@@ -56,7 +56,7 @@ test('getIntersectionOf', ({ end, matches, throws }) => {
 	end();
 });
 
-test('isIntersectionOf', ({ end, notOk, ok, throws }) => {
+test('isIntersectionOf', ({ end }) => {
 
 	ok(isIntersectionOf([isObjectOf({
 		number: isNumber
@@ -88,7 +88,7 @@ test('isIntersectionOf', ({ end, notOk, ok, throws }) => {
 	end();
 });
 
-test('parseIntersectionOf', ({ end, matches, throws }) => {
+test('parseIntersectionOf', ({ end }) => {
 
 	const parseIntersectionOfNumberString = parseIntersectionOf([isObjectOf({
 		number: isNumber

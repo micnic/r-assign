@@ -1,9 +1,9 @@
 'use strict';
 
-const { test } = require('tap');
+const { test, equals, matches, notOk, ok, throws } = require('tap');
 const { getSymbol, isSymbol, parseSymbol } = require('r-assign/lib/symbol');
 
-test('getSymbol', ({ end, equals, matches, throws }) => {
+test('getSymbol', ({ end }) => {
 
 	const getSymbolNoDefault = getSymbol();
 	const symbol = Symbol();
@@ -25,13 +25,13 @@ test('getSymbol', ({ end, equals, matches, throws }) => {
 	end();
 });
 
-test('isSymbol', ({ end, notOk, ok }) => {
+test('isSymbol', ({ end }) => {
 	notOk(isSymbol());
 	ok(isSymbol(Symbol()));
 	end();
 });
 
-test('parseSymbol', ({ end, equals, throws }) => {
+test('parseSymbol', ({ end }) => {
 
 	const symbol = Symbol();
 

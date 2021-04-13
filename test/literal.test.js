@@ -1,13 +1,13 @@
 'use strict';
 
-const { test } = require('tap');
+const { test, equals, notOk, ok, throws } = require('tap');
 const {
 	getLiteral,
 	isLiteral,
 	parseLiteral
 } = require('r-assign/lib/literal');
 
-test('getLiteral', ({ end, equals, throws }) => {
+test('getLiteral', ({ end }) => {
 
 	const getLiteralNull = getLiteral(null);
 
@@ -22,7 +22,7 @@ test('getLiteral', ({ end, equals, throws }) => {
 	end();
 });
 
-test('isLiteral', ({ end, notOk, ok, throws }) => {
+test('isLiteral', ({ end }) => {
 
 	const symbol = Symbol();
 
@@ -41,7 +41,7 @@ test('isLiteral', ({ end, notOk, ok, throws }) => {
 	end();
 });
 
-test('parseLiteral', ({ end, equals, throws }) => {
+test('parseLiteral', ({ end }) => {
 
 	const getLiteralFalse = parseLiteral(false);
 

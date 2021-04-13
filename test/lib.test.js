@@ -1,9 +1,9 @@
 'use strict';
 
-const { test } = require('tap');
+const { test, ok } = require('tap');
 const lib = require('r-assign/lib');
 
-test('rAssign lib exports', ({ end, ok }) => {
+test('rAssign lib exports', ({ end }) => {
 	ok('getAny' in lib);
 	ok('getAnyNumber' in lib);
 	ok('getArrayOf' in lib);

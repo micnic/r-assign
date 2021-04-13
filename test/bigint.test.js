@@ -1,13 +1,13 @@
 'use strict';
 
-const { test } = require('tap');
+const { test, equals, notOk, ok, throws } = require('tap');
 const {
 	getBigInt,
 	isBigInt,
 	parseBigInt
 } = require('r-assign/lib/bigint');
 
-test('getBigInt', ({ end, equals, throws }) => {
+test('getBigInt', ({ end }) => {
 
 	const getBigIntNoDefault = getBigInt();
 
@@ -30,14 +30,14 @@ test('getBigInt', ({ end, equals, throws }) => {
 	end();
 });
 
-test('isBigInt', ({ end, notOk, ok }) => {
+test('isBigInt', ({ end }) => {
 	notOk(isBigInt());
 	notOk(isBigInt(0));
 	ok(isBigInt(0n));
 	end();
 });
 
-test('parseBigInt', ({ end, equals, throws }) => {
+test('parseBigInt', ({ end }) => {
 	equals(parseBigInt(0n), 0n);
 	throws(() => {
 		parseBigInt();

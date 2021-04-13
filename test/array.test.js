@@ -1,6 +1,6 @@
 'use strict';
 
-const { test } = require('tap');
+const { test, matches, notOk, ok, throws } = require('tap');
 const {
 	getArrayOf,
 	isArrayOf,
@@ -10,7 +10,7 @@ const { isBoolean } = require('r-assign/lib/boolean');
 const { isNumber } = require('r-assign/lib/number');
 const { isString } = require('r-assign/lib/string');
 
-test('getArrayOf', ({ end, matches, throws }) => {
+test('getArrayOf', ({ end }) => {
 
 	const getArrayOfString = getArrayOf(isString);
 
@@ -38,7 +38,7 @@ test('getArrayOf', ({ end, matches, throws }) => {
 	end();
 });
 
-test('isArrayOf', ({ end, notOk, ok, throws }) => {
+test('isArrayOf', ({ end }) => {
 
 	ok(isArrayOf(isBoolean)([]));
 	ok(isArrayOf(isBoolean)([true]));
@@ -59,7 +59,7 @@ test('isArrayOf', ({ end, notOk, ok, throws }) => {
 	end();
 });
 
-test('parseArrayOf', ({ end, matches, throws }) => {
+test('parseArrayOf', ({ end }) => {
 
 	const validateArrayOfString = parseArrayOf(isString);
 
