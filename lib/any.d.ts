@@ -2,7 +2,7 @@ import type { TransformFunction } from 'r-assign';
 import type { TypeGuard } from 'r-assign/lib/union';
 
 /**
- * Creator of transform functions for non-undefined values
+ * Extract non-undefined values
  */
 declare const getAny: (initial?: any) => TransformFunction;
 
@@ -12,7 +12,7 @@ declare const getAny: (initial?: any) => TransformFunction;
 declare const isAny: TypeGuard;
 
 /**
- * Transform function to validate non-undefined values
+ * Extract and validate non-undefined values
  */
 declare const parseAny: TransformFunction;
 

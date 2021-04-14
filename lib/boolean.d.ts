@@ -2,7 +2,7 @@ import type { TransformFunction } from 'r-assign';
 import type { TypeGuard } from 'r-assign/lib/union';
 
 /**
- * Creator of transform functions for boolean values
+ * Extract boolean values
  */
 declare const getBoolean: (initial?: boolean) => TransformFunction<boolean>;
 
@@ -12,7 +12,7 @@ declare const getBoolean: (initial?: boolean) => TransformFunction<boolean>;
 declare const isBoolean: TypeGuard<boolean>;
 
 /**
- * Transform function to validate boolean values
+ * Extract and validate boolean values
  */
 declare const parseBoolean: TransformFunction<boolean>;
 

@@ -2,12 +2,12 @@ import type { TransformFunction } from 'r-assign';
 import type { TypeGuard } from 'r-assign/lib/union';
 
 /**
- * Creator of transform functions for number values
+ * Extract number values
  */
 declare const getAnyNumber: (initial?: number) => TransformFunction<number>;
 
 /**
- * Creator of transform functions for finite number values
+ * Extract finite number values
  */
 declare const getNumber: (initial?: number) => TransformFunction<number>;
 
@@ -22,12 +22,12 @@ declare const isAnyNumber: TypeGuard<number>;
 declare const isNumber: TypeGuard<number>;
 
 /**
- * Transform function to validate number values
+ * Extract and validate number values
  */
 declare const parseAnyNumber: TransformFunction<number>;
 
 /**
- * Transform function to validate finite number values
+ * Extract and validate finite number values
  */
 declare const parseNumber: TransformFunction<number>;
 
