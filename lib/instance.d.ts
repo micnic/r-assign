@@ -8,7 +8,7 @@ export type InferInstance<T extends Instance> = T extends Instance<infer I>
 	: never;
 
 /**
- * Creator of transform functions for instance values
+ * Extract instance values
  */
 declare const getInstanceOf: <T extends Instance>(
 	type: T,
@@ -23,7 +23,7 @@ declare const isInstanceOf: <T extends Instance>(
 ) => TypeGuard<InferInstance<T>>;
 
 /**
- * Creator of transform functions for instance validation
+ * Extract and validate instance values
  */
 declare const parseInstanceOf: <T extends Instance>(
 	type: T

@@ -4,7 +4,7 @@ import type { TypeGuard } from 'r-assign/lib/union';
 export type Primitive = bigint | boolean | null | number | symbol | string;
 
 /**
- * Creator of transform functions for literal values
+ * Extract literal values
  */
 declare const getLiteral: <T extends Primitive>(
 	literal: T
@@ -18,7 +18,7 @@ declare const isLiteral: <T extends Primitive>(
 ) => TypeGuard<T>;
 
 /**
- * Creator of transform functions for literal validation
+ * Extract and validate literal values
  */
 declare const parseLiteral: <T extends Primitive>(
 	literal: T

@@ -2,7 +2,7 @@ import type { TransformFunction } from 'r-assign';
 import type { TypeGuard } from 'r-assign/lib/union';
 
 /**
- * Creator of transform functions for string values
+ * Extract string values
  */
 declare const getString: (initial?: string) => TransformFunction<string>;
 
@@ -12,7 +12,7 @@ declare const getString: (initial?: string) => TransformFunction<string>;
 declare const isString: TypeGuard<string>;
 
 /**
- * Transform function to validate string values
+ * Extract and validate string values
  */
 declare const parseString: TransformFunction<string>;
 

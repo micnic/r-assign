@@ -13,7 +13,7 @@ export type InferUnion<T extends Union> = T extends Union<infer U>
 	: never;
 
 /**
- * Creator of transform functions for union types values
+ * Extract union type values
  */
 declare const getUnionOf: <U extends Union>(
 	union: U,
@@ -21,14 +21,14 @@ declare const getUnionOf: <U extends Union>(
 ) => TransformFunction<InferUnion<U>>;
 
 /**
- * Check for values of union types
+ * Check for union type values
  */
 declare const isUnionOf: <U extends Union>(
 	union: U
 ) => TypeGuard<InferUnion<U>>;
 
 /**
- * Creator of transform functions for validating union types
+ * Extract and validate union type values
  */
 declare const parseUnionOf: <U extends Union>(
 	union: U

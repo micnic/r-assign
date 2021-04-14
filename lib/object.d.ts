@@ -6,7 +6,7 @@ export type Shape = {
 };
 
 /**
- * Creator of transform functions for object values
+ * Extract object values
  */
 declare const getObjectOf: <S extends Shape>(
 	shape: S,
@@ -14,7 +14,7 @@ declare const getObjectOf: <S extends Shape>(
 ) => TransformFunction<{ [key in keyof S]: InferTypeGuard<S[key]> }>;
 
 /**
- * Creator of transform functions for strict object values
+ * Extract strict object values
  */
 declare const getStrictObjectOf: <S extends Shape>(
 	shape: S,
@@ -36,14 +36,14 @@ declare const isStrictObjectOf: <S extends Shape>(
 ) => TypeGuard<{ [key in keyof S]: InferTypeGuard<S[key]> }>;
 
 /**
- * Creator of transform functions for object validation
+ * Extract and validate object values
  */
 declare const parseObjectOf: <S extends Shape>(
 	shape: S
 ) => TransformFunction<{ [key in keyof S]: InferTypeGuard<S[key]> }>;
 
 /**
- * Creator of transform functions for strict object validation
+ * Extract and validate strict object values
  */
 declare const parseStrictObjectOf: <S extends Shape>(
 	shape: S

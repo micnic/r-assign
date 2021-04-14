@@ -14,7 +14,7 @@ export type InferIntersection<
 > = T extends Intersection<infer U> ? UnionToIntersection<U> : never;
 
 /**
- * Creator of transform functions for intersection types values
+ * Extract intersection type values
  */
 declare const getIntersectionOf: <I extends Intersection>(
 	intersection: I,
@@ -22,14 +22,14 @@ declare const getIntersectionOf: <I extends Intersection>(
 ) => TransformFunction<InferIntersection<I>>;
 
 /**
- * Check for values of intersection types
+ * Check for intersection type values
  */
 declare const isIntersectionOf: <I extends Intersection>(
 	intersection: I
 ) => TypeGuard<InferIntersection<I>>;
 
 /**
- * Creator of transform functions for validating intersection types
+ * Extract and validate intersection type values
  */
 declare const parseIntersectionOf: <I extends Intersection>(
 	intersection: I

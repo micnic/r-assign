@@ -2,7 +2,7 @@ import type { TransformFunction } from 'r-assign';
 import type { TypeGuard } from 'r-assign/lib/union';
 
 /**
- * Creator of transform functions for symbol values
+ * Extract symbol values
  */
 declare const getSymbol: (initial?: symbol) => TransformFunction<symbol>;
 
@@ -12,7 +12,7 @@ declare const getSymbol: (initial?: symbol) => TransformFunction<symbol>;
 declare const isSymbol: TypeGuard<symbol>;
 
 /**
- * Transform function to validate symbol values
+ * Extract and validate symbol values
  */
 declare const parseSymbol: TransformFunction<symbol>;
 

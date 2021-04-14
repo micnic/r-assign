@@ -2,7 +2,7 @@ import type { TransformFunction } from 'r-assign';
 import type { InferTypeGuard, TypeGuard } from 'r-assign/lib/union';
 
 /**
- * Creator of transform functions for array values
+ * Extract array values
  */
 declare const getArrayOf: <T extends TypeGuard>(
 	type: T,
@@ -17,7 +17,7 @@ declare const isArrayOf: <T extends TypeGuard>(
 ) => TypeGuard<InferTypeGuard<T>[]>;
 
 /**
- * Creator of transform functions for array validation
+ * Extract and validate array values
  */
 declare const parseArrayOf: <T extends TypeGuard>(
 	type: T
