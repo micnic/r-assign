@@ -1,6 +1,6 @@
 'use strict';
 
-const { test, equals, notOk, ok, throws } = require('tap');
+const { test, equal, notOk, ok, throws } = require('tap');
 const { isBoolean } = require('r-assign/lib/boolean');
 const { isNumber } = require('r-assign/lib/number');
 const { isString } = require('r-assign/lib/string');
@@ -14,11 +14,11 @@ test('getUnionOf', ({ end }) => {
 
 	const getStringOrNumber = getUnionOf([isNumber, isString], '');
 
-	equals(getStringOrNumber(), '');
-	equals(getStringOrNumber(0), 0);
-	equals(getStringOrNumber(1), 1);
-	equals(getStringOrNumber(''), '');
-	equals(getStringOrNumber('data'), 'data');
+	equal(getStringOrNumber(), '');
+	equal(getStringOrNumber(0), 0);
+	equal(getStringOrNumber(1), 1);
+	equal(getStringOrNumber(''), '');
+	equal(getStringOrNumber('data'), 'data');
 
 	throws(() => {
 		getUnionOf();
@@ -72,7 +72,7 @@ test('parseUnionOf', ({ end }) => {
 
 	const parseStringOrNumber = parseUnionOf([isString, isNumber]);
 
-	equals(parseStringOrNumber(''), '');
+	equal(parseStringOrNumber(''), '');
 
 	throws(() => {
 		parseStringOrNumber(null);

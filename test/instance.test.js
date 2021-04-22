@@ -1,6 +1,6 @@
 'use strict';
 
-const { test, matches, notOk, ok, throws } = require('tap');
+const { test, match, notOk, ok, throws } = require('tap');
 const {
 	getInstanceOf,
 	isInstanceOf,
@@ -11,8 +11,8 @@ test('getInstanceOf', ({ end }) => {
 
 	const getDate = getInstanceOf(Date, new Date());
 
-	matches(getDate(), new Date());
-	matches(getDate(new Date()), new Date());
+	match(getDate(), new Date());
+	match(getDate(new Date()), new Date());
 
 	throws(() => {
 		getInstanceOf(Date);
@@ -39,7 +39,7 @@ test('parseInstanceOf', ({ end }) => {
 
 	const parseDate = parseInstanceOf(Date);
 
-	matches(parseDate(new Date()), new Date());
+	match(parseDate(new Date()), new Date());
 
 	throws(() => {
 		parseDate();

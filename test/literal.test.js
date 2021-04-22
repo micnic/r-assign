@@ -1,6 +1,6 @@
 'use strict';
 
-const { test, equals, notOk, ok, throws } = require('tap');
+const { test, equal, notOk, ok, throws } = require('tap');
 const {
 	getLiteral,
 	getLiteralOf,
@@ -14,9 +14,9 @@ test('getLiteral', ({ end }) => {
 
 	const getLiteralNull = getLiteral(null);
 
-	equals(getLiteralNull(), null);
-	equals(getLiteralNull(null), null);
-	equals(getLiteralNull(0), null);
+	equal(getLiteralNull(), null);
+	equal(getLiteralNull(null), null);
+	equal(getLiteralNull(0), null);
 
 	throws(() => {
 		getLiteral();
@@ -29,15 +29,15 @@ test('getLiteralOf', ({ end }) => {
 
 	const getLiteralAB = getLiteralOf(['a', 'b']);
 
-	equals(getLiteralAB(), 'a');
-	equals(getLiteralAB('b'), 'b');
-	equals(getLiteralAB(0), 'a');
+	equal(getLiteralAB(), 'a');
+	equal(getLiteralAB('b'), 'b');
+	equal(getLiteralAB(0), 'a');
 
 	const getLiteralBA = getLiteralOf(['a', 'b'], 'b');
 
-	equals(getLiteralBA(), 'b');
-	equals(getLiteralBA('a'), 'a');
-	equals(getLiteralBA(0), 'b');
+	equal(getLiteralBA(), 'b');
+	equal(getLiteralBA('a'), 'a');
+	equal(getLiteralBA(0), 'b');
 
 	throws(() => {
 		getLiteralOf();
@@ -113,7 +113,7 @@ test('parseLiteral', ({ end }) => {
 
 	const parseLiteralFalse = parseLiteral(false);
 
-	equals(parseLiteralFalse(false), false);
+	equal(parseLiteralFalse(false), false);
 
 	throws(() => {
 		parseLiteralFalse();
@@ -126,7 +126,7 @@ test('parseLiteralOf', ({ end }) => {
 
 	const parseLiteralAB = parseLiteralOf(['a', 'b']);
 
-	equals(parseLiteralAB('a'), 'a');
+	equal(parseLiteralAB('a'), 'a');
 
 	throws(() => {
 		parseLiteralAB();

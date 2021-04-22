@@ -1,6 +1,6 @@
 'use strict';
 
-const { test, matches, notOk, ok, throws } = require('tap');
+const { test, match, notOk, ok, throws } = require('tap');
 const {
 	getArrayOf,
 	isArrayOf,
@@ -14,10 +14,10 @@ test('getArrayOf', ({ end }) => {
 
 	const getArrayOfString = getArrayOf(isString);
 
-	matches(getArrayOfString(), []);
-	matches(getArrayOfString(null), []);
-	matches(getArrayOfString([]), []);
-	matches(getArrayOfString(['']), ['']);
+	match(getArrayOfString(), []);
+	match(getArrayOfString(null), []);
+	match(getArrayOfString([]), []);
+	match(getArrayOfString(['']), ['']);
 
 	throws(() => {
 		getArrayOf();
@@ -63,7 +63,7 @@ test('parseArrayOf', ({ end }) => {
 
 	const validateArrayOfString = parseArrayOf(isString);
 
-	matches(validateArrayOfString(['']), ['']);
+	match(validateArrayOfString(['']), ['']);
 
 	throws(() => {
 		validateArrayOfString(null);

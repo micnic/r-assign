@@ -1,6 +1,6 @@
 'use strict';
 
-const { test, matches, notOk, ok, throws } = require('tap');
+const { test, match, notOk, ok, throws } = require('tap');
 const {
 	getObjectOf,
 	getStrictObjectOf,
@@ -17,10 +17,10 @@ test('getObjectOf', ({ end }) => {
 
 	const getObjectABC = getObjectOf({ abc: isString }, { abc: '' });
 
-	matches(getObjectABC(), { abc: '' });
-	matches(getObjectABC({ abc: '' }), { abc: '' });
-	matches(getObjectABC({ abc: 'abc' }), { abc: 'abc' });
-	matches(getObjectABC({
+	match(getObjectABC(), { abc: '' });
+	match(getObjectABC({ abc: '' }), { abc: '' });
+	match(getObjectABC({ abc: 'abc' }), { abc: 'abc' });
+	match(getObjectABC({
 		abc: 'abc',
 		def: 'def'
 	}), {
@@ -62,10 +62,10 @@ test('getStrictObjectOf', ({ end }) => {
 
 	const getObjectABC = getStrictObjectOf({ abc: isString }, { abc: '' });
 
-	matches(getObjectABC(), { abc: '' });
-	matches(getObjectABC({ abc: '' }), { abc: '' });
-	matches(getObjectABC({ abc: 'abc' }), { abc: 'abc' });
-	matches(getObjectABC({ abc: 'abc', def: 'def' }), { abc: '' });
+	match(getObjectABC(), { abc: '' });
+	match(getObjectABC({ abc: '' }), { abc: '' });
+	match(getObjectABC({ abc: 'abc' }), { abc: 'abc' });
+	match(getObjectABC({ abc: 'abc', def: 'def' }), { abc: '' });
 
 	throws(() => {
 		getStrictObjectOf();
@@ -156,8 +156,8 @@ test('parseObjectOf', ({ end }) => {
 
 	const validateObjectABC = parseObjectOf({ abc: isString });
 
-	matches(validateObjectABC({ abc: '' }), { abc: '' });
-	matches(validateObjectABC({ abc: '', def: null }), { abc: '', def: null });
+	match(validateObjectABC({ abc: '' }), { abc: '' });
+	match(validateObjectABC({ abc: '', def: null }), { abc: '', def: null });
 
 	throws(() => {
 		validateObjectABC();
@@ -167,7 +167,7 @@ test('parseObjectOf', ({ end }) => {
 		abc: isString
 	}));
 
-	matches(validateObjectABCWithPrototype({}), {});
+	match(validateObjectABCWithPrototype({}), {});
 
 	end();
 });
@@ -176,7 +176,7 @@ test('parseStrictObjectOf', ({ end }) => {
 
 	const validateObjectABC = parseStrictObjectOf({ abc: isString });
 
-	matches(validateObjectABC({ abc: '' }), { abc: '' });
+	match(validateObjectABC({ abc: '' }), { abc: '' });
 
 	throws(() => {
 		validateObjectABC({ abc: '', def: null });

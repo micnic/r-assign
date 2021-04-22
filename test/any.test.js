@@ -1,19 +1,19 @@
 'use strict';
 
-const { test, equals, notOk, ok, throws } = require('tap');
+const { test, equal, notOk, ok, throws } = require('tap');
 const { getAny, isAny, parseAny } = require('r-assign/lib/any');
 
 test('getAny', ({ end }) => {
 
 	const getAnyNoDefault = getAny();
 
-	equals(typeof getAnyNoDefault(), 'undefined');
-	equals(getAnyNoDefault(null), null);
+	equal(typeof getAnyNoDefault(), 'undefined');
+	equal(getAnyNoDefault(null), null);
 
 	const getAnyNull = getAny(null);
 
-	equals(getAnyNull(), null);
-	equals(getAnyNull(null), null);
+	equal(getAnyNull(), null);
+	equal(getAnyNull(null), null);
 	end();
 });
 
@@ -24,7 +24,7 @@ test('isAny', ({ end }) => {
 });
 
 test('parseAny', ({ end }) => {
-	equals(parseAny(null), null);
+	equal(parseAny(null), null);
 	throws(() => {
 		parseAny();
 	});

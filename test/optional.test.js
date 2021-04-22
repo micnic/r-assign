@@ -1,6 +1,6 @@
 'use strict';
 
-const { test, equals, notOk, ok, throws } = require('tap');
+const { test, equal, notOk, ok, throws } = require('tap');
 const { getString, isString } = require('r-assign/lib/string');
 const {
 	getOptional,
@@ -12,10 +12,10 @@ test('getOptional', ({ end }) => {
 
 	const getOptionalString = getOptional(getString());
 
-	equals(typeof getOptionalString(), 'undefined');
-	equals(getOptionalString(''), '');
-	equals(getOptionalString('data'), 'data');
-	equals(getOptionalString(null), '');
+	equal(typeof getOptionalString(), 'undefined');
+	equal(getOptionalString(''), '');
+	equal(getOptionalString('data'), 'data');
+	equal(getOptionalString(null), '');
 
 	throws(() => {
 		getOptional();
@@ -47,8 +47,8 @@ test('parseOptional', ({ end }) => {
 
 	const parseOptionalString = parseOptional(isString);
 
-	equals(typeof parseOptionalString(), 'undefined');
-	equals(parseOptionalString(''), '');
+	equal(typeof parseOptionalString(), 'undefined');
+	equal(parseOptionalString(''), '');
 
 	throws(() => {
 		parseOptionalString(null);
