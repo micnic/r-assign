@@ -1,5 +1,5 @@
-import type { TransformFunction } from 'r-assign';
-import type { TypeGuard } from 'r-assign/lib/union';
+import type { TransformFunction } from "r-assign";
+import type { TypeGuard } from "r-assign/lib/union";
 
 export type Primitive = bigint | boolean | null | number | symbol | string;
 
@@ -11,10 +11,23 @@ declare const getLiteral: <T extends Primitive>(
 ) => TransformFunction<T>;
 
 /**
+ * Extract union of literal values
+ */
+declare const getLiteralOf: <T extends Primitive>(
+	literals: [T, T, ...T[]],
+	initial?: T
+) => TransformFunction<T>;
+
+/**
  * Check for literal values
  */
-declare const isLiteral: <T extends Primitive>(
-	literal: T
+declare const isLiteral: <T extends Primitive>(literal: T) => TypeGuard<T>;
+
+/**
+ * Check for union of literal values
+ */
+declare const isLiteralOf: <T extends Primitive>(
+	literals: [T, T, ...T[]]
 ) => TypeGuard<T>;
 
 /**
@@ -24,4 +37,18 @@ declare const parseLiteral: <T extends Primitive>(
 	literal: T
 ) => TransformFunction<T>;
 
-export { getLiteral, isLiteral, parseLiteral };
+/**
+ * Extract and validate union of literal values
+ */
+declare const parseLiteralOf: <T extends Primitive>(
+	literals: [T, T, ...T[]]
+) => TransformFunction<T>;
+
+export {
+	getLiteral,
+	getLiteralOf,
+	isLiteral,
+	isLiteralOf,
+	parseLiteral,
+	parseLiteralOf,
+};
