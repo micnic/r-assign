@@ -3,15 +3,11 @@ import type { TypeGuard, Union } from "r-assign/lib/union";
 
 export type Intersection<T = any> = Union<T>;
 
-type UnionToIntersection<U> = (U extends any ? (k: U) => void : never) extends (
-	k: infer I
-) => void
+export type InferIntersection<T extends Intersection> = {
+	[K in keyof T]: T[K] extends TypeGuard ? (parameter: T[K]) => void : never;
+  }[number] extends (k: TypeGuard<infer I>) => void
 	? I
-	: never;
-
-export type InferIntersection<
-	T extends Intersection
-> = T extends Intersection<infer U> ? UnionToIntersection<U> : never;
+	: never
 
 /**
  * Extract intersection type values
