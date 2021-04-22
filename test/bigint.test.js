@@ -1,6 +1,6 @@
 'use strict';
 
-const { test, equals, notOk, ok, throws } = require('tap');
+const { test, equal, notOk, ok, throws } = require('tap');
 const {
 	getBigInt,
 	isBigInt,
@@ -11,17 +11,17 @@ test('getBigInt', ({ end }) => {
 
 	const getBigIntNoDefault = getBigInt();
 
-	equals(getBigIntNoDefault(), 0n);
-	equals(getBigIntNoDefault(0n), 0n);
-	equals(getBigIntNoDefault(1n), 1n);
-	equals(getBigIntNoDefault(0), 0n);
+	equal(getBigIntNoDefault(), 0n);
+	equal(getBigIntNoDefault(0n), 0n);
+	equal(getBigIntNoDefault(1n), 1n);
+	equal(getBigIntNoDefault(0), 0n);
 
 	const getBigIntOne = getBigInt(1n);
 
-	equals(getBigIntOne(), 1n);
-	equals(getBigIntOne(0n), 0n);
-	equals(getBigIntOne(1n), 1n);
-	equals(getBigIntOne(0), 1n);
+	equal(getBigIntOne(), 1n);
+	equal(getBigIntOne(0n), 0n);
+	equal(getBigIntOne(1n), 1n);
+	equal(getBigIntOne(0), 1n);
 
 	throws(() => {
 		getBigInt(0);
@@ -38,7 +38,7 @@ test('isBigInt', ({ end }) => {
 });
 
 test('parseBigInt', ({ end }) => {
-	equals(parseBigInt(0n), 0n);
+	equal(parseBigInt(0n), 0n);
 	throws(() => {
 		parseBigInt();
 	});

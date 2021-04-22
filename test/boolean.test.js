@@ -1,6 +1,6 @@
 'use strict';
 
-const { test, equals, notOk, ok, throws } = require('tap');
+const { test, equal, notOk, ok, throws } = require('tap');
 const {
 	getBoolean,
 	isBoolean,
@@ -11,17 +11,17 @@ test('getBoolean', ({ end }) => {
 
 	const getBooleanNoDefault = getBoolean();
 
-	equals(getBooleanNoDefault(), false);
-	equals(getBooleanNoDefault(false), false);
-	equals(getBooleanNoDefault(true), true);
-	equals(getBooleanNoDefault(null), false);
+	equal(getBooleanNoDefault(), false);
+	equal(getBooleanNoDefault(false), false);
+	equal(getBooleanNoDefault(true), true);
+	equal(getBooleanNoDefault(null), false);
 
 	const getBooleanTrue = getBoolean(true);
 
-	equals(getBooleanTrue(), true);
-	equals(getBooleanTrue(false), false);
-	equals(getBooleanTrue(true), true);
-	equals(getBooleanTrue(null), true);
+	equal(getBooleanTrue(), true);
+	equal(getBooleanTrue(false), false);
+	equal(getBooleanTrue(true), true);
+	equal(getBooleanTrue(null), true);
 
 	throws(() => {
 		getBoolean(null);
@@ -38,7 +38,7 @@ test('isBoolean', ({ end }) => {
 });
 
 test('parseBoolean', ({ end }) => {
-	equals(parseBoolean(false), false);
+	equal(parseBoolean(false), false);
 	throws(() => {
 		parseBoolean();
 	});

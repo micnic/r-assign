@@ -1,21 +1,21 @@
 'use strict';
 
-const { test, equals, notOk, ok, throws } = require('tap');
+const { test, equal, notOk, ok, throws } = require('tap');
 const { getString, isString, parseString } = require('r-assign/lib/string');
 
 test('getString', ({ end }) => {
 
 	const getStringNoDefault = getString();
 
-	equals(getStringNoDefault(), '');
-	equals(getStringNoDefault('data'), 'data');
-	equals(getStringNoDefault(null), '');
+	equal(getStringNoDefault(), '');
+	equal(getStringNoDefault('data'), 'data');
+	equal(getStringNoDefault(null), '');
 
 	const getStringData = getString('data');
 
-	equals(getStringData(), 'data');
-	equals(getStringData('data'), 'data');
-	equals(getStringData(null), 'data');
+	equal(getStringData(), 'data');
+	equal(getStringData('data'), 'data');
+	equal(getStringData(null), 'data');
 
 	throws(() => {
 		getString(null);
@@ -31,7 +31,7 @@ test('isString', ({ end }) => {
 });
 
 test('parseString', ({ end }) => {
-	equals(parseString(''), '');
+	equal(parseString(''), '');
 	throws(() => {
 		parseString();
 	});
