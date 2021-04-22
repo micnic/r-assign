@@ -12,6 +12,7 @@ test('rAssign lib exports', ({ end }) => {
 	ok('getInstanceOf' in lib);
 	ok('getIntersectionOf' in lib);
 	ok('getLiteral' in lib);
+	ok('getLiteralOf' in lib);
 	ok('getNumber' in lib);
 	ok('getObjectOf' in lib);
 	ok('getOptional' in lib);
@@ -27,6 +28,7 @@ test('rAssign lib exports', ({ end }) => {
 	ok('isInstanceOf' in lib);
 	ok('isIntersectionOf' in lib);
 	ok('isLiteral' in lib);
+	ok('isLiteralOf' in lib);
 	ok('isNumber' in lib);
 	ok('isObjectOf' in lib);
 	ok('isOptional' in lib);
@@ -42,6 +44,7 @@ test('rAssign lib exports', ({ end }) => {
 	ok('parseInstanceOf' in lib);
 	ok('parseIntersectionOf' in lib);
 	ok('parseLiteral' in lib);
+	ok('parseLiteralOf' in lib);
 	ok('parseNumber' in lib);
 	ok('parseObjectOf' in lib);
 	ok('parseOptional' in lib);

@@ -3,8 +3,11 @@
 const { test, equals, notOk, ok, throws } = require('tap');
 const {
 	getLiteral,
+	getLiteralOf,
 	isLiteral,
-	parseLiteral
+	isLiteralOf,
+	parseLiteral,
+	parseLiteralOf
 } = require('r-assign/lib/literal');
 
 test('getLiteral', ({ end }) => {
@@ -17,6 +20,39 @@ test('getLiteral', ({ end }) => {
 
 	throws(() => {
 		getLiteral();
+	});
+
+	end();
+});
+
+test('getLiteralOf', ({ end }) => {
+
+	const getLiteralAB = getLiteralOf(['a', 'b']);
+
+	equals(getLiteralAB(), 'a');
+	equals(getLiteralAB('b'), 'b');
+	equals(getLiteralAB(0), 'a');
+
+	const getLiteralBA = getLiteralOf(['a', 'b'], 'b');
+
+	equals(getLiteralBA(), 'b');
+	equals(getLiteralBA('a'), 'a');
+	equals(getLiteralBA(0), 'b');
+
+	throws(() => {
+		getLiteralOf();
+	});
+
+	throws(() => {
+		getLiteralOf([null]);
+	});
+
+	throws(() => {
+		getLiteralOf([{}, {}]);
+	});
+
+	throws(() => {
+		getLiteralOf(['a', 'b'], 0);
 	});
 
 	end();
@@ -38,17 +74,62 @@ test('isLiteral', ({ end }) => {
 		isLiteral();
 	});
 
+	throws(() => {
+		isLiteral({});
+	});
+
+	throws(() => {
+		isLiteral(Infinity);
+	});
+
+	throws(() => {
+		isLiteral(() => null);
+	});
+
+	end();
+});
+
+test('isLiteralOf', ({ end }) => {
+
+	ok(isLiteralOf(['a', 'b'])('a'));
+	notOk(isLiteralOf(['a', 'b'])(0));
+
+	throws(() => {
+		isLiteralOf();
+	});
+
+	throws(() => {
+		isLiteralOf(['a']);
+	});
+
+	throws(() => {
+		isLiteralOf([{}, {}]);
+	});
+
 	end();
 });
 
 test('parseLiteral', ({ end }) => {
 
-	const getLiteralFalse = parseLiteral(false);
+	const parseLiteralFalse = parseLiteral(false);
 
-	equals(getLiteralFalse(false), false);
+	equals(parseLiteralFalse(false), false);
 
 	throws(() => {
-		getLiteralFalse();
+		parseLiteralFalse();
+	});
+
+	end();
+});
+
+test('parseLiteralOf', ({ end }) => {
+
+	const parseLiteralAB = parseLiteralOf(['a', 'b']);
+
+	equals(parseLiteralAB('a'), 'a');
+
+	throws(() => {
+		parseLiteralAB();
 	});
 
 	end();
