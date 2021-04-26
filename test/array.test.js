@@ -7,7 +7,6 @@ const {
 	parseArrayOf
 } = require('r-assign/lib/array');
 const { isBoolean } = require('r-assign/lib/boolean');
-const { isNumber } = require('r-assign/lib/number');
 const { isString } = require('r-assign/lib/string');
 
 test('getArrayOf', ({ end }) => {
@@ -40,9 +39,16 @@ test('getArrayOf', ({ end }) => {
 
 test('isArrayOf', ({ end }) => {
 
+	const sparseArray = new Array(1);
+	const sparseArrayWithOneValue = new Array(2);
+
+	sparseArrayWithOneValue[1] = true;
+
 	ok(isArrayOf(isBoolean)([]));
 	ok(isArrayOf(isBoolean)([true]));
-	notOk(isArrayOf(isNumber)());
+	notOk(isArrayOf(isBoolean)(sparseArray));
+	notOk(isArrayOf(isBoolean)(sparseArrayWithOneValue));
+	notOk(isArrayOf(isBoolean)());
 
 	throws(() => {
 		isArrayOf();
