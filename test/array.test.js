@@ -39,15 +39,14 @@ test('getArrayOf', ({ end }) => {
 
 test('isArrayOf', ({ end }) => {
 
-	const sparseArray = new Array(1);
-	const sparseArrayWithOneValue = new Array(2);
+	const sparseArrayLength = 3;
+	const sparseArray = new Array(sparseArrayLength);
 
-	sparseArrayWithOneValue[1] = true;
+	sparseArray[1] = true;
 
 	ok(isArrayOf(isBoolean)([]));
 	ok(isArrayOf(isBoolean)([true]));
 	notOk(isArrayOf(isBoolean)(sparseArray));
-	notOk(isArrayOf(isBoolean)(sparseArrayWithOneValue));
 	notOk(isArrayOf(isBoolean)());
 
 	throws(() => {
