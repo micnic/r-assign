@@ -1,10 +1,5 @@
 import type { TransformFunction } from 'r-assign';
-
-export type TypeGuard<T = any> = (value?: any) => value is T;
-
-export type InferTypeGuard<T extends TypeGuard> = T extends TypeGuard<infer U>
-	? U
-	: never;
+import type { TypeGuard } from 'r-assign/lib';
 
 export type Union<T = any> = [TypeGuard<T>, TypeGuard<T>, ...TypeGuard<T>[]];
 

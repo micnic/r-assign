@@ -1,13 +1,17 @@
-import type { TransformFunction } from "r-assign";
-import type { TypeGuard, Union } from "r-assign/lib/union";
+import type { TransformFunction } from 'r-assign';
+import type { TypeGuard } from 'r-assign/lib';
 
-export type Intersection<T = any> = Union<T>;
+export type Intersection<T = any> = [
+	TypeGuard<T>,
+	TypeGuard<T>,
+	...TypeGuard<T>[]
+];
 
 export type InferIntersection<T extends Intersection> = {
 	[K in keyof T]: T[K] extends TypeGuard ? (parameter: T[K]) => void : never;
-  }[number] extends (k: TypeGuard<infer I>) => void
+}[number] extends (k: TypeGuard<infer I>) => void
 	? I
-	: never
+	: never;
 
 /**
  * Extract intersection type values
