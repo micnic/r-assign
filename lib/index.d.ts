@@ -11,3 +11,9 @@ export * from 'r-assign/lib/optional';
 export * from 'r-assign/lib/string';
 export * from 'r-assign/lib/symbol';
 export * from 'r-assign/lib/union';
+
+export type TypeGuard<T = any> = (value?: any) => value is T;
+
+export type InferTypeGuard<T extends TypeGuard> = T extends TypeGuard<infer U>
+	? U
+	: never;

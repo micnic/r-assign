@@ -1,5 +1,5 @@
-import type { TransformFunction } from "r-assign";
-import type { TypeGuard } from "r-assign/lib/union";
+import type { TransformFunction } from 'r-assign';
+import type { TypeGuard } from 'r-assign/lib';
 
 export type Primitive = bigint | boolean | null | number | symbol | string;
 

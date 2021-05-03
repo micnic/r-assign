@@ -1,5 +1,5 @@
 import type { TransformFunction } from 'r-assign';
-import type { TypeGuard } from 'r-assign/lib/union';
+import type { TypeGuard } from 'r-assign/lib';
 
 export type Instance<T = any> = new (...args: any[]) => T;
 

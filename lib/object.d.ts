@@ -1,5 +1,5 @@
 import type { TransformFunction } from 'r-assign';
-import type { InferTypeGuard, TypeGuard } from 'r-assign/lib/union';
+import type { InferTypeGuard, TypeGuard } from 'r-assign/lib';
 
 export type Shape = {
 	[key: string]: TypeGuard;
