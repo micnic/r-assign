@@ -28,9 +28,12 @@ declare namespace rAssign {
 /**
  * Assign object properties and transform result based on the provided schema
  */
-declare const rAssign: <S extends rAssign.TransformSchema<any>>(
+declare const rAssign: <
+	S extends rAssign.TransformSchema<any>,
+	T extends Record<string, any>
+>(
 	schema: S,
-	...sources: any[]
+	...sources: [T, ...T[]]
 ) => rAssign.InferType<S>;
 
 export = rAssign;

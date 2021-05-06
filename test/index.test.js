@@ -10,20 +10,34 @@ test('No arguments', ({ end }) => {
 	end();
 });
 
+test('No source', ({ end }) => {
+	throws(() => {
+		rAssign({});
+	});
+	end();
+});
+
 test('Invalid schema', ({ end }) => {
 	throws(() => {
-		rAssign({ data: null });
+		rAssign({ data: null }, {});
+	});
+	end();
+});
+
+test('Invalid source', ({ end }) => {
+	throws(() => {
+		rAssign({}, null);
 	});
 	end();
 });
 
 test('Schema with skipped property', ({ end }) => {
-	match(rAssign({ data: () => {/* Return nothing */} }), {});
+	match(rAssign({ data: () => {/* Return nothing */} }, {}), {});
 	end();
 });
 
 test('Schema with one property', ({ end }) => {
-	match(rAssign({ data: () => null }), { data: null });
+	match(rAssign({ data: () => null }, {}), { data: null });
 	end();
 });
 
@@ -32,7 +46,7 @@ test('Schema with inherited properties', ({ end }) => {
 
 	schema.data = () => null;
 
-	match(rAssign(schema), { data: null });
+	match(rAssign(schema, {}), { data: null });
 	end();
 });
 
