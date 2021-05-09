@@ -25,10 +25,13 @@
 	],
 	"types": "index.d.ts",
 	"scripts": {
-		"prepublishOnly": "npm test && npm run ts-check",
-		"test": "tap -b test.js",
+		"check": "npm run eslint-check && npm run ts-check",
+		"eslint-check": "eslint .",
+		"prepublishOnly": "npm test && npm run check",
+		"test": "tap -b test/*.test.js",
 		"test-cov-html": "npm test -- --coverage-report=html",
-		"ts-check": "tsc -p jsconfig.json"
+		"test-lcov": "npm test -- --coverage-report=lcov",
+		"ts-check": "tsc"
 	},
 	"devDependencies": {
 		"eslint": "7.x",
