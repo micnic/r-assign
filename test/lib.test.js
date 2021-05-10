@@ -1,9 +1,12 @@
 'use strict';
 
-const { test, ok } = require('tap');
+const { test, equal, ok } = require('tap');
 const lib = require('r-assign/lib');
 
+const methods = 51;
+
 test('rAssign lib exports', ({ end }) => {
+	equal(Object.keys(lib).length, methods);
 	ok('getAny' in lib);
 	ok('getAnyNumber' in lib);
 	ok('getArrayOf' in lib);
@@ -19,6 +22,7 @@ test('rAssign lib exports', ({ end }) => {
 	ok('getStrictObjectOf' in lib);
 	ok('getString' in lib);
 	ok('getSymbol' in lib);
+	ok('getTupleOf' in lib);
 	ok('getUnionOf' in lib);
 	ok('isAny' in lib);
 	ok('isAnyNumber' in lib);
@@ -35,6 +39,7 @@ test('rAssign lib exports', ({ end }) => {
 	ok('isStrictObjectOf' in lib);
 	ok('isString' in lib);
 	ok('isSymbol' in lib);
+	ok('isTupleOf' in lib);
 	ok('isUnionOf' in lib);
 	ok('parseAny' in lib);
 	ok('parseAnyNumber' in lib);
@@ -51,6 +56,7 @@ test('rAssign lib exports', ({ end }) => {
 	ok('parseStrictObjectOf' in lib);
 	ok('parseString' in lib);
 	ok('parseSymbol' in lib);
+	ok('parseTupleOf' in lib);
 	ok('parseUnionOf' in lib);
 	end();
 });
