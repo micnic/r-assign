@@ -12,6 +12,15 @@ export * from 'r-assign/lib/string';
 export * from 'r-assign/lib/symbol';
 export * from 'r-assign/lib/union';
 
+export type OptionalObject<T> = Pick<T, {
+		[key in keyof T]: undefined extends T[key] ? never : key;
+	}[keyof T]> &
+	Partial<Pick<T,{
+		[key in keyof T]: undefined extends T[key] ? key : never;
+	}[keyof T]>> extends infer R
+	? { [P in keyof R]: R[P] }
+	: never;
+
 export type TypeGuard<T = any> = (value?: any) => value is T;
 
 export type InferTypeGuard<T extends TypeGuard> = T extends TypeGuard<infer U>

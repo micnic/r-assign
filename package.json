@@ -1,6 +1,6 @@
 {
 	"name": "r-assign",
-	"version": "1.1.0",
+	"version": "1.1.1",
 	"description": "Object.assign() with super powers",
 	"keywords": [
 		"assert",
@@ -37,6 +37,7 @@
 	"scripts": {
 		"check": "npm run eslint-check && npm run ts-check",
 		"eslint-check": "eslint .",
+		"eslint-fix": "npm run eslint-check -- --fix",
 		"prepublishOnly": "npm test && npm run check",
 		"test": "tap -b test/*.test.js",
 		"test-cov-html": "npm test -- --coverage-report=html",

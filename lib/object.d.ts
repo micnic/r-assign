@@ -1,53 +1,57 @@
 import type { TransformFunction } from 'r-assign';
-import type { InferTypeGuard, TypeGuard } from 'r-assign/lib';
+import type { InferTypeGuard, OptionalObject, TypeGuard } from 'r-assign/lib';
 
 export type Shape = {
 	[key: string]: TypeGuard;
 };
+
+export type ResultObject<S extends Shape> = OptionalObject<
+	{ [key in keyof S]: InferTypeGuard<S[key]> }
+>;
 
 /**
  * Extract object values
  */
 declare const getObjectOf: <S extends Shape>(
 	shape: S,
-	initial: { [key in keyof S]: InferTypeGuard<S[key]> }
-) => TransformFunction<{ [key in keyof S]: InferTypeGuard<S[key]> }>;
+	initial: ResultObject<S>
+) => TransformFunction<ResultObject<S>>;
 
 /**
  * Extract strict object values
  */
 declare const getStrictObjectOf: <S extends Shape>(
 	shape: S,
-	initial: { [key in keyof S]: InferTypeGuard<S[key]> }
-) => TransformFunction<{ [key in keyof S]: InferTypeGuard<S[key]> }>;
+	initial: ResultObject<S>
+) => TransformFunction<ResultObject<S>>;
 
 /**
  * Check for object values
  */
 declare const isObjectOf: <S extends Shape>(
 	shape: S
-) => TypeGuard<{ [key in keyof S]: InferTypeGuard<S[key]> }>;
+) => TypeGuard<ResultObject<S>>;
 
 /**
  * Check for strict object values
  */
 declare const isStrictObjectOf: <S extends Shape>(
 	shape: S
-) => TypeGuard<{ [key in keyof S]: InferTypeGuard<S[key]> }>;
+) => TypeGuard<ResultObject<S>>;
 
 /**
  * Extract and validate object values
  */
 declare const parseObjectOf: <S extends Shape>(
 	shape: S
-) => TransformFunction<{ [key in keyof S]: InferTypeGuard<S[key]> }>;
+) => TransformFunction<ResultObject<S>>;
 
 /**
  * Extract and validate strict object values
  */
 declare const parseStrictObjectOf: <S extends Shape>(
 	shape: S
-) => TransformFunction<{ [key in keyof S]: InferTypeGuard<S[key]> }>;
+) => TransformFunction<ResultObject<S>>;
 
 export {
 	getObjectOf,

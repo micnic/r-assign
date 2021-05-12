@@ -1,7 +1,7 @@
 import type { TransformFunction } from 'r-assign';
 import type { TypeGuard } from 'r-assign/lib';
 
-export type Primitive = bigint | boolean | null | number | symbol | string;
+export type Primitive = bigint | boolean | null | number | string | symbol;
 
 /**
  * Extract literal values
