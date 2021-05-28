@@ -1,7 +1,7 @@
 'use strict';
 
-const { test, match, notOk, ok, throws } = require('tap');
-const { isBoolean } = require('r-assign/lib/boolean');
+const { test, match, ok, throws } = require('tap');
+const { isAny } = require('r-assign/lib/any');
 const { isNumber } = require('r-assign/lib/number');
 const { isObjectOf } = require('r-assign/lib/object');
 const { isString } = require('r-assign/lib/string');
@@ -10,6 +10,14 @@ const {
 	isIntersectionOf,
 	parseIntersectionOf
 } = require('r-assign/lib/intersection');
+
+const numberObject = '{\n "number": number;\n}';
+const stringObject = '{\n "string": string;\n}';
+const intersectionAnnotation = `(${numberObject} & ${stringObject})`;
+const expected = `expected an intersection of ${intersectionAnnotation}`;
+const invalidDefaultValue = 'Invalid default value type';
+const invalidValue = 'Invalid value type';
+const received = 'but received null';
 
 test('getIntersectionOf', ({ end }) => {
 
@@ -30,28 +38,12 @@ test('getIntersectionOf', ({ end }) => {
 	}), { number: 1, string: 'data' });
 
 	throws(() => {
-		getIntersectionOf();
-	});
-
-	throws(() => {
-		getIntersectionOf([null]);
-	});
-
-	throws(() => {
-		getIntersectionOf([() => null]);
-	});
-
-	throws(() => {
-		getIntersectionOf([isNumber, isString], null);
-	});
-
-	throws(() => {
 		getIntersectionOf([isObjectOf({
 			number: isNumber
 		}), isObjectOf({
 			string: isString
 		})], null);
-	});
+	}, TypeError(`${invalidDefaultValue}, ${expected} ${received}`));
 
 	end();
 });
@@ -63,27 +55,26 @@ test('isIntersectionOf', ({ end }) => {
 	}), isObjectOf({
 		string: isString
 	})])({ number: 0, string: '' }));
-	notOk(isIntersectionOf([isBoolean, isNumber])(true));
 
 	throws(() => {
 		isIntersectionOf();
-	});
+	}, TypeError('Invalid type guards provided'));
 
 	throws(() => {
 		isIntersectionOf([]);
-	});
-
-	throws(() => {
-		isIntersectionOf([null]);
-	});
+	}, TypeError('Not enough type guards, at least two expected'));
 
 	throws(() => {
 		isIntersectionOf([null, null]);
-	});
+	}, TypeError('Invalid type guard provided'));
 
 	throws(() => {
-		isIntersectionOf([() => null, () => null]);
-	});
+		isIntersectionOf([isAny, isString]);
+	}, TypeError('Provided intersection of any'));
+
+	throws(() => {
+		isIntersectionOf([isNumber, isString]);
+	}, TypeError('Provided intersection is impossible'));
 
 	end();
 });
@@ -106,7 +97,7 @@ test('parseIntersectionOf', ({ end }) => {
 
 	throws(() => {
 		parseIntersectionOfNumberString(null);
-	});
+	}, TypeError(`${invalidValue}, ${expected} ${received}`));
 
 	end();
 });

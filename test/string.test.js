@@ -1,7 +1,16 @@
 'use strict';
 
+/* eslint-disable no-new-wrappers */
+
 const { test, equal, notOk, ok, throws } = require('tap');
 const { getString, isString, parseString } = require('r-assign/lib/string');
+
+const expected = 'expected a string value';
+const invalidDefaultValue = 'Invalid default value type';
+const invalidValue = 'Invalid value type';
+const invalidValueWithProperty = `${invalidValue} for property "key"`;
+const receivedNull = 'but received null';
+const receivedString = 'but received an instance of String';
 
 test('getString', ({ end }) => {
 
@@ -19,7 +28,7 @@ test('getString', ({ end }) => {
 
 	throws(() => {
 		getString(null);
-	});
+	}, TypeError(`${invalidDefaultValue}, ${expected} ${receivedNull}`));
 
 	end();
 });
@@ -32,8 +41,18 @@ test('isString', ({ end }) => {
 
 test('parseString', ({ end }) => {
 	equal(parseString(''), '');
+
 	throws(() => {
-		parseString();
-	});
+		parseString(new String);
+	}, TypeError(`${invalidValue}, ${expected} ${receivedString}`));
+
+	throws(() => {
+		parseString(null);
+	}, TypeError(`${invalidValue}, ${expected} ${receivedNull}`));
+
+	throws(() => {
+		parseString(null, 'key');
+	}, TypeError(`${invalidValueWithProperty}, ${expected} ${receivedNull}`));
+
 	end();
 });

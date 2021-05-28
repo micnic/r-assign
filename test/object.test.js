@@ -1,5 +1,7 @@
 'use strict';
 
+/* eslint-disable no-new-wrappers */
+
 const { test, match, notOk, ok, throws } = require('tap');
 const {
 	getObjectOf,
@@ -11,7 +13,24 @@ const {
 } = require('r-assign/lib/object');
 const { isBoolean } = require('r-assign/lib/boolean');
 const { isNumber } = require('r-assign/lib/number');
+const { isOptional } = require('r-assign/lib/optional');
 const { isString } = require('r-assign/lib/string');
+
+const { assign, create } = Object;
+
+const circularRefShape = '{\n "obj": <Circular Reference>;\n}';
+const objectShape = '{\n "abc": string;\n}';
+const optionalObjectShape = '{\n "abc"?: (string | undefined);\n}';
+const expected = `expected an object of shape ${objectShape}`;
+const expectedOptional = `expected an object of shape ${optionalObjectShape}`;
+const invalidDefaultValue = 'Invalid default value type';
+const invalidTypeGuard = 'Invalid type guard provided';
+const invalidValue = 'Invalid value type';
+const received = 'but received null';
+const receivedEmptyObject = 'but received a value of type {}';
+const receivedObject = 'but received a value of type {\n "abc": number;\n}';
+const receivedCircularRef = `but received a value of type ${circularRefShape}`;
+const invalidShape = 'Shape is not an object';
 
 test('getObjectOf', ({ end }) => {
 
@@ -28,32 +47,16 @@ test('getObjectOf', ({ end }) => {
 	});
 
 	throws(() => {
-		getObjectOf();
-	});
+		getObjectOf({ abc: null });
+	}, TypeError(invalidTypeGuard));
 
 	throws(() => {
-		getObjectOf(null);
-	});
+		getObjectOf({ abc: isString }, null);
+	}, TypeError(`${invalidDefaultValue}, ${expected} ${received}`));
 
 	throws(() => {
-		getObjectOf(0);
-	});
-
-	throws(() => {
-		getObjectOf({ abc: isString });
-	});
-
-	throws(() => {
-		getObjectOf({ abc: isString }, {});
-	});
-
-	throws(() => {
-		getObjectOf({ abc: null }, {});
-	});
-
-	throws(() => {
-		getObjectOf({ abc: () => null }, {});
-	});
+		getObjectOf({ abc: isOptional(isString) }, null);
+	}, TypeError(`${invalidDefaultValue}, ${expectedOptional} ${received}`));
 
 	end();
 });
@@ -68,36 +71,8 @@ test('getStrictObjectOf', ({ end }) => {
 	match(getObjectABC({ abc: 'abc', def: 'def' }), { abc: '' });
 
 	throws(() => {
-		getStrictObjectOf();
-	});
-
-	throws(() => {
-		getStrictObjectOf(null);
-	});
-
-	throws(() => {
-		getStrictObjectOf(0);
-	});
-
-	throws(() => {
-		getStrictObjectOf({ abc: isString });
-	});
-
-	throws(() => {
-		getStrictObjectOf({ abc: isString }, {});
-	});
-
-	throws(() => {
-		getStrictObjectOf({ abc: isString }, { abc: '', def: '' });
-	});
-
-	throws(() => {
-		getStrictObjectOf({ abc: null }, {});
-	});
-
-	throws(() => {
-		getStrictObjectOf({ abc: () => null }, {});
-	});
+		getStrictObjectOf({ abc: isString }, null);
+	}, TypeError(`${invalidDefaultValue}, ${expected} ${received}`));
 
 	end();
 });
@@ -114,15 +89,15 @@ test('isObjectOf', ({ end }) => {
 
 	throws(() => {
 		isObjectOf();
-	});
+	}, TypeError(invalidShape));
 
 	throws(() => {
 		isObjectOf(null);
-	});
+	}, TypeError(invalidShape));
 
 	throws(() => {
-		isObjectOf(0);
-	});
+		isObjectOf({});
+	}, TypeError(invalidShape));
 
 	end();
 });
@@ -137,54 +112,58 @@ test('isStrictObjectOf', ({ end }) => {
 	notOk(isStrictObjectOf({ boolean: isBoolean })(null));
 	notOk(isStrictObjectOf({ boolean: isBoolean })({ boolean: 0 }));
 
-	throws(() => {
-		isStrictObjectOf();
-	});
-
-	throws(() => {
-		isStrictObjectOf(null);
-	});
-
-	throws(() => {
-		isStrictObjectOf(0);
-	});
-
 	end();
 });
 
 test('parseObjectOf', ({ end }) => {
 
-	const validateObjectABC = parseObjectOf({ abc: isString });
+	const parseObjectABC = parseObjectOf({ abc: isString });
 
-	match(validateObjectABC({ abc: '' }), { abc: '' });
-	match(validateObjectABC({ abc: '', def: null }), { abc: '', def: null });
+	match(parseObjectABC({ abc: '' }), { abc: '' });
+	match(parseObjectABC({ abc: '', def: null }), { abc: '' });
+
+	const obj = {};
+
+	obj.obj = obj;
 
 	throws(() => {
-		validateObjectABC();
-	});
+		parseObjectABC(null);
+	}, TypeError(`${invalidValue}, ${expected} ${received}`));
 
-	const validateObjectABCWithPrototype = parseObjectOf(Object.create({
+	throws(() => {
+		parseObjectABC({});
+	}, TypeError(`${invalidValue}, ${expected} ${receivedEmptyObject}`));
+
+	throws(() => {
+		parseObjectABC({
+			abc: 0
+		});
+	}, TypeError(`${invalidValue}, ${expected} ${receivedObject}`));
+
+	throws(() => {
+		parseObjectABC(obj);
+	}, TypeError(`${invalidValue}, ${expected} ${receivedCircularRef}`));
+
+	const parseObjectABCWithPrototype = parseObjectOf(assign(create({
+		def: null
+	}), {
 		abc: isString
 	}));
 
-	match(validateObjectABCWithPrototype({}), {});
+	match(parseObjectABCWithPrototype({ abc: '' }), { abc: '' });
 
 	end();
 });
 
 test('parseStrictObjectOf', ({ end }) => {
 
-	const validateObjectABC = parseStrictObjectOf({ abc: isString });
+	const parseObjectABC = parseStrictObjectOf({ abc: isString });
 
-	match(validateObjectABC({ abc: '' }), { abc: '' });
-
-	throws(() => {
-		validateObjectABC({ abc: '', def: null });
-	});
+	match(parseObjectABC({ abc: '' }), { abc: '' });
 
 	throws(() => {
-		validateObjectABC();
-	});
+		parseObjectABC(null);
+	}, TypeError(`${invalidValue}, ${expected} ${received}`));
 
 	end();
 });

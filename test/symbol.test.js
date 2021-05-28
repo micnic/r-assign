@@ -3,6 +3,13 @@
 const { test, equal, match, notOk, ok, throws } = require('tap');
 const { getSymbol, isSymbol, parseSymbol } = require('r-assign/lib/symbol');
 
+const expected = 'expected a symbol value';
+const invalidDefaultValue = 'Invalid default value type';
+const invalidValue = 'Invalid value type';
+const invalidValueWithProperty = `${invalidValue} for property "key"`;
+const receivedNull = 'but received null';
+const receivedString = 'but received a value of type string';
+
 test('getSymbol', ({ end }) => {
 
 	const getSymbolNoDefault = getSymbol();
@@ -20,7 +27,11 @@ test('getSymbol', ({ end }) => {
 
 	throws(() => {
 		getSymbol(null);
-	});
+	}, TypeError(`${invalidDefaultValue}, ${expected} ${receivedNull}`));
+
+	throws(() => {
+		getSymbol('');
+	}, TypeError(`${invalidDefaultValue}, ${expected} ${receivedString}`));
 
 	end();
 });
@@ -36,8 +47,22 @@ test('parseSymbol', ({ end }) => {
 	const symbol = Symbol();
 
 	equal(parseSymbol(symbol), symbol);
+
 	throws(() => {
-		parseSymbol();
-	});
+		parseSymbol(null);
+	}, TypeError(`${invalidValue}, ${expected} ${receivedNull}`));
+
+	throws(() => {
+		parseSymbol('');
+	}, TypeError(`${invalidValue}, ${expected} ${receivedString}`));
+
+	throws(() => {
+		parseSymbol(null, 'key');
+	}, TypeError(`${invalidValueWithProperty}, ${expected} ${receivedNull}`));
+
+	throws(() => {
+		parseSymbol('', 'key');
+	}, TypeError(`${invalidValueWithProperty}, ${expected} ${receivedString}`));
+
 	end();
 });

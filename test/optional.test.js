@@ -8,6 +8,10 @@ const {
 	parseOptional
 } = require('r-assign/lib/optional');
 
+const expected = 'expected an union of (string | undefined)';
+const invalidValue = 'Invalid value type';
+const received = 'but received null';
+
 test('getOptional', ({ end }) => {
 
 	const getOptionalString = getOptional(getString());
@@ -19,7 +23,7 @@ test('getOptional', ({ end }) => {
 
 	throws(() => {
 		getOptional();
-	});
+	}, TypeError('Invalid transform function provided'));
 
 	end();
 });
@@ -34,11 +38,7 @@ test('isOptional', ({ end }) => {
 
 	throws(() => {
 		isOptional();
-	});
-
-	throws(() => {
-		isOptional(() => null);
-	});
+	}, TypeError('Invalid type guard provided'));
 
 	end();
 });
@@ -52,7 +52,7 @@ test('parseOptional', ({ end }) => {
 
 	throws(() => {
 		parseOptionalString(null);
-	});
+	}, TypeError(`${invalidValue}, ${expected} ${received}`));
 
 	end();
 });

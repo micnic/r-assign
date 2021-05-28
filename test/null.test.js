@@ -11,6 +11,11 @@ const {
 	parseNullable
 } = require('r-assign/lib/null');
 
+const expectedNull = 'expected a null value';
+const expectedNullable = 'expected an union of (string | null)';
+const invalidValue = 'Invalid value type';
+const received = 'but received undefined';
+
 test('getNull', ({ end }) => {
 
 	equal(getNull()(), null);
@@ -29,7 +34,7 @@ test('getNullable', ({ end }) => {
 
 	throws(() => {
 		getNullable();
-	});
+	}, TypeError('Invalid transform function provided'));
 
 	end();
 });
@@ -52,11 +57,7 @@ test('isNullable', ({ end }) => {
 
 	throws(() => {
 		isNullable();
-	});
-
-	throws(() => {
-		isNullable(() => null);
-	});
+	}, TypeError('Invalid type guard provided'));
 
 	end();
 });
@@ -67,7 +68,7 @@ test('parseNull', ({ end }) => {
 
 	throws(() => {
 		parseNull();
-	});
+	}, TypeError(`${invalidValue}, ${expectedNull} ${received}`));
 
 	end();
 });
@@ -81,7 +82,7 @@ test('parseNullable', ({ end }) => {
 
 	throws(() => {
 		parseNullableString();
-	});
+	}, TypeError(`${invalidValue}, ${expectedNullable} ${received}`));
 
 	end();
 });

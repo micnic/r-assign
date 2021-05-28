@@ -14,12 +14,12 @@ export * from 'r-assign/lib/symbol';
 export * from 'r-assign/lib/tuple';
 export * from 'r-assign/lib/union';
 
-export type OptionalObject<T> = Pick<T, {
-		[key in keyof T]: undefined extends T[key] ? never : key;
-	}[keyof T]> &
-	Partial<Pick<T,{
-		[key in keyof T]: undefined extends T[key] ? key : never;
-	}[keyof T]>> extends infer R
+type UndefinedKeys<T> = {
+	[key in keyof T]: undefined extends T[key] ? never : key;
+}[keyof T];
+
+export type OptionalObject<T> = Pick<T, UndefinedKeys<T>> &
+	Partial<Omit<T, UndefinedKeys<T>>> extends infer R
 	? { [P in keyof R]: R[P] }
 	: never;
 
@@ -31,8 +31,26 @@ export type OptionalTuple<T extends any[]> = T extends [infer H, ...infer R]
 	? []
 	: never;
 
+export type TypeClassification =
+	| 'any'
+	| 'array'
+	| 'intersection'
+	| 'instance'
+	| 'literal'
+	| 'object'
+	| 'optional'
+	| 'primitive'
+	| 'tuple'
+	| 'union';
+
 export type TypeGuard<T = any> = (value?: any) => value is T;
 
-export type InferTypeGuard<T extends TypeGuard> = T extends TypeGuard<infer U>
-	? U
+export type TypeGuardMeta = {
+	annotation: string;
+	classification: TypeClassification;
+	description: string;
+};
+
+export type InferTypeGuard<G extends TypeGuard> = G extends TypeGuard<infer T>
+	? T
 	: never;
