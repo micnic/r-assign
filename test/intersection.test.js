@@ -1,6 +1,7 @@
 'use strict';
 
 const { test, match, notOk, ok, throws } = require('tap');
+const { isAny } = require('r-assign/lib/any');
 const { isBoolean } = require('r-assign/lib/boolean');
 const { isNumber } = require('r-assign/lib/number');
 const { isObjectOf } = require('r-assign/lib/object');
@@ -10,6 +11,8 @@ const {
 	isIntersectionOf,
 	parseIntersectionOf
 } = require('r-assign/lib/intersection');
+
+const invalidDefaultValue = 'Invalid default value type';
 
 test('getIntersectionOf', ({ end }) => {
 
@@ -44,6 +47,10 @@ test('getIntersectionOf', ({ end }) => {
 	throws(() => {
 		getIntersectionOf([isNumber, isString], null);
 	});
+
+	throws(() => {
+		getIntersectionOf([isAny, isString]);
+	}, TypeError(`${invalidDefaultValue}, expected an intersection of any`));
 
 	throws(() => {
 		getIntersectionOf([isObjectOf({

@@ -1,6 +1,7 @@
 'use strict';
 
 const { test, equal, notOk, ok, throws } = require('tap');
+const { isAny } = require('r-assign/lib/any');
 const { isBoolean } = require('r-assign/lib/boolean');
 const { isNumber } = require('r-assign/lib/number');
 const { isString } = require('r-assign/lib/string');
@@ -35,6 +36,10 @@ test('getUnionOf', ({ end }) => {
 	throws(() => {
 		getUnionOf([isNumber, isString], null);
 	});
+
+	throws(() => {
+		getUnionOf([isAny, isString]);
+	}, TypeError('Invalid default value type, expected an union of any'));
 
 	end();
 });

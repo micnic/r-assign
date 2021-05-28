@@ -10,6 +10,12 @@ const {
 	parseNumber
 } = require('r-assign/lib/number');
 
+const expected = 'expected a number value but received';
+const expectedFinite = 'expected a finite number value but received';
+const invalidDefaultValue = 'Invalid default value type';
+const invalidValue = 'Invalid value type';
+const invalidValueWithProperty = `${invalidValue} for property "key"`;
+
 test('getAnyNumber', ({ end }) => {
 
 	const getNumberNoDefault = getAnyNumber();
@@ -50,7 +56,7 @@ test('getAnyNumber', ({ end }) => {
 
 	throws(() => {
 		getAnyNumber(null);
-	});
+	}, TypeError(`${invalidDefaultValue}, ${expected} null`));
 
 	end();
 });
@@ -77,19 +83,19 @@ test('getNumber', ({ end }) => {
 
 	throws(() => {
 		getNumber(null);
-	});
+	}, TypeError(`${invalidDefaultValue}, ${expectedFinite} null`));
 
 	throws(() => {
 		getNumber(NaN);
-	});
+	}, TypeError(`${invalidDefaultValue}, ${expectedFinite} NaN`));
 
 	throws(() => {
 		getNumber(Infinity);
-	});
+	}, TypeError(`${invalidDefaultValue}, ${expectedFinite} Infinity`));
 
 	throws(() => {
 		getNumber(-Infinity);
-	});
+	}, TypeError(`${invalidDefaultValue}, ${expectedFinite} -Infinity`));
 
 	end();
 });
@@ -119,8 +125,12 @@ test('parseAnyNumber', ({ end }) => {
 	equal(parseAnyNumber(-Infinity), -Infinity);
 
 	throws(() => {
-		parseAnyNumber();
-	});
+		parseAnyNumber(null);
+	}, TypeError(`${invalidValue}, ${expected} null`));
+
+	throws(() => {
+		parseAnyNumber(null, 'key');
+	}, TypeError(`${invalidValueWithProperty}, ${expected} null`));
 
 	end();
 });
@@ -129,20 +139,36 @@ test('parseNumber', ({ end }) => {
 	equal(parseNumber(0), 0);
 
 	throws(() => {
-		parseNumber();
-	});
+		parseNumber(null);
+	}, TypeError(`${invalidValue}, ${expectedFinite} null`));
+
+	throws(() => {
+		parseNumber(null, 'key');
+	}, TypeError(`${invalidValueWithProperty}, ${expectedFinite} null`));
 
 	throws(() => {
 		parseNumber(NaN);
-	});
+	}, TypeError(`${invalidValue}, ${expectedFinite} NaN`));
+
+	throws(() => {
+		parseNumber(NaN, 'key');
+	}, TypeError(`${invalidValueWithProperty}, ${expectedFinite} NaN`));
 
 	throws(() => {
 		parseNumber(Infinity);
-	});
+	}, TypeError(`${invalidValue}, ${expectedFinite} Infinity`));
+
+	throws(() => {
+		parseNumber(Infinity, 'key');
+	}, TypeError(`${invalidValueWithProperty}, ${expectedFinite} Infinity`));
 
 	throws(() => {
 		parseNumber(-Infinity);
-	});
+	}, TypeError(`${invalidValue}, ${expectedFinite} -Infinity`));
+
+	throws(() => {
+		parseNumber(-Infinity, 'key');
+	}, TypeError(`${invalidValueWithProperty}, ${expectedFinite} -Infinity`));
 
 	end();
 });

@@ -7,6 +7,12 @@ const {
 	parseBoolean
 } = require('r-assign/lib/boolean');
 
+const expected = 'expected a boolean value';
+const invalidDefaultValue = 'Invalid default value type';
+const invalidValue = 'Invalid value type';
+const invalidValueWithProperty = `${invalidValue} for property "key"`;
+const received = 'but received null';
+
 test('getBoolean', ({ end }) => {
 
 	const getBooleanNoDefault = getBoolean();
@@ -25,7 +31,7 @@ test('getBoolean', ({ end }) => {
 
 	throws(() => {
 		getBoolean(null);
-	});
+	}, TypeError(`${invalidDefaultValue}, ${expected} ${received}`));
 
 	end();
 });
@@ -39,8 +45,14 @@ test('isBoolean', ({ end }) => {
 
 test('parseBoolean', ({ end }) => {
 	equal(parseBoolean(false), false);
+
 	throws(() => {
-		parseBoolean();
-	});
+		parseBoolean(null);
+	}, TypeError(`${invalidValue}, ${expected} ${received}`));
+
+	throws(() => {
+		parseBoolean(null, 'key');
+	}, TypeError(`${invalidValueWithProperty}, ${expected} ${received}`));
+
 	end();
 });

@@ -57,9 +57,11 @@
 		"ts-check": "tsc"
 	},
 	"devDependencies": {
+		"benchmark": "2.x",
 		"eslint": "7.x",
 		"tap": "15.x",
-		"typescript": "4.x"
+		"typescript": "4.x",
+		"zod": "3.x"
 	},
 	"engines": {
 		"node": ">=10.0"

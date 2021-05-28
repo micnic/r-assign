@@ -7,6 +7,12 @@ const {
 	parseBigInt
 } = require('r-assign/lib/bigint');
 
+const expected = 'expected a BigInt value';
+const invalidDefaultValue = 'Invalid default value type';
+const invalidValue = 'Invalid value type';
+const invalidValueWithProperty = `${invalidValue} for property "key"`;
+const received = 'but received a value of type number';
+
 test('getBigInt', ({ end }) => {
 
 	const getBigIntNoDefault = getBigInt();
@@ -25,7 +31,7 @@ test('getBigInt', ({ end }) => {
 
 	throws(() => {
 		getBigInt(0);
-	});
+	}, TypeError(`${invalidDefaultValue}, ${expected} ${received}`));
 
 	end();
 });
@@ -39,8 +45,14 @@ test('isBigInt', ({ end }) => {
 
 test('parseBigInt', ({ end }) => {
 	equal(parseBigInt(0n), 0n);
+
 	throws(() => {
-		parseBigInt();
-	});
+		parseBigInt(0);
+	}, TypeError(`${invalidValue}, ${expected} ${received}`));
+
+	throws(() => {
+		parseBigInt(0, 'key');
+	}, TypeError(`${invalidValueWithProperty}, ${expected} ${received}`));
+
 	end();
 });

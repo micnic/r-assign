@@ -8,6 +8,15 @@ const {
 } = require('r-assign/lib/array');
 const { isBoolean } = require('r-assign/lib/boolean');
 const { isString } = require('r-assign/lib/string');
+const { isUnionOf } = require('r-assign/lib/union');
+
+
+const expectedSingle = 'expected an array of strings';
+const expectedUnion = 'expected an array of (boolean | string)';
+const invalidDefaultValue = 'Invalid default value type';
+const invalidValue = 'Invalid value type';
+const invalidValueWithProperty = `${invalidValue} for property "key"`;
+const received = 'but received null';
 
 test('getArrayOf', ({ end }) => {
 
@@ -20,19 +29,15 @@ test('getArrayOf', ({ end }) => {
 
 	throws(() => {
 		getArrayOf();
-	});
-
-	throws(() => {
-		getArrayOf(null, null);
-	});
-
-	throws(() => {
-		getArrayOf(() => null, null);
-	});
+	}, TypeError('Invalid type guard provided'));
 
 	throws(() => {
 		getArrayOf(isString, null);
-	});
+	}, TypeError(`${invalidDefaultValue}, ${expectedSingle} ${received}`));
+
+	throws(() => {
+		getArrayOf(isUnionOf([isBoolean, isString]), null);
+	}, TypeError(`${invalidDefaultValue}, ${expectedUnion} ${received}`));
 
 	end();
 });
@@ -51,28 +56,24 @@ test('isArrayOf', ({ end }) => {
 
 	throws(() => {
 		isArrayOf();
-	});
-
-	throws(() => {
-		isArrayOf(null, null);
-	});
-
-	throws(() => {
-		isArrayOf(() => null, null);
-	});
+	}, TypeError('Invalid type guard provided'));
 
 	end();
 });
 
 test('parseArrayOf', ({ end }) => {
 
-	const validateArrayOfString = parseArrayOf(isString);
+	const parseArrayOfStrings = parseArrayOf(isString);
 
-	match(validateArrayOfString(['']), ['']);
+	match(parseArrayOfStrings(['']), ['']);
 
 	throws(() => {
-		validateArrayOfString(null);
-	});
+		parseArrayOfStrings(null);
+	}, TypeError(`${invalidValue}, ${expectedSingle} ${received}`));
+
+	throws(() => {
+		parseArrayOfStrings(null, 'key');
+	}, TypeError(`${invalidValueWithProperty}, ${expectedSingle} ${received}`));
 
 	end();
 });

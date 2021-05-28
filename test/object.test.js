@@ -11,7 +11,16 @@ const {
 } = require('r-assign/lib/object');
 const { isBoolean } = require('r-assign/lib/boolean');
 const { isNumber } = require('r-assign/lib/number');
+const { isOptional } = require('r-assign/lib/optional');
 const { isString } = require('r-assign/lib/string');
+
+const objectShape = '{\n abc: string;\n}';
+const optionalObjectShape = '{\n abc?: (string | undefined);\n}';
+const expected = `expected an object of shape ${objectShape}`;
+const expectedOptional = `expected an object of shape ${optionalObjectShape}`;
+const invalidDefaultValue = 'Invalid default value type';
+const received = 'but received null';
+const invalidShape = 'Shape is not an object';
 
 test('getObjectOf', ({ end }) => {
 
@@ -29,31 +38,19 @@ test('getObjectOf', ({ end }) => {
 
 	throws(() => {
 		getObjectOf();
-	});
+	}, TypeError(invalidShape));
 
 	throws(() => {
-		getObjectOf(null);
-	});
+		getObjectOf({ abc: null });
+	}, TypeError('Invalid type guard provided'));
 
 	throws(() => {
-		getObjectOf(0);
-	});
+		getObjectOf({ abc: isString }, null);
+	}, TypeError(`${invalidDefaultValue}, ${expected} ${received}`));
 
 	throws(() => {
-		getObjectOf({ abc: isString });
-	});
-
-	throws(() => {
-		getObjectOf({ abc: isString }, {});
-	});
-
-	throws(() => {
-		getObjectOf({ abc: null }, {});
-	});
-
-	throws(() => {
-		getObjectOf({ abc: () => null }, {});
-	});
+		getObjectOf({ abc: isOptional(isString) }, null);
+	}, TypeError(`${invalidDefaultValue}, ${expectedOptional} ${received}`));
 
 	end();
 });
