@@ -7,6 +7,13 @@ const {
 	parseBigInt
 } = require('r-assign/lib/bigint');
 
+const expected = 'expected a BigInt value';
+const invalidDefaultValue = 'Invalid default value type';
+const invalidValue = 'Invalid value type';
+const invalidValueWithProperty = `${invalidValue} for property "key"`;
+const receivedNull = 'but received null';
+const receivedNumber = 'but received a value of type number';
+
 test('getBigInt', ({ end }) => {
 
 	const getBigIntNoDefault = getBigInt();
@@ -24,8 +31,12 @@ test('getBigInt', ({ end }) => {
 	equal(getBigIntOne(0), 1n);
 
 	throws(() => {
+		getBigInt(null);
+	}, TypeError(`${invalidDefaultValue}, ${expected} ${receivedNull}`));
+
+	throws(() => {
 		getBigInt(0);
-	});
+	}, TypeError(`${invalidDefaultValue}, ${expected} ${receivedNumber}`));
 
 	end();
 });
@@ -39,8 +50,22 @@ test('isBigInt', ({ end }) => {
 
 test('parseBigInt', ({ end }) => {
 	equal(parseBigInt(0n), 0n);
+
 	throws(() => {
-		parseBigInt();
-	});
+		parseBigInt(null);
+	}, TypeError(`${invalidValue}, ${expected} ${receivedNull}`));
+
+	throws(() => {
+		parseBigInt(0);
+	}, TypeError(`${invalidValue}, ${expected} ${receivedNumber}`));
+
+	throws(() => {
+		parseBigInt(null, 'key');
+	}, TypeError(`${invalidValueWithProperty}, ${expected} ${receivedNull}`));
+
+	throws(() => {
+		parseBigInt(0, 'key');
+	}, TypeError(`${invalidValueWithProperty}, ${expected} ${receivedNumber}`));
+
 	end();
 });

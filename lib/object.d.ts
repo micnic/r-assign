@@ -5,7 +5,7 @@ export type Shape = {
 	[key: string]: TypeGuard;
 };
 
-export type ResultObject<S extends Shape> = OptionalObject<
+export type InferShape<S extends Shape> = OptionalObject<
 	{ [key in keyof S]: InferTypeGuard<S[key]> }
 >;
 
@@ -14,44 +14,44 @@ export type ResultObject<S extends Shape> = OptionalObject<
  */
 declare const getObjectOf: <S extends Shape>(
 	shape: S,
-	initial: ResultObject<S>
-) => TransformFunction<ResultObject<S>>;
+	initial: InferShape<S>
+) => TransformFunction<InferShape<S>>;
 
 /**
  * Extract strict object values
  */
 declare const getStrictObjectOf: <S extends Shape>(
 	shape: S,
-	initial: ResultObject<S>
-) => TransformFunction<ResultObject<S>>;
+	initial: InferShape<S>
+) => TransformFunction<InferShape<S>>;
 
 /**
  * Check for object values
  */
 declare const isObjectOf: <S extends Shape>(
 	shape: S
-) => TypeGuard<ResultObject<S>>;
+) => TypeGuard<InferShape<S>>;
 
 /**
  * Check for strict object values
  */
 declare const isStrictObjectOf: <S extends Shape>(
 	shape: S
-) => TypeGuard<ResultObject<S>>;
+) => TypeGuard<InferShape<S>>;
 
 /**
  * Extract and validate object values
  */
 declare const parseObjectOf: <S extends Shape>(
 	shape: S
-) => TransformFunction<ResultObject<S>>;
+) => TransformFunction<InferShape<S>>;
 
 /**
  * Extract and validate strict object values
  */
 declare const parseStrictObjectOf: <S extends Shape>(
 	shape: S
-) => TransformFunction<ResultObject<S>>;
+) => TransformFunction<InferShape<S>>;
 
 export {
 	getObjectOf,

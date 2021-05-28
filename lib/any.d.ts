@@ -2,17 +2,17 @@ import type { TransformFunction } from 'r-assign';
 import type { TypeGuard } from 'r-assign/lib';
 
 /**
- * Extract non-undefined values
+ * Extract any values
  */
-declare const getAny: (initial?: any) => TransformFunction;
+declare const getAny: () => TransformFunction;
 
 /**
- * Check for non-undefined values
+ * Check for any values
  */
 declare const isAny: TypeGuard;
 
 /**
- * Extract and validate non-undefined values
+ * Extract and validate any values
  */
 declare const parseAny: TransformFunction;
 

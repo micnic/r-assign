@@ -1,6 +1,7 @@
 'use strict';
 
 const { test, equal, notOk, ok, throws } = require('tap');
+const { isAny } = require('r-assign/lib/any');
 const { isBoolean } = require('r-assign/lib/boolean');
 const { isNumber } = require('r-assign/lib/number');
 const { isString } = require('r-assign/lib/string');
@@ -10,9 +11,13 @@ const {
 	parseUnionOf
 } = require('r-assign/lib/union');
 
+const expected = 'expected an union of (string | number)';
+const invalidDefaultValue = 'Invalid default value type';
+const invalidValue = 'Invalid value type';
+
 test('getUnionOf', ({ end }) => {
 
-	const getStringOrNumber = getUnionOf([isNumber, isString], '');
+	const getStringOrNumber = getUnionOf([isString, isNumber], '');
 
 	equal(getStringOrNumber(), '');
 	equal(getStringOrNumber(0), 0);
@@ -21,49 +26,30 @@ test('getUnionOf', ({ end }) => {
 	equal(getStringOrNumber('data'), 'data');
 
 	throws(() => {
-		getUnionOf();
-	});
-
-	throws(() => {
-		getUnionOf([null], null);
-	});
-
-	throws(() => {
-		getUnionOf([() => null], null);
-	});
-
-	throws(() => {
-		getUnionOf([isNumber, isString], null);
-	});
+		getUnionOf([isString, isNumber], null);
+	}, TypeError(`${invalidDefaultValue}, ${expected} but received null`));
 
 	end();
 });
 
 test('isUnionOf', ({ end }) => {
 
+	ok(isUnionOf([isAny, isString])());
 	ok(isUnionOf([isBoolean, isNumber])(true));
 	ok(isUnionOf([isBoolean, isNumber])(0));
 	notOk(isUnionOf([isBoolean, isNumber])(''));
 
 	throws(() => {
 		isUnionOf();
-	});
+	}, TypeError('Invalid type guards provided'));
 
 	throws(() => {
 		isUnionOf([]);
-	});
-
-	throws(() => {
-		isUnionOf([null]);
-	});
+	}, TypeError('Not enough type guards, at least two expected'));
 
 	throws(() => {
 		isUnionOf([null, null]);
-	});
-
-	throws(() => {
-		isUnionOf([() => null, () => null]);
-	});
+	}, TypeError('Invalid type guard provided'));
 
 	end();
 });
@@ -76,7 +62,7 @@ test('parseUnionOf', ({ end }) => {
 
 	throws(() => {
 		parseStringOrNumber(null);
-	});
+	}, TypeError(`${invalidValue}, ${expected} but received null`));
 
 	end();
 });

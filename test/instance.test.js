@@ -7,6 +7,11 @@ const {
 	parseInstanceOf
 } = require('r-assign/lib/instance');
 
+const expected = 'expected an instance of Date';
+const invalidDefaultValue = 'Invalid default value type';
+const invalidValue = 'Invalid value type';
+const received = 'but received undefined';
+
 test('getInstanceOf', ({ end }) => {
 
 	const getDate = getInstanceOf(Date, new Date());
@@ -16,7 +21,7 @@ test('getInstanceOf', ({ end }) => {
 
 	throws(() => {
 		getInstanceOf(Date);
-	});
+	}, TypeError(`${invalidDefaultValue}, ${expected} ${received}`));
 
 	end();
 });
@@ -30,7 +35,7 @@ test('isInstanceOf', ({ end }) => {
 
 	throws(() => {
 		isInstanceOf();
-	});
+	}, TypeError('Invalid constructor provided'));
 
 	end();
 });
@@ -43,7 +48,7 @@ test('parseInstanceOf', ({ end }) => {
 
 	throws(() => {
 		parseDate();
-	});
+	}, TypeError(`${invalidValue}, ${expected} ${received}`));
 
 	end();
 });

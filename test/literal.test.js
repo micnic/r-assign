@@ -10,6 +10,13 @@ const {
 	parseLiteralOf
 } = require('r-assign/lib/literal');
 
+const expectedFalse = 'expected false literal';
+const expectedLiterals = 'expected a union of literals ("a" | "b")';
+const invalidDefaultValue = 'Invalid default value type';
+const invalidValue = 'Invalid value type';
+const received = 'but received null';
+const receivedStringFalse = 'but received "false"';
+
 test('getLiteral', ({ end }) => {
 
 	const getLiteralNull = getLiteral(null);
@@ -20,7 +27,7 @@ test('getLiteral', ({ end }) => {
 
 	throws(() => {
 		getLiteral();
-	});
+	}, TypeError('Invalid literal provided'));
 
 	end();
 });
@@ -41,19 +48,19 @@ test('getLiteralOf', ({ end }) => {
 
 	throws(() => {
 		getLiteralOf();
-	});
+	}, TypeError('Invalid literals provided'));
 
 	throws(() => {
 		getLiteralOf([null]);
-	});
+	}, TypeError('Not enough literals, at least two expected'));
 
 	throws(() => {
 		getLiteralOf([{}, {}]);
-	});
+	}, TypeError('Invalid literal provided'));
 
 	throws(() => {
-		getLiteralOf(['a', 'b'], 0);
-	});
+		getLiteralOf(['a', 'b'], null);
+	}, TypeError(`${invalidDefaultValue}, ${expectedLiterals} ${received}`));
 
 	end();
 });
@@ -72,19 +79,19 @@ test('isLiteral', ({ end }) => {
 
 	throws(() => {
 		isLiteral();
-	});
+	}, TypeError('Invalid literal provided'));
 
 	throws(() => {
 		isLiteral({});
-	});
+	}, TypeError('Invalid literal provided'));
 
 	throws(() => {
 		isLiteral(Infinity);
-	});
+	}, TypeError('Invalid literal provided'));
 
 	throws(() => {
 		isLiteral(() => null);
-	});
+	}, TypeError('Invalid literal provided'));
 
 	end();
 });
@@ -96,15 +103,15 @@ test('isLiteralOf', ({ end }) => {
 
 	throws(() => {
 		isLiteralOf();
-	});
+	}, TypeError('Invalid literals provided'));
 
 	throws(() => {
 		isLiteralOf(['a']);
-	});
+	}, TypeError('Not enough literals, at least two expected'));
 
 	throws(() => {
-		isLiteralOf([{}, {}]);
-	});
+		isLiteralOf(['a', 'a']);
+	}, TypeError('Duplicate literal provided'));
 
 	end();
 });
@@ -116,8 +123,12 @@ test('parseLiteral', ({ end }) => {
 	equal(parseLiteralFalse(false), false);
 
 	throws(() => {
-		parseLiteralFalse();
-	});
+		parseLiteralFalse(null);
+	}, TypeError(`${invalidValue}, ${expectedFalse} ${received}`));
+
+	throws(() => {
+		parseLiteralFalse('false');
+	}, TypeError(`${invalidValue}, ${expectedFalse} ${receivedStringFalse}`));
 
 	end();
 });
@@ -129,8 +140,8 @@ test('parseLiteralOf', ({ end }) => {
 	equal(parseLiteralAB('a'), 'a');
 
 	throws(() => {
-		parseLiteralAB();
-	});
+		parseLiteralAB(null);
+	}, TypeError(`${invalidValue}, ${expectedLiterals} ${received}`));
 
 	end();
 });

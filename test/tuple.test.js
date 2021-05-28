@@ -11,6 +11,11 @@ const { isNumber } = require('r-assign/lib/number');
 const { isOptional } = require('r-assign/lib/optional');
 const { isString } = require('r-assign/lib/string');
 
+const invalidDefaultValue = 'Invalid default value type';
+const invalidValue = 'Invalid value type';
+const expected = 'expected a tuple of [ string ]';
+const received = 'but received a value of type [ number ]';
+
 test('getTupleOf', ({ end }) => {
 
 	const getTupleOfString = getTupleOf([isString], ['abc']);
@@ -20,7 +25,7 @@ test('getTupleOf', ({ end }) => {
 
 	throws(() => {
 		getTupleOf([isString]);
-	});
+	}, TypeError(`${invalidDefaultValue}, ${expected} but received undefined`));
 
 	end();
 });
@@ -72,19 +77,15 @@ test('isTupleOf', ({ end }) => {
 
 	throws(() => {
 		isTupleOf();
-	});
+	}, TypeError('Invalid type guards provided'));
 
 	throws(() => {
 		isTupleOf([]);
-	});
+	}, TypeError('Not enough type guards, at least one expected'));
 
 	throws(() => {
 		isTupleOf([null]);
-	});
-
-	throws(() => {
-		isTupleOf([() => null]);
-	});
+	}, TypeError('Invalid type guard provided'));
 
 	end();
 });
@@ -98,6 +99,10 @@ test('parseTupleOf', ({ end }) => {
 	throws(() => {
 		parseTupleOfString([]);
 	});
+
+	throws(() => {
+		parseTupleOfString([0]);
+	}, TypeError(`${invalidValue}, ${expected} ${received}`));
 
 	end();
 });
