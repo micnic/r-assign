@@ -103,6 +103,7 @@ const objectABC = rAssign({
 
         // Check the type of the provided value
         if (typeof value === 'string') {
+
             return value; // Return the value itself   --------------------+
         }                                                               // |
                                                                         // |
@@ -150,18 +151,20 @@ submodules that will be used. The list of the available submodules is the
 following:
 
 Primitives:
-- `r-assign/lib/any` - for non-undefined values
+- `r-assign/lib/any` - for any values
 - `r-assign/lib/bigint` - for BigInt values
 - `r-assign/lib/boolean` - for boolean values
 - `r-assign/lib/number` - for number values
 - `r-assign/lib/string` - for string values
 - `r-assign/lib/symbol` - for symbol values
+- `r-assign/lib/null` - for null and nullable values
 - `r-assign/lib/literal` - for single primitive values
 
 Complex Data Types:
 - `r-assign/lib/array` - for array values
 - `r-assign/lib/object` - for object values
 - `r-assign/lib/instance` - for objects values of specific instance
+- `r-assign/lib/tuple` - for tuple values
 - More complex data types planned to be added in next releases
 
 Type Operations
@@ -205,16 +208,18 @@ import { isBoolean } from 'r-assign/lib/boolean';
 import { isNumber, isAnyNumber } from 'r-assign/lib/number';
 import { isString } from 'r-assign/lib/string';
 import { isSymbol } from 'r-assign/lib/symbol';
+import { isNull, isNullable } from 'r-assign/lib/null';
 import { isLiteral, isLiteralOf } from 'r-assign/lib/literal';
 import { isArrayOf } from 'r-assign/lib/array';
 import { isObjectOf, isStrictObjectOf } from 'r-assign/lib/object';
 import { isInstanceOf } from 'r-assign/lib/instance';
+import { isTupleOf } from 'r-assign/lib/tuple';
 import { isOptional } from 'r-assign/lib/optional';
 import { isUnionOf } from 'r-assign/lib/union';
 import { isIntersectionOf } from 'r-assign/lib/intersection';
 
 isAny('abc'); // => true
-isAny(); // => false, will return false only for undefined values
+isAny(); // => true, will always return true
 
 isBigInt(42n); // => true
 isBoolean(false); // => true
@@ -223,10 +228,19 @@ isAnyNumber(NaN); // => true, will return true for any number values
 isString('abc'); // => true
 isSymbol(Symbol('abc')); // => true
 
-// Takes as argument any primitive value or null
-const isNull = isLiteral(null);
-
 isNull(null); // => true
+
+// Takes as argument a type guard
+const isStringOrNull = isNullable(isString);
+
+isStringOrNull('abc'); // => true
+isStringOrNull(null); // => true
+
+// Takes as argument any primitive value or null
+const isLiteralABC = isLiteral('abc');
+
+isLiteralABC('abc'); // => true
+isLiteralABC('def'); // => false
 
 // Takes as argument an array of primitive values, at least 2 are required
 const isOneOrTwo = isLiteralOf([1, 2]);
@@ -269,6 +283,11 @@ isStrictObjectOfNameAge({
 const isDate = isInstanceOf(Date);
 
 isDate(new Date()); // => true
+
+const isTupleOfStrings = isTupleOf([isString, isString]);
+
+isTupleOfStrings(['abc', 'def']); // => true
+isTupleOfStrings(['abc']); // => false
 
 // Takes as argument a type guard
 const isOptionalString = isOptional(isString);
@@ -326,16 +345,18 @@ import { parseBoolean } from 'r-assign/lib/boolean';
 import { parseNumber, parseAnyNumber, isNumber } from 'r-assign/lib/number';
 import { parseString, isString } from 'r-assign/lib/string';
 import { parseSymbol } from 'r-assign/lib/symbol';
+import { parseNull, parseNullable } from 'r-assign/lib/null';
 import { parseLiteral, parseLiteralOf } from 'r-assign/lib/literal';
 import { parseArrayOf } from 'r-assign/lib/array';
 import { parseObjectOf, parseStrictObjectOf, isObjectOf } from 'r-assign/lib/object';
 import { parseInstanceOf } from 'r-assign/lib/instance';
+import { parseTupleOf } from 'r-assign/lib/tuple';
 import { parseOptional } from 'r-assign/lib/optional';
 import { parseUnionOf } from 'r-assign/lib/union';
 import { parseIntersectionOf } from 'r-assign/lib/intersection';
 
 const result = rAssign({
-    data00: parseAny, // Parse non-undefined values
+    data00: parseAny, // Parse any values
 
     data01: parseBigInt, // Parse BigInt values
     data02: parseBoolean, // Parse boolean values
@@ -343,26 +364,31 @@ const result = rAssign({
     data04: parseAnyNumber, // Parse any number values
     data05: parseString, // Parse string values
     data06: parseSymbol, // Parse symbol values
+    data07: parseNull, // Parse null values
 
-    data07: parseLiteral(null), // Parse any primitive or null
-    data08: parseLiteralOf([1, 2]), // Parse union of primitive values
+    data08: parseNullable(isString), // Parse union of null and other values
 
-    data09: parseArrayOf(isString), // Parse array values
+    data09: parseLiteral(null), // Parse any primitive or null
+    data10: parseLiteralOf([1, 2]), // Parse union of primitive values
 
-    data10: parseObjectOf({
+    data11: parseArrayOf(isString), // Parse array values
+
+    data12: parseObjectOf({
         prop: isString
     }), // Parse object of provided shape
-    data11: parseStrictObjectOf({
+    data13: parseStrictObjectOf({
         prop: isString
     }), // Parse strict object of provided shape
 
-    data12: parseInstanceOf(Date), // Parse instance of provided constructor
+    data14: parseInstanceOf(Date), // Parse instance of provided constructor
 
-    data13: parseOptional(isString), // Parse optional values
+    data15: parseTupleOf([isString, isString]), // Parse tuple values
 
-    data14: parseUnionOf([isString, isNumber]), // Parse union of values
+    data16: parseOptional(isString), // Parse optional values
 
-    data15: parseIntersectionOf([isObjectOf({
+    data17: parseUnionOf([isString, isNumber]), // Parse union of values
+
+    data18: parseIntersectionOf([isObjectOf({
         prop0: isString
     }), isObjectOf({
         prop1: isNumber
@@ -396,16 +422,18 @@ import { getBoolean } from 'r-assign/lib/boolean';
 import { getNumber, getAnyNumber, isNumber } from 'r-assign/lib/number';
 import { getString, isString } from 'r-assign/lib/string';
 import { getSymbol } from 'r-assign/lib/symbol';
+import { getNull, getNullable } from 'r-assign/lib/null';
 import { getLiteral, getLiteralOf } from 'r-assign/lib/literal';
 import { getArrayOf } from 'r-assign/lib/array';
 import { getObjectOf, getStrictObjectOf, isObjectOf } from 'r-assign/lib/object';
 import { getInstanceOf } from 'r-assign/lib/instance';
+import { getTupleOf } from 'r-assign/lib/tuple';
 import { getOptional } from 'r-assign/lib/optional';
 import { getUnionOf } from 'r-assign/lib/union';
 import { getIntersectionOf } from 'r-assign/lib/intersection';
 
 const result = rAssign({
-    data00: getAny(), // Get non-undefined values
+    data00: getAny(), // Get any values
 
     data01: getBigInt(42n), // Get BigInt values
     data02: getBoolean(false), // Get boolean values
@@ -417,22 +445,27 @@ const result = rAssign({
     data07: getLiteral(null), // Get any primitive or null
     data08: getLiteralOf([1, 2], 1), // Get union of primitive values
 
-    data09: getArrayOf(isString, []), // Get array values
+    data09: getNull(), // Get null value
+    data10: getNullable(getString('abc')), // Get union of provided transform and null values
 
-    data10: getObjectOf({
+    data11: getArrayOf(isString, []), // Get array values
+
+    data12: getObjectOf({
         prop: isString
     }, { prop: 'abc' }), // Get object of provided shape
-    data11: getStrictObjectOf({
+    data13: getStrictObjectOf({
         prop: isString
     }, { prop: 'abc' }), // Get strict object of provided shape
 
-    data12: getInstanceOf(Date, new Date()), // Get instance of provided constructor
+    data14: getInstanceOf(Date, new Date()), // Get instance of provided constructor
 
-    data13: getOptional(getString('abc')), // Get optional values
+    data15: getTupleOf([isString], ['abc']); // Get tuple values
 
-    data14: getUnionOf([isString, isNumber], 'abc'), // Get union of values
+    data16: getOptional(getString('abc')), // Get optional values
 
-    data15: getIntersectionOf([isObjectOf({
+    data17: getUnionOf([isString, isNumber], 'abc'), // Get union of values
+
+    data18: getIntersectionOf([isObjectOf({
         prop0: isString
     }), isObjectOf({
         prop1: isNumber
