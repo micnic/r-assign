@@ -19,13 +19,13 @@ const invalidSource = 'Invalid source argument type, object expected';
 /**
  * Extract one source object or merge an array of source objects
  * @template {Record<string, any>} T
- * @param {[T, ...T[]]} sources
+ * @param {T[]} sources
  * @returns {T}
  */
 const getSource = (sources) => {
 
 	// Check for one source object
-	if (sources.length === 1) {
+	if (sources.length === 1 && typeof sources[0] === 'object') {
 		return sources[0];
 	}
 
@@ -55,7 +55,7 @@ const isNotObject = (source) => {
  * @template {TransformSchema<any>} S
  * @template {Record<string, any>} T
  * @param {S} schema
- * @param {[T, ...T[]]} sources
+ * @param {T[]} sources
  * @returns {InferType<S>}
  */
 const rAssign = (schema, ...sources) => {
