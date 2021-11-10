@@ -19,14 +19,14 @@ const receivedStringFalse = 'but received "false"';
 
 test('getLiteral', ({ end }) => {
 
-	const getLiteralNull = getLiteral(null);
+	const getNullLiteral = getLiteral(null);
 
-	equal(getLiteralNull(), null);
-	equal(getLiteralNull(null), null);
-	equal(getLiteralNull(0), null);
+	equal(getNullLiteral(), null);
+	equal(getNullLiteral(null), null);
+	equal(getNullLiteral(0), null);
 
 	throws(() => {
-		getLiteral();
+		getLiteral({});
 	}, TypeError('Invalid literal provided'));
 
 	end();
@@ -76,10 +76,6 @@ test('isLiteral', ({ end }) => {
 	ok(isLiteral('')(''));
 	ok(isLiteral(symbol)(symbol));
 	notOk(isLiteral(0)());
-
-	throws(() => {
-		isLiteral();
-	}, TypeError('Invalid literal provided'));
 
 	throws(() => {
 		isLiteral({});

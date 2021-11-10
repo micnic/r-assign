@@ -4,6 +4,7 @@ const { test, match, ok, throws } = require('tap');
 const { isAny } = require('r-assign/lib/any');
 const { isNumber } = require('r-assign/lib/number');
 const { isObjectOf } = require('r-assign/lib/object');
+const { isOptional } = require('r-assign/lib/optional');
 const { isString } = require('r-assign/lib/string');
 const {
 	getIntersectionOf,
@@ -75,6 +76,10 @@ test('isIntersectionOf', ({ end }) => {
 	throws(() => {
 		isIntersectionOf([isNumber, isString]);
 	}, TypeError('Provided intersection is impossible'));
+
+	throws(() => {
+		isIntersectionOf([isOptional(isNumber), isString]);
+	}, TypeError('Optional type cannot be used in intersection declaration'));
 
 	end();
 });

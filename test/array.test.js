@@ -9,13 +9,14 @@ const {
 	parseArrayOf
 } = require('r-assign/lib/array');
 const { isBoolean } = require('r-assign/lib/boolean');
+const { isOptional } = require('r-assign/lib/optional');
 const { isString } = require('r-assign/lib/string');
 const { isUnionOf } = require('r-assign/lib/union');
-
 
 const expectedSingle = 'expected an array of strings';
 const expectedUnion = 'expected an array of (boolean | string)';
 const invalidDefaultValue = 'Invalid default value type';
+const invalidOptionalType = 'Optional type cannot be used in array declaration';
 const invalidTypeGuard = 'Invalid type guard provided';
 const invalidValue = 'Invalid value type';
 const invalidValueWithProperty = `${invalidValue} for property "key"`;
@@ -66,6 +67,10 @@ test('isArrayOf', ({ end }) => {
 		isArrayOf();
 	}, TypeError(invalidTypeGuard));
 
+	throws(() => {
+		isArrayOf(isOptional(isString));
+	}, TypeError(invalidOptionalType));
+
 	end();
 });
 
@@ -84,7 +89,7 @@ test('parseArrayOf', ({ end }) => {
 	}, TypeError(`${invalidValue}, ${expectedSingle} ${received}`));
 
 	throws(() => {
-		parseArrayOfStrings(() => {});
+		parseArrayOfStrings(() => null);
 	}, TypeError(`${invalidValue}, ${expectedSingle} ${receivedFunction}`));
 
 	throws(() => {

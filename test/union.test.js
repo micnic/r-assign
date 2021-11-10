@@ -4,6 +4,7 @@ const { test, equal, notOk, ok, throws } = require('tap');
 const { isAny } = require('r-assign/lib/any');
 const { isBoolean } = require('r-assign/lib/boolean');
 const { isNumber } = require('r-assign/lib/number');
+const { isOptional } = require('r-assign/lib/optional');
 const { isString } = require('r-assign/lib/string');
 const {
 	getUnionOf,
@@ -13,6 +14,7 @@ const {
 
 const expected = 'expected an union of (string | number)';
 const invalidDefaultValue = 'Invalid default value type';
+const invalidOptionalType = 'Optional type cannot be used in union declaration';
 const invalidValue = 'Invalid value type';
 
 test('getUnionOf', ({ end }) => {
@@ -50,6 +52,10 @@ test('isUnionOf', ({ end }) => {
 	throws(() => {
 		isUnionOf([null, null]);
 	}, TypeError('Invalid type guard provided'));
+
+	throws(() => {
+		isUnionOf([isOptional(isString), isString]);
+	}, TypeError(invalidOptionalType));
 
 	end();
 });
