@@ -3,23 +3,26 @@
 		"es6": true,
 		"node": true
 	},
-	"extends": "eslint:recommended",
+	"extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended"],
+	"parser": "@typescript-eslint/parser",
 	"parserOptions": {
 		"ecmaVersion": 2020
 	},
+	"plugins": ["@typescript-eslint"],
 	"rules": {
-		"array-callback-return": "error",
-		"arrow-parens": [
+		"@typescript-eslint/ban-types": "off",
+		"@typescript-eslint/no-explicit-any": "off",
+		"@typescript-eslint/no-redeclare": [
 			"error",
-			"always"
+			{ "ignoreDeclarationMerge": true }
 		],
+		"@typescript-eslint/no-unused-vars": "error",
+		"array-callback-return": "error",
+		"arrow-parens": ["error", "always"],
 		"capitalized-comments": "error",
 		"class-methods-use-this": "error",
 		"camelcase": "error",
-		"comma-dangle": [
-			"error",
-			"never"
-		],
+		"comma-dangle": ["error", "never"],
 		"comma-spacing": [
 			"error",
 			{
@@ -27,35 +30,18 @@
 				"before": false
 			}
 		],
-		"complexity": [
-			"error",
-			16
-		],
+		"complexity": ["error", 16],
 		"consistent-return": "error",
-		"curly": [
-			"error",
-			"all"
-		],
+		"curly": ["error", "all"],
+		"default-case": "error",
+		"default-case-last": "error",
 		"dot-notation": "error",
-		"eol-last": [
-			"error",
-			"never"
-		],
+		"eol-last": ["error", "never"],
 		"eqeqeq": "error",
 		"global-require": "error",
-		"indent": [
-			"error",
-			"tab"
-		],
-		"max-len": [
-			"error",
-			80,
-			4
-		],
-		"max-params": [
-			"error",
-			4
-		],
+		"indent": ["error", "tab", { "SwitchCase": 1 }],
+		"max-len": ["error", 80, 4],
+		"max-params": ["error", 4],
 		"no-alert": "error",
 		"no-buffer-constructor": "error",
 		"no-await-in-loop": "error",
@@ -68,6 +54,7 @@
 		"no-eval": "error",
 		"no-extend-native": "error",
 		"no-floating-decimal": "error",
+		"no-fallthrough": "error",
 		"no-global-assign": "error",
 		"no-implicit-coercion": "error",
 		"no-implicit-globals": "error",
@@ -80,14 +67,7 @@
 		"no-magic-numbers": [
 			"error",
 			{
-				"ignore": [
-					-1,
-					0,
-					1,
-					"-1n",
-					"0n",
-					"1n"
-				],
+				"ignore": [-1, 0, 1, "-1n", "0n", "1n"],
 				"detectObjects": true,
 				"enforceConst": true,
 				"ignoreArrayIndexes": true
@@ -106,6 +86,7 @@
 		"no-process-exit": "error",
 		"no-proto": "error",
 		"no-prototype-builtins": "error",
+		"no-redeclare": "off",
 		"no-return-assign": "error",
 		"no-return-await": "error",
 		"no-self-compare": "error",
@@ -120,7 +101,8 @@
 		"no-unmodified-loop-condition": "error",
 		"no-unsafe-negation": "error",
 		"no-unused-expressions": "error",
-		"no-use-before-define": "error",
+		"no-unused-vars": "off",
+		"no-use-before-define": ["error", { "variables": false }],
 		"no-useless-call": "error",
 		"no-useless-concat": "error",
 		"no-useless-rename": "error",
@@ -128,30 +110,18 @@
 		"no-var": "error",
 		"no-void": "error",
 		"no-with": "error",
-		"one-var": [
-			"error",
-			"never"
-		],
+		"one-var": ["error", "never"],
 		"object-shorthand": "error",
 		"prefer-arrow-callback": "error",
 		"prefer-const": "error",
 		"prefer-destructuring": "error",
 		"prefer-promise-reject-errors": "error",
 		"prefer-regex-literals": "error",
-		"quote-props": [
-			"error",
-			"consistent-as-needed"
-		],
-		"quotes": [
-			"error",
-			"single"
-		],
+		"quote-props": ["error", "consistent-as-needed"],
+		"quotes": ["error", "single"],
 		"require-atomic-updates": "off",
 		"require-await": "error",
-		"semi": [
-			"error",
-			"always"
-		],
+		"semi": ["error", "always"],
 		"semi-spacing": [
 			"error",
 			{
@@ -165,6 +135,30 @@
 		"space-unary-ops": "error",
 		"spaced-comment": "error",
 		"strict": "error",
+		"switch-colon-spacing": "error",
 		"yoda": "error"
-	}
+	},
+	"overrides": [
+		{
+			"files": "*.js",
+			"parserOptions": {
+				"sourceType": "script"
+			},
+			"rules": {
+				"@typescript-eslint/no-var-requires": "off"
+			}
+		},
+		{
+			"files": "*.test.js",
+			"rules": {
+				"no-undefined": "off"
+			}
+		},
+		{
+			"files": ["*.d.ts"],
+			"rules": {
+				"strict": "off"
+			}
+		}
+	]
 }
