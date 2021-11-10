@@ -1,32 +1,40 @@
 import type { TransformFunction } from 'r-assign';
 import type { TypeGuard } from 'r-assign/lib';
 
-export type Instance<T = any> = new (...args: any[]) => T;
+type Instance<T = any> = new (...args: any[]) => T;
 
-export type InferInstance<T extends Instance> = T extends Instance<infer I>
+type InferInstance<T extends Instance> = T extends Instance<infer I>
 	? I
 	: never;
 
 /**
  * Extract instance values
+ * @deprecated will be removed in version 2.0, use getType instead
  */
-declare const getInstanceOf: <T extends Instance>(
-	type: T,
-	initial: InferInstance<T>
-) => TransformFunction<InferInstance<T>>;
+declare function getInstanceOf<I extends Instance>(
+	type: I,
+	initial: InferInstance<I>
+): TransformFunction<InferInstance<I>>;
 
 /**
  * Check for instance values
  */
-declare const isInstanceOf: <T extends Instance>(
-	type: T
-) => TypeGuard<InferInstance<T>>;
+declare function isInstanceOf<I extends Instance>(
+	type: I
+): TypeGuard<InferInstance<I>>;
 
 /**
  * Extract and validate instance values
+ * @deprecated will be removed in version 2.0, use parseType instead
  */
-declare const parseInstanceOf: <T extends Instance>(
-	type: T
-) => TransformFunction<InferInstance<T>>;
+declare function parseInstanceOf<I extends Instance>(
+	type: I
+): TransformFunction<InferInstance<I>>;
 
-export { getInstanceOf, isInstanceOf, parseInstanceOf };
+export {
+	getInstanceOf,
+	isInstanceOf,
+	parseInstanceOf,
+	InferInstance,
+	Instance
+};

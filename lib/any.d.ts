@@ -3,8 +3,9 @@ import type { TypeGuard } from 'r-assign/lib';
 
 /**
  * Extract any values
+ * @deprecated will be removed in version 2.0, use getType instead
  */
-declare const getAny: () => TransformFunction;
+declare function getAny(): TransformFunction;
 
 /**
  * Check for any values
@@ -13,7 +14,8 @@ declare const isAny: TypeGuard;
 
 /**
  * Extract and validate any values
+ * @deprecated will be removed in version 2.0, use parseType instead
  */
-declare const parseAny: TransformFunction;
+declare function parseAny(): TransformFunction;
 
 export { getAny, isAny, parseAny };

@@ -1,32 +1,28 @@
 import type { TransformFunction } from 'r-assign';
-import type { TypeGuard } from 'r-assign/lib';
-
-export type Union<T = any> = [TypeGuard<T>, TypeGuard<T>, ...TypeGuard<T>[]];
-
-export type InferUnion<T extends Union> = T extends Union<infer U>
-	? U
-	: never;
+import type { InferUnion, TypeGuard, Union } from 'r-assign/lib';
 
 /**
  * Extract union type values
+ * @deprecated will be removed in version 2.0, use getType instead
  */
-declare const getUnionOf: <U extends Union>(
+declare function getUnionOf<U extends Union>(
 	union: U,
 	initial: InferUnion<U>
-) => TransformFunction<InferUnion<U>>;
+): TransformFunction<InferUnion<U>>;
 
 /**
  * Check for union type values
  */
-declare const isUnionOf: <U extends Union>(
+declare function isUnionOf<U extends Union>(
 	union: U
-) => TypeGuard<InferUnion<U>>;
+): TypeGuard<InferUnion<U>>;
 
 /**
  * Extract and validate union type values
+ * @deprecated will be removed in version 2.0, use parseType instead
  */
-declare const parseUnionOf: <U extends Union>(
+declare function parseUnionOf<U extends Union>(
 	union: U
-) => TransformFunction<InferUnion<U>>;
+): TransformFunction<InferUnion<U>>;
 
-export { getUnionOf, isUnionOf, parseUnionOf };
+export { getUnionOf, isUnionOf, parseUnionOf, InferUnion, Union };

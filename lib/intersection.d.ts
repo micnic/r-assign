@@ -1,38 +1,34 @@
 import type { TransformFunction } from 'r-assign';
-import type { TypeGuard } from 'r-assign/lib';
-
-export type Intersection<T = any> = [
-	TypeGuard<T>,
-	TypeGuard<T>,
-	...TypeGuard<T>[]
-];
-
-export type InferIntersection<T extends Intersection> = {
-	[K in keyof T]: T[K] extends TypeGuard ? (parameter: T[K]) => void : never;
-}[number] extends (k: TypeGuard<infer I>) => void
-	? I
-	: never;
+import type { InferIntersection, Intersection, TypeGuard } from 'r-assign/lib';
 
 /**
  * Extract intersection type values
+ * @deprecated will be removed in version 2.0, use getType instead
  */
-declare const getIntersectionOf: <I extends Intersection>(
+declare function getIntersectionOf<I extends Intersection>(
 	intersection: I,
 	initial: InferIntersection<I>
-) => TransformFunction<InferIntersection<I>>;
+): TransformFunction<InferIntersection<I>>;
 
 /**
  * Check for intersection type values
  */
-declare const isIntersectionOf: <I extends Intersection>(
+declare function isIntersectionOf<I extends Intersection>(
 	intersection: I
-) => TypeGuard<InferIntersection<I>>;
+): TypeGuard<InferIntersection<I>>;
 
 /**
  * Extract and validate intersection type values
+ * @deprecated will be removed in version 2.0, use parseType instead
  */
-declare const parseIntersectionOf: <I extends Intersection>(
+declare function parseIntersectionOf<I extends Intersection>(
 	intersection: I
-) => TransformFunction<InferIntersection<I>>;
+): TransformFunction<InferIntersection<I>>;
 
-export { getIntersectionOf, isIntersectionOf, parseIntersectionOf };
+export {
+	getIntersectionOf,
+	isIntersectionOf,
+	parseIntersectionOf,
+	InferIntersection,
+	Intersection
+};

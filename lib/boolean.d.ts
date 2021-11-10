@@ -3,8 +3,9 @@ import type { TypeGuard } from 'r-assign/lib';
 
 /**
  * Extract boolean values
+ * @deprecated will be removed in version 2.0, use getType instead
  */
-declare const getBoolean: (initial?: boolean) => TransformFunction<boolean>;
+declare function getBoolean(initial?: boolean): TransformFunction<boolean>;
 
 /**
  * Check for boolean values
@@ -13,7 +14,8 @@ declare const isBoolean: TypeGuard<boolean>;
 
 /**
  * Extract and validate boolean values
+ * @deprecated will be removed in version 2.0, use parseType instead
  */
-declare const parseBoolean: TransformFunction<boolean>;
+declare function parseBoolean(): TransformFunction<boolean>;
 
 export { getBoolean, isBoolean, parseBoolean };
