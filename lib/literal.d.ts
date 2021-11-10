@@ -1,48 +1,50 @@
 import type { TransformFunction } from 'r-assign';
-import type { TypeGuard } from 'r-assign/lib';
-
-export type Primitive = bigint | boolean | null | number | string | symbol;
+import type { Literal, TypeGuard } from 'r-assign/lib';
 
 /**
  * Extract literal values
+ * @deprecated will be removed in version 2.0, use getType instead
  */
-declare const getLiteral: <T extends Primitive>(
-	literal: T
-) => TransformFunction<T>;
+declare function getLiteral<L extends Literal>(
+	literal: L
+): TransformFunction<L>;
 
 /**
  * Extract union of literal values
+ * @deprecated will be removed in version 2.0, use getType instead
  */
-declare const getLiteralOf: <T extends Primitive>(
-	literals: [T, T, ...T[]],
-	initial?: T
-) => TransformFunction<T>;
+declare function getLiteralOf<L extends Literal>(
+	literals: [L, L, ...L[]],
+	initial?: L
+): TransformFunction<L>;
 
 /**
  * Check for literal values
  */
-declare const isLiteral: <T extends Primitive>(literal: T) => TypeGuard<T>;
+declare function isLiteral<L extends Literal>(literal: L): TypeGuard<L>;
 
 /**
  * Check for union of literal values
  */
-declare const isLiteralOf: <T extends Primitive>(
-	literals: [T, T, ...T[]]
-) => TypeGuard<T>;
+declare function isLiteralOf<L extends Literal>(
+	literals: [L, L, ...L[]]
+): TypeGuard<L>;
 
 /**
  * Extract and validate literal values
+ * @deprecated will be removed in version 2.0, use parseType instead
  */
-declare const parseLiteral: <T extends Primitive>(
-	literal: T
-) => TransformFunction<T>;
+declare function parseLiteral<L extends Literal>(
+	literal: L
+): TransformFunction<L>;
 
 /**
  * Extract and validate union of literal values
+ * @deprecated will be removed in version 2.0, use parseType instead
  */
-declare const parseLiteralOf: <T extends Primitive>(
-	literals: [T, T, ...T[]]
-) => TransformFunction<T>;
+declare function parseLiteralOf<L extends Literal>(
+	literals: [L, L, ...L[]]
+): TransformFunction<L>;
 
 export {
 	getLiteral,
@@ -51,4 +53,5 @@ export {
 	isLiteralOf,
 	parseLiteral,
 	parseLiteralOf,
+	Literal
 };

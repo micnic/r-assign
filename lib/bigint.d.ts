@@ -3,8 +3,9 @@ import type { TypeGuard } from 'r-assign/lib';
 
 /**
  * Extract BigInt values
+ * @deprecated will be removed in version 2.0, use getType instead
  */
-declare const getBigInt: (initial?: bigint) => TransformFunction<bigint>;
+declare function getBigInt(initial?: bigint): TransformFunction<bigint>;
 
 /**
  * Check for BigInt values
@@ -13,7 +14,8 @@ declare const isBigInt: TypeGuard<bigint>;
 
 /**
  * Extract and validate BigInt values
+ * @deprecated will be removed in version 2.0, use parseType instead
  */
-declare const parseBigInt: TransformFunction<bigint>;
+declare function parseBigInt(): TransformFunction<bigint>;
 
 export { getBigInt, isBigInt, parseBigInt };

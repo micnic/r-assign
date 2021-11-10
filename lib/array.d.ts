@@ -1,26 +1,32 @@
 import type { TransformFunction } from 'r-assign';
-import type { InferTypeGuard, TypeGuard } from 'r-assign/lib';
+import type {
+	InferTypeGuard,
+	NotOptionalTypeGuard,
+	TypeGuard
+} from 'r-assign/lib';
 
 /**
  * Extract array values
+ * @deprecated will be removed in version 2.0, use getType instead
  */
-declare const getArrayOf: <T extends TypeGuard>(
-	type: T,
-	initial?: InferTypeGuard<T>[]
-) => TransformFunction<InferTypeGuard<T>[]>;
+declare function getArrayOf<T extends TypeGuard>(
+	type: NotOptionalTypeGuard<T>,
+	initial?: InferTypeGuard<NotOptionalTypeGuard<T>>[]
+): TransformFunction<InferTypeGuard<T>[]>;
 
 /**
  * Check for array values
  */
-declare const isArrayOf: <T extends TypeGuard>(
-	type: T
-) => TypeGuard<InferTypeGuard<T>[]>;
+declare function isArrayOf<T extends TypeGuard>(
+	type: NotOptionalTypeGuard<T>
+): TypeGuard<InferTypeGuard<T>[]>;
 
 /**
  * Extract and validate array values
+ * @deprecated will be removed in version 2.0, use parseType instead
  */
-declare const parseArrayOf: <T extends TypeGuard>(
-	type: T
-) => TransformFunction<InferTypeGuard<T>[]>;
+declare function parseArrayOf<T extends TypeGuard>(
+	type: NotOptionalTypeGuard<T>
+): TransformFunction<InferTypeGuard<T>[]>;
 
 export { getArrayOf, isArrayOf, parseArrayOf };

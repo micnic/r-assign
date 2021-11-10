@@ -3,13 +3,15 @@ import type { TypeGuard } from 'r-assign/lib';
 
 /**
  * Extract number values
+ * @deprecated will be removed in version 2.0, use getType instead
  */
-declare const getAnyNumber: (initial?: number) => TransformFunction<number>;
+declare function getAnyNumber(initial?: number): TransformFunction<number>;
 
 /**
  * Extract finite number values
+ * @deprecated will be removed in version 2.0, use getType instead
  */
-declare const getNumber: (initial?: number) => TransformFunction<number>;
+declare function getNumber(initial?: number): TransformFunction<number>;
 
 /**
  * Check for number values
@@ -23,13 +25,15 @@ declare const isNumber: TypeGuard<number>;
 
 /**
  * Extract and validate number values
+ * @deprecated will be removed in version 2.0, use parseType instead
  */
-declare const parseAnyNumber: TransformFunction<number>;
+declare function parseAnyNumber(): TransformFunction<number>;
 
 /**
  * Extract and validate finite number values
+ * @deprecated will be removed in version 2.0, use parseType instead
  */
-declare const parseNumber: TransformFunction<number>;
+declare function parseNumber(): TransformFunction<number>;
 
 export {
 	getAnyNumber,

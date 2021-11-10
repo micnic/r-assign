@@ -1,25 +1,39 @@
 import type { TransformFunction } from 'r-assign';
-import type { InferTypeGuard, TypeGuard } from 'r-assign/lib';
+import type {
+	InferTypeGuard,
+	NotOptionalTypeGuard,
+	OptionalTypeGuard,
+	TypeGuard
+} from 'r-assign/lib';
 
 /**
  * Extract optional values
+ * @deprecated will be removed in version 2.0, use getType instead
  */
-declare const getOptional: <T extends TransformFunction>(
+declare function getOptional<T extends TransformFunction>(
 	transform: T
-) => TransformFunction<ReturnType<T> | undefined>;
+): TransformFunction<ReturnType<T> | undefined>;
 
 /**
  * Check for optional values
  */
-declare const isOptional: <T extends TypeGuard>(
-	type: T
-) => TypeGuard<InferTypeGuard<T> | undefined>;
+declare function isOptional<T extends TypeGuard>(
+	type: NotOptionalTypeGuard<T>
+): OptionalTypeGuard<InferTypeGuard<T>>;
+
+/**
+ * Check for optional values
+ */
+declare function isOptionalUndefined<T extends TypeGuard>(
+	type: NotOptionalTypeGuard<T>
+): OptionalTypeGuard<InferTypeGuard<T> | undefined>;
 
 /**
  * Extract and validate optional values
+ * @deprecated will be removed in version 2.0, use parseType instead
  */
-declare const parseOptional: <T extends TypeGuard>(
-	type: T
-) => TransformFunction<InferTypeGuard<T> | undefined>;
+declare function parseOptional<T extends TypeGuard>(
+	type: NotOptionalTypeGuard<T>
+): TransformFunction<InferTypeGuard<T> | undefined>;
 
-export { getOptional, isOptional, parseOptional };
+export { getOptional, isOptional, isOptionalUndefined, parseOptional };
