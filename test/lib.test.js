@@ -3,68 +3,73 @@
 const { test, equal, ok } = require('tap');
 const lib = require('r-assign/lib');
 
-const methods = 57;
-
-const inLib = (method) => ok(method in lib);
+const methods = [
+	'getAny',
+	'getAnyNumber',
+	'getArrayOf',
+	'getBigInt',
+	'getBoolean',
+	'getInstanceOf',
+	'getIntersectionOf',
+	'getLiteral',
+	'getLiteralOf',
+	'getNull',
+	'getNullable',
+	'getNumber',
+	'getObjectOf',
+	'getOptional',
+	'getStrictObjectOf',
+	'getString',
+	'getSymbol',
+	'getTupleOf',
+	'getType',
+	'getUnionOf',
+	'isAny',
+	'isAnyNumber',
+	'isArrayOf',
+	'isBigInt',
+	'isBoolean',
+	'isFunction',
+	'isInstanceOf',
+	'isIntersectionOf',
+	'isLiteral',
+	'isLiteralOf',
+	'isNull',
+	'isNullable',
+	'isNumber',
+	'isObjectOf',
+	'isOptional',
+	'isOptionalUndefined',
+	'isStrictObjectOf',
+	'isString',
+	'isSymbol',
+	'isTupleOf',
+	'isUndefined',
+	'isUnionOf',
+	'parseAny',
+	'parseAnyNumber',
+	'parseArrayOf',
+	'parseBigInt',
+	'parseBoolean',
+	'parseInstanceOf',
+	'parseIntersectionOf',
+	'parseLiteral',
+	'parseLiteralOf',
+	'parseNull',
+	'parseNullable',
+	'parseNumber',
+	'parseObjectOf',
+	'parseOptional',
+	'parseStrictObjectOf',
+	'parseString',
+	'parseSymbol',
+	'parseTupleOf',
+	'parseType',
+	'parseUnionOf'
+];
 
 test('rAssign lib exports', ({ end }) => {
-	equal(Object.keys(lib).length, methods);
-	inLib('getAny');
-	inLib('getAnyNumber');
-	inLib('getArrayOf');
-	inLib('getBigInt');
-	inLib('getBoolean');
-	inLib('getInstanceOf');
-	inLib('getIntersectionOf');
-	inLib('getLiteral');
-	inLib('getLiteralOf');
-	inLib('getNull');
-	inLib('getNullable');
-	inLib('getNumber');
-	inLib('getObjectOf');
-	inLib('getOptional');
-	inLib('getStrictObjectOf');
-	inLib('getString');
-	inLib('getSymbol');
-	inLib('getTupleOf');
-	inLib('getUnionOf');
-	inLib('isAny');
-	inLib('isAnyNumber');
-	inLib('isArrayOf');
-	inLib('isBigInt');
-	inLib('isBoolean');
-	inLib('isInstanceOf');
-	inLib('isIntersectionOf');
-	inLib('isLiteral');
-	inLib('isLiteralOf');
-	inLib('isNull');
-	inLib('isNullable');
-	inLib('isNumber');
-	inLib('isObjectOf');
-	inLib('isOptional');
-	inLib('isStrictObjectOf');
-	inLib('isString');
-	inLib('isSymbol');
-	inLib('isTupleOf');
-	inLib('isUnionOf');
-	inLib('parseAny');
-	inLib('parseAnyNumber');
-	inLib('parseArrayOf');
-	inLib('parseBigInt');
-	inLib('parseBoolean');
-	inLib('parseInstanceOf');
-	inLib('parseIntersectionOf');
-	inLib('parseLiteral');
-	inLib('parseLiteralOf');
-	inLib('parseNull');
-	inLib('parseNullable');
-	inLib('parseNumber');
-	inLib('parseObjectOf');
-	inLib('parseOptional');
-	inLib('parseStrictObjectOf');
-	inLib('parseString');
-	inLib('parseSymbol');
-	inLib('parseTupleOf');
-	inLib('parseUnionOf');
+	equal(Object.keys(lib).length, methods.length);
+	methods.forEach((method) => ok(method in lib));
 	end();
 });

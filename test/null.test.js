@@ -1,6 +1,7 @@
 'use strict';
 
 const { test, equal, notOk, ok, throws } = require('tap');
+const { isOptional } = require('r-assign/lib/optional');
 const { getString, isString } = require('r-assign/lib/string');
 const {
 	getNull,
@@ -58,6 +59,10 @@ test('isNullable', ({ end }) => {
 	throws(() => {
 		isNullable();
 	}, TypeError('Invalid type guard provided'));
+
+	throws(() => {
+		isNullable(isOptional(isString));
+	}, TypeError('Optional type cannot be nullable'));
 
 	end();
 });
