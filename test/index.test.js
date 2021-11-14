@@ -10,23 +10,9 @@ test('No arguments', ({ end }) => {
 	end();
 });
 
-test('No source', ({ end }) => {
-	throws(() => {
-		rAssign({});
-	});
-	end();
-});
-
 test('Invalid schema', ({ end }) => {
 	throws(() => {
 		rAssign({ data: null }, {});
-	});
-	end();
-});
-
-test('Invalid source', ({ end }) => {
-	throws(() => {
-		rAssign({}, null);
 	});
 	end();
 });

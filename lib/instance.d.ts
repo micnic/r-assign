@@ -1,11 +1,5 @@
 import type { TransformFunction } from 'r-assign';
-import type { TypeGuard } from 'r-assign/lib';
-
-type Instance<T = any> = new (...args: any[]) => T;
-
-type InferInstance<T extends Instance> = T extends Instance<infer I>
-	? I
-	: never;
+import type { InferInstance, Instance, TypeGuard } from 'r-assign/lib';
 
 /**
  * Extract instance values

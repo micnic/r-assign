@@ -14,6 +14,12 @@ type InferTypeGuard<G extends TypeGuard> = G extends OptionalTypeGuard<infer T>
 	? T
 	: never;
 
+type Instance<T = any> = new (...args: any) => T;
+
+type InferInstance<T extends Instance> = T extends Instance<infer I>
+	? I
+	: never;
+
 type Intersection = [
 	NotOptionalTypeGuard<TypeGuard>,
 	NotOptionalTypeGuard<TypeGuard>,
@@ -178,11 +184,13 @@ export * from 'r-assign/lib/union';
 
 export {
 	InferFunction,
+	InferInstance,
 	InferIntersection,
 	InferShape,
 	InferTuple,
 	InferTypeGuard,
 	InferUnion,
+	Instance,
 	Intersection,
 	Literal,
 	NotOptionalTypeGuard,
