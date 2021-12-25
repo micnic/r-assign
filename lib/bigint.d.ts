@@ -16,6 +16,6 @@ declare const isBigInt: TypeGuard<bigint>;
  * Extract and validate BigInt values
  * @deprecated will be removed in version 2.0, use parseType instead
  */
-declare function parseBigInt(): TransformFunction<bigint>;
+declare const parseBigInt: TransformFunction<bigint>;
 
 export { getBigInt, isBigInt, parseBigInt };

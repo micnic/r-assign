@@ -16,6 +16,6 @@ declare const isBoolean: TypeGuard<boolean>;
  * Extract and validate boolean values
  * @deprecated will be removed in version 2.0, use parseType instead
  */
-declare function parseBoolean(): TransformFunction<boolean>;
+declare const parseBoolean: TransformFunction<boolean>;
 
 export { getBoolean, isBoolean, parseBoolean };

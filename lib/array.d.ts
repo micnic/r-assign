@@ -16,6 +16,7 @@ declare function getArrayOf<T extends TypeGuard>(
 
 /**
  * Check for array values
+ * @note Does not accept `isOptional*` type guard as it is invalid syntax
  */
 declare function isArrayOf<T extends TypeGuard>(
 	type: NotOptionalTypeGuard<T>

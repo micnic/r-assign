@@ -27,13 +27,13 @@ declare const isNumber: TypeGuard<number>;
  * Extract and validate number values
  * @deprecated will be removed in version 2.0, use parseType instead
  */
-declare function parseAnyNumber(): TransformFunction<number>;
+declare const parseAnyNumber: TransformFunction<number>;
 
 /**
  * Extract and validate finite number values
  * @deprecated will be removed in version 2.0, use parseType instead
  */
-declare function parseNumber(): TransformFunction<number>;
+declare const parseNumber: TransformFunction<number>;
 
 export {
 	getAnyNumber,
