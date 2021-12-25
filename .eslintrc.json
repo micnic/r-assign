@@ -97,7 +97,6 @@
 		"no-ternary": "error",
 		"no-throw-literal": "error",
 		"no-trailing-spaces": "error",
-		"no-undefined": "error",
 		"no-unmodified-loop-condition": "error",
 		"no-unsafe-negation": "error",
 		"no-unused-expressions": "error",
@@ -146,12 +145,6 @@
 			},
 			"rules": {
 				"@typescript-eslint/no-var-requires": "off"
-			}
-		},
-		{
-			"files": "*.test.js",
-			"rules": {
-				"no-undefined": "off"
 			}
 		},
 		{
