@@ -4,7 +4,6 @@
 [![coveralls](https://img.shields.io/coveralls/github/micnic/r-assign?style=flat-square)](https://coveralls.io/github/micnic/r-assign)
 [![npm downloads](https://img.shields.io/npm/dm/r-assign.svg?style=flat-square)](https://www.npmjs.com/package/r-assign)
 [![npm types](https://img.shields.io/npm/types/r-assign.svg?style=flat-square)](https://www.npmjs.com/package/r-assign)
-[![node version](https://img.shields.io/node/v/r-assign.svg?style=flat-square)](https://www.npmjs.com/package/r-assign)
 [![license](https://img.shields.io/npm/l/r-assign.svg?style=flat-square)](https://www.npmjs.com/package/r-assign)
 
 `Object.assign()` with a transforming feature for filtering, mapping, and
@@ -27,7 +26,8 @@ Reasons to use `r-assign`:
 - TypeScript support
 - Expressive in defining complex schemas
 - Flexible to create custom transforming functional
-- Helpful at preventing undesired values (like `NaN` when working with numbers)
+- Helpful at preventing undesired values (like `NaN` when working with numbers
+or `Invalid Date` when working with dates)
 
 ## Table of contents
 - [Install](#install)
@@ -166,6 +166,7 @@ Primitives:
 - `r-assign/lib/null` - for null and nullable values
 - `r-assign/lib/undefined` - for undefined value
 - `r-assign/lib/literal` - for literal values
+- `r-assign/lib/template-literal` - for template literal values
 
 Complex Data Types:
 - `r-assign/lib/array` - for array values
@@ -173,6 +174,7 @@ Complex Data Types:
 - `r-assign/lib/instance` - for objects values of specific instance
 - `r-assign/lib/tuple` - for tuple values
 - `r-assign/lib/function` - for function values
+- `r-assign/lib/date` - for date values
 
 Type Operations
 - `r-assign/lib/optional` - for optional types
@@ -211,12 +213,13 @@ isArrayOfStrings(['abc']); // => true
 isArrayOfStrings([42]); // => false
 ```
 
-The list of all type guards:
+More type guards examples:
 
 ```js
 import { isAny } from 'r-assign/lib/any';
 import { isBigInt } from 'r-assign/lib/bigint';
 import { isBoolean } from 'r-assign/lib/boolean';
+import { isAnyDate, isDate } from 'r-assign/lib/date';
 import { isNumber, isAnyNumber } from 'r-assign/lib/number';
 import { isString } from 'r-assign/lib/string';
 import { isSymbol } from 'r-assign/lib/symbol';
@@ -226,11 +229,10 @@ import { isLiteral, isLiteralOf } from 'r-assign/lib/literal';
 import { isArrayOf } from 'r-assign/lib/array';
 import { isObjectOf, isStrictObjectOf } from 'r-assign/lib/object';
 import { isInstanceOf } from 'r-assign/lib/instance';
+import { isTemplateLiteralOf } from 'r-assign/lib/template-literal';
 import { isTupleOf } from 'r-assign/lib/tuple';
 import { isFunction } from 'r-assign/lib/function';
 import { isOptional, isOptionalUndefined } from 'r-assign/lib/optional';
-import { isUnionOf } from 'r-assign/lib/union';
-import { isIntersectionOf } from 'r-assign/lib/intersection';
 
 isAny('abc'); // => true
 isAny(); // => true, will always return true
@@ -298,15 +300,28 @@ isStrictObjectOfNameAge({
 }); // => false, checks for the provided properties and object shape to match
 
 // Takes as argument a class constructor
-const isDate = isInstanceOf(Date);
+const isDateInstance = isInstanceOf(Date);
 
+isDateInstance(new Date()); // => true
+
+// There is also a date type guard
 isDate(new Date()); // => true
+isDate(new Date(NaN)); // => false, will return true only for valid date values
+
+isAnyDate(new Date()); // => true
+isAnyDate(new Date(NaN)); // => true, will return true for any date values
 
 // Takes as argument an array of type guards
 const isTupleOfStrings = isTupleOf([isString, isString]);
 
 isTupleOfStrings(['abc', 'def']); // => true
 isTupleOfStrings(['abc']); // => false
+
+// Takes as argument an array of type guards and literal values
+const isStringNumberDashed = isTemplateLiteralOf([isString, '-', isNumber]);
+
+isStringNumberDashed('abc-123'); // => true
+isStringNumberDashed('abc'); // => false
 
 // Takes two arguments, the function arguments tuple type guards and function
 // return type guard
@@ -328,10 +343,10 @@ isOptionalString(); // => true, will return true for string or undefined values
 
 // Works like "isOptional()" type guard but has a different semantic when used
 // in object or tuple type guards
-const isOptionalUndefinedString = isOptionalUndefined(isString);
+const isOptUndefString = isOptionalUndefined(isString);
 
-isOptionalUndefinedString('abc'); // => true
-isOptionalUndefinedString(); // => true, will return true for string or undefined values
+isOptUndefString('abc'); // => true
+isOptUndefString(); // => true, will return true for string or undefined values
 
 // Note: Optional type guards should be used as part of object or tuple type
 //       guards, they do not have a specific semantic by themselves
@@ -388,6 +403,23 @@ isObjectOfNameOptionalAge2({
     name: 'John',
     age: undefined
 }); // => true
+```
+
+## Union and intersection type guards
+Union and intersection type guards are used to combine multiple type guards (at
+least two) into more complex type guards. For union type guard to return true
+only one of the provided type guards must return true. For intersection type
+guard to return true all of the provided type guards must return true. `isAny()`
+or `isOptional()` type guards are not allowed to be used in union or
+intersection type guards.
+
+```js
+import { isBoolean } from 'r-assign/lib/boolean';
+import { isNumber } from 'r-assign/lib/number';
+import { isObjectOf } from 'r-assign/lib/object';
+import { isString } from 'r-assign/lib/string';
+import { isUnionOf } from 'r-assign/lib/union';
+import { isIntersectionOf } from 'r-assign/lib/intersection';
 
 // Takes as argument an array of type guards, at least 2 are required
 const isStringOrNumber = isUnionOf([isString, isNumber]);
@@ -395,17 +427,36 @@ const isStringOrNumber = isUnionOf([isString, isNumber]);
 isStringOrNumber('abc'); // => true
 isStringOrNumber(42); // => true, will return true for string or number values
 
-// Takes as argument an array of type guards, at least 2 are required
-const isObjectOfStringAndBoolean = isIntersectionOf([isObjectOf({
-    s: isString
-}), isObjectOf({
-    b: isBoolean
-})]);
+const isStringOrBoolean = isUnionOf([isString, isBoolean]);
 
-isObjectOfStringAndBoolean({
-    s: 'abc',
-    b: true
-}); // => true
+isStringOrBoolean('abc'); // => true
+isStringOrBoolean(false); // => true, will return true for string or boolean values
+
+const isStringButWhy = isIntersectionOf([isStringOrNumber, isStringOrBoolean]);
+
+isStringButWhy('abc'); // => true
+isStringButWhy(42); // => false
+isStringButWhy(false); // => false, will return false for other but string values
+
+const isObjectOfNameAge = isObjectOf({
+    name: isString,
+    age: isNumber
+});
+
+const isObjectOfActive = isObjectOf({
+    active: isBoolean
+});
+
+const isObjectOfNameAgeActive = isIntersectionOf([
+    isObjectOfNameAge,
+    isObjectOfActive
+]);
+
+isObjectOfNameAgeActive({
+    name: 'John',
+    age: 22,
+    active: true
+}); // => true, will return true for merged objects type guard
 ```
 
 ## Parsing data
@@ -449,41 +500,96 @@ const result = rAssign({
 }, { /* Unknown data */ });
 ```
 
+## Converting data to strings and dates
+When there is a variety of data types that can be converted to string or date
+types, `r-assign` provides utility functions for that purpose using the
+following functions:
+- `convertToString` - converts any value to string, will NOT stringify objects
+  to JSON, it behaves exactly as calling `.toString()` method on the provided
+  values.
+- `convertToDate` - converts any string or number to date, will throw an error
+  if the provided value is not a valid date, it behaves exactly as calling the
+  `new Date()` constructor on the provided values.
+- `convertToAnyDate` - converts any string or number to date, will throw an
+  error if the provided value is not convertible to date, it behaves exactly as
+  calling the `new Date()` constructor on the provided values.
+
+```js
+import rAssign from 'r-assign';
+import { convertToAnyDate, convertToDate } from 'r-assign/lib/date';
+import { convertToString } from 'r-assign/lib/string';
+
+const input = {
+    created: '2020-01-01',
+    edited: 1609459200000,
+    status: null
+};
+
+const result = rAssign({
+    created: convertToDate,
+    edited: convertToAnyDate,
+    status: convertToString
+}, input);
+
+// {
+//     created: new Date('2020-01-01'),
+//     edited: new Date('2021-01-01'),
+//     status: 'null'
+// }
+```
+
 ## Working with TypeScript
 `r-assign` is designed to be used in both JavaScript and TypeScript projects.
 The output of the `rAssign` function is automatically inferred, it is also
 possible to infer a type out of the provided schema using the `InferType` type
-that is exported from the package.
+that is exported from the package. In the case of a type guard the type
+`InferTypeGuard` should be used, it is exported from `r-assign/lib`.
 
 ```ts
 import rAssign, { InferType } from 'r-assign';
 import {
     isBoolean,
     isNumber,
+    isObjectOf,
     isOptional,
     isString,
     getType,
-    parseType
+    parseType,
+    InferTypeGuard
 } from 'r-assign/lib';
 
-const someSchema = {
+const personSchema = {
     name: parseType(isString),
     age: getType(isNumber, 0),
     active: getType(isOptional(isBoolean), false)
 };
 
-type SomeSchema = InferType<typeof someSchema>;
+const result = rAssign(personSchema, { /* Unknown data */ });
 
-// type SomeSchema = {
+// {
 //     name: string;
 //     age: number;
 //     active?: boolean;
 // };
 
-const result = rAssign(someSchema, { /* Unknown data */ });
+type PersonType = InferType<typeof personSchema>;
 
-// typeof result
-// {
+// type PersonType = {
+//     name: string;
+//     age: number;
+//     active?: boolean;
+// };
+
+// Or use a type guard and infer the type from it
+const isPerson = isObjectOf({
+    name: isString,
+    age: isNumber,
+    active: isOptional(isBoolean)
+});
+
+type PersonType = InferTypeGuard<typeof isPerson>;
+
+// type PersonType = {
 //     name: string;
 //     age: number;
 //     active?: boolean;
