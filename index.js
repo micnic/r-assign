@@ -1,13 +1,13 @@
 'use strict';
 
 /**
- * @template S
- * @typedef {import('r-assign').InferType<S>} InferType
+ * @template [T = any]
+ * @typedef {import('r-assign').TransformSchema<T>} TransformSchema
  */
 
 /**
- * @template T
- * @typedef {import('r-assign').TransformSchema<T>} TransformSchema
+ * @template {TransformSchema} S
+ * @typedef {import('r-assign').InferType<S>} InferType
  */
 
 const { assign, prototype } = Object;

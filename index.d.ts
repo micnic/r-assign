@@ -14,11 +14,11 @@ declare namespace rAssign {
 		source: unknown
 	) => T;
 
-	type TransformSchema<T> = {
+	type TransformSchema<T = any> = {
 		[key in keyof T]: TransformFunction<T[key]>;
 	};
 
-	type InferType<S extends TransformSchema<any>> = OptionalObject<{
+	type InferType<S extends TransformSchema> = OptionalObject<{
 		[key in keyof S]: ReturnType<S[key]>;
 	}>;
 }
@@ -27,7 +27,7 @@ declare namespace rAssign {
  * Assign object properties and transform result based on the provided schema
  */
 declare function rAssign<
-	S extends rAssign.TransformSchema<any>
+	S extends rAssign.TransformSchema
 >(schema: S, ...sources: unknown[]): rAssign.InferType<S>;
 
 export = rAssign;
