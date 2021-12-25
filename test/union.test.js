@@ -36,8 +36,8 @@ test('getUnionOf', ({ end }) => {
 
 test('isUnionOf', ({ end }) => {
 
-	ok(isUnionOf([isAny, isString])());
 	ok(isUnionOf([isBoolean, isNumber])(true));
+	ok(isUnionOf([isBoolean, isBoolean])(true));
 	ok(isUnionOf([isBoolean, isNumber])(0));
 	notOk(isUnionOf([isBoolean, isNumber])(''));
 
@@ -52,6 +52,10 @@ test('isUnionOf', ({ end }) => {
 	throws(() => {
 		isUnionOf([null, null]);
 	}, TypeError('Invalid type guard provided'));
+
+	throws(() => {
+		isUnionOf([isAny, isString]);
+	}, TypeError('Provided union of any'));
 
 	throws(() => {
 		isUnionOf([isOptional(isString), isString]);

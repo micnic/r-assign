@@ -4,6 +4,9 @@ const { test, equal, ok } = require('tap');
 const lib = require('r-assign/lib');
 
 const methods = [
+	'convertToAnyDate',
+	'convertToDate',
+	'convertToString',
 	'getAny',
 	'getAnyNumber',
 	'getArrayOf',
@@ -25,10 +28,12 @@ const methods = [
 	'getType',
 	'getUnionOf',
 	'isAny',
+	'isAnyDate',
 	'isAnyNumber',
 	'isArrayOf',
 	'isBigInt',
 	'isBoolean',
+	'isDate',
 	'isFunction',
 	'isInstanceOf',
 	'isIntersectionOf',
@@ -43,6 +48,7 @@ const methods = [
 	'isStrictObjectOf',
 	'isString',
 	'isSymbol',
+	'isTemplateLiteralOf',
 	'isTupleOf',
 	'isUndefined',
 	'isUnionOf',
