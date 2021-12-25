@@ -5,7 +5,7 @@ import type { InferTypeGuard, TypeGuard } from 'r-assign/lib';
  * Extract null values
  * @deprecated will be removed in version 2.0, use getType instead
  */
-declare function getNull(): TransformFunction<null>;
+declare const getNull: TransformFunction<null>;
 
 /**
  * Extract nullable values
@@ -22,6 +22,7 @@ declare const isNull: TypeGuard<null>;
 
 /**
  * Check for nullable values
+ * @note Does not accept `isOptional*` type guard as it is invalid syntax
  */
 declare function isNullable<T extends TypeGuard>(
 	type: T
@@ -31,7 +32,7 @@ declare function isNullable<T extends TypeGuard>(
  * Extract and validate null values
  * @deprecated will be removed in version 2.0, use parseType instead
  */
-declare function parseNull(): TransformFunction<null>;
+declare const parseNull: TransformFunction<null>;
 
 /**
  * Extract and validate nullable values

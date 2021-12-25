@@ -16,7 +16,7 @@ declare const isSymbol: TypeGuard<symbol>;
  * Extract and validate symbol values
  * @deprecated will be removed in version 2.0, use parseType instead
  */
-declare function parseSymbol(): TransformFunction<symbol>;
+declare const parseSymbol: TransformFunction<symbol>;
 
 export {
 	getSymbol,

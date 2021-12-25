@@ -12,6 +12,8 @@ declare function getIntersectionOf<I extends Intersection>(
 
 /**
  * Check for intersection type values
+ * @note Does not accept `isAny` type guard as it is redundant
+ * @note Does not accept `isOptional*` type guard as it is invalid syntax
  */
 declare function isIntersectionOf<I extends Intersection>(
 	intersection: I
