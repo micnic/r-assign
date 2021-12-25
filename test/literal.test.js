@@ -66,15 +66,11 @@ test('getLiteralOf', ({ end }) => {
 });
 
 test('isLiteral', ({ end }) => {
-
-	const symbol = Symbol();
-
 	ok(isLiteral(null)(null));
 	ok(isLiteral(0n)(0n));
 	ok(isLiteral(false)(false));
 	ok(isLiteral(0)(0));
 	ok(isLiteral('')(''));
-	ok(isLiteral(symbol)(symbol));
 	notOk(isLiteral(0)());
 
 	throws(() => {

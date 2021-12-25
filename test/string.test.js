@@ -3,7 +3,12 @@
 /* eslint-disable no-new-wrappers */
 
 const { test, equal, notOk, ok, throws } = require('tap');
-const { getString, isString, parseString } = require('r-assign/lib/string');
+const {
+	convertToString,
+	getString,
+	isString,
+	parseString
+} = require('r-assign/lib/string');
 
 const expected = 'expected a string value';
 const invalidDefaultValue = 'Invalid default value type';
@@ -11,6 +16,15 @@ const invalidValue = 'Invalid value type';
 const invalidValueWithProperty = `${invalidValue} for property "key"`;
 const receivedNull = 'but received null';
 const receivedString = 'but received an instance of String';
+
+test('convertToString', ({ end }) => {
+
+	equal(convertToString(), 'undefined');
+	equal(convertToString(null), 'null');
+	equal(convertToString(''), '');
+
+	end();
+});
 
 test('getString', ({ end }) => {
 
