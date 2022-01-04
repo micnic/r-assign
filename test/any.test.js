@@ -1,7 +1,7 @@
 'use strict';
 
 const { test, equal, ok } = require('tap');
-const { getAny, isAny, parseAny } = require('r-assign/lib/any');
+const { any, getAny, isAny, parseAny } = require('r-assign/lib/any');
 
 test('getAny', ({ end }) => {
 	equal(getAny(), undefined);
@@ -11,6 +11,8 @@ test('getAny', ({ end }) => {
 });
 
 test('isAny', ({ end }) => {
+	equal(isAny, any);
+
 	ok(isAny());
 	ok(isAny(null));
 

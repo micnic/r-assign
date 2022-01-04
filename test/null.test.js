@@ -8,6 +8,10 @@ const {
 	getNullable,
 	isNull,
 	isNullable,
+	isNullish,
+	nullable,
+	nulled,
+	nullish,
 	parseNull,
 	parseNullable
 } = require('r-assign/lib/null');
@@ -19,7 +23,7 @@ const received = 'but received undefined';
 
 test('getNull', ({ end }) => {
 
-	equal(getNull()(), null);
+	equal(getNull(), null);
 
 	end();
 });
@@ -34,6 +38,7 @@ test('getNullable', ({ end }) => {
 	equal(getNullableString(null), null);
 
 	throws(() => {
+		// @ts-expect-error
 		getNullable();
 	}, TypeError('Invalid transform function provided'));
 
@@ -41,6 +46,8 @@ test('getNullable', ({ end }) => {
 });
 
 test('isNull', ({ end }) => {
+
+	equal(isNull, nulled);
 
 	ok(isNull(null));
 	notOk(isNull());
@@ -52,17 +59,43 @@ test('isNullable', ({ end }) => {
 
 	const isNullableString = isNullable(isString);
 
+	equal(isNullable, nullable);
+
 	ok(isNullableString(null));
 	ok(isNullableString(''));
 	notOk(isNullableString());
 
 	throws(() => {
+		// @ts-expect-error
 		isNullable();
 	}, TypeError('Invalid type guard provided'));
 
 	throws(() => {
 		isNullable(isOptional(isString));
 	}, TypeError('Optional type cannot be nullable'));
+
+	end();
+});
+
+test('isNullish', ({ end }) => {
+
+	const isNullishString = isNullish(isString);
+
+	equal(isNullish, nullish);
+
+	ok(isNullishString(null));
+	ok(isNullishString());
+	ok(isNullishString(''));
+	notOk(isNullishString(true));
+
+	throws(() => {
+		// @ts-expect-error
+		isNullish();
+	}, TypeError('Invalid type guard provided'));
+
+	throws(() => {
+		isNullish(isOptional(isString));
+	}, TypeError('Optional type cannot be nullish'));
 
 	end();
 });

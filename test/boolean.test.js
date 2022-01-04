@@ -1,9 +1,8 @@
 'use strict';
 
-/* eslint-disable no-new-wrappers */
-
 const { test, equal, notOk, ok, throws } = require('tap');
 const {
+	boolean,
 	getBoolean,
 	isBoolean,
 	parseBoolean
@@ -33,6 +32,7 @@ test('getBoolean', ({ end }) => {
 	equal(getBooleanTrue(null), true);
 
 	throws(() => {
+		// @ts-expect-error
 		getBoolean(null);
 	}, TypeError(`${invalidDefaultValue}, ${expected} ${receivedNull}`));
 
@@ -40,6 +40,8 @@ test('getBoolean', ({ end }) => {
 });
 
 test('isBoolean', ({ end }) => {
+	equal(isBoolean, boolean);
+
 	notOk(isBoolean());
 	ok(isBoolean(false));
 	ok(isBoolean(true));
@@ -50,6 +52,7 @@ test('parseBoolean', ({ end }) => {
 	equal(parseBoolean(false), false);
 
 	throws(() => {
+		// eslint-disable-next-line no-new-wrappers
 		parseBoolean(new Boolean);
 	}, TypeError(`${invalidValue}, ${expected} ${receivedBoolean}`));
 

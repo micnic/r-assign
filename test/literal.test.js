@@ -6,6 +6,8 @@ const {
 	getLiteralOf,
 	isLiteral,
 	isLiteralOf,
+	literal,
+	literals,
 	parseLiteral,
 	parseLiteralOf
 } = require('r-assign/lib/literal');
@@ -26,6 +28,7 @@ test('getLiteral', ({ end }) => {
 	equal(getNullLiteral(0), null);
 
 	throws(() => {
+		// @ts-expect-error
 		getLiteral({});
 	}, TypeError('Invalid literal provided'));
 
@@ -47,18 +50,22 @@ test('getLiteralOf', ({ end }) => {
 	equal(getLiteralBA(0), 'b');
 
 	throws(() => {
+		// @ts-expect-error
 		getLiteralOf();
 	}, TypeError('Invalid literals provided'));
 
 	throws(() => {
+		// @ts-expect-error
 		getLiteralOf([null]);
 	}, TypeError('Not enough literals, at least two expected'));
 
 	throws(() => {
+		// @ts-expect-error
 		getLiteralOf([{}, {}]);
 	}, TypeError('Invalid literal provided'));
 
 	throws(() => {
+		// @ts-expect-error
 		getLiteralOf(['a', 'b'], null);
 	}, TypeError(`${invalidDefaultValue}, ${expectedLiterals} ${received}`));
 
@@ -66,6 +73,9 @@ test('getLiteralOf', ({ end }) => {
 });
 
 test('isLiteral', ({ end }) => {
+
+	equal(isLiteral, literal);
+
 	ok(isLiteral(null)(null));
 	ok(isLiteral(0n)(0n));
 	ok(isLiteral(false)(false));
@@ -74,6 +84,7 @@ test('isLiteral', ({ end }) => {
 	notOk(isLiteral(0)());
 
 	throws(() => {
+		// @ts-expect-error
 		isLiteral({});
 	}, TypeError('Invalid literal provided'));
 
@@ -82,6 +93,7 @@ test('isLiteral', ({ end }) => {
 	}, TypeError('Invalid literal provided'));
 
 	throws(() => {
+		// @ts-expect-error
 		isLiteral(() => null);
 	}, TypeError('Invalid literal provided'));
 
@@ -90,14 +102,18 @@ test('isLiteral', ({ end }) => {
 
 test('isLiteralOf', ({ end }) => {
 
+	equal(isLiteralOf, literals);
+
 	ok(isLiteralOf(['a', 'b'])('a'));
 	notOk(isLiteralOf(['a', 'b'])(0));
 
 	throws(() => {
+		// @ts-expect-error
 		isLiteralOf();
 	}, TypeError('Invalid literals provided'));
 
 	throws(() => {
+		// @ts-expect-error
 		isLiteralOf(['a']);
 	}, TypeError('Not enough literals, at least two expected'));
 

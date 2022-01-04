@@ -3,13 +3,13 @@ import type { InferTypeGuard, TypeGuard } from 'r-assign/lib';
 
 /**
  * Extract null values
- * @deprecated will be removed in version 2.0, use getType instead
+ * @deprecated will be removed in version 2.0, use `getType()` instead
  */
-declare const getNull: TransformFunction<null>;
+declare function getNull(value?: unknown, key?: string, source?: unknown): null;
 
 /**
  * Extract nullable values
- * @deprecated will be removed in version 2.0, use getType instead
+ * @deprecated will be removed in version 2.0, use `getType()` instead
  */
 declare function getNullable<T extends TransformFunction>(
 	transform: T
@@ -29,17 +29,40 @@ declare function isNullable<T extends TypeGuard>(
 ): TypeGuard<InferTypeGuard<T> | null>;
 
 /**
- * Extract and validate null values
- * @deprecated will be removed in version 2.0, use parseType instead
+ * Check for nullish values
+ * @note Does not accept `isOptional*` type guard as it is invalid syntax
  */
-declare const parseNull: TransformFunction<null>;
+declare function isNullish<T extends TypeGuard>(
+	type: T
+): TypeGuard<InferTypeGuard<T> | null | undefined>;
+
+/**
+ * Extract and validate null values
+ * @deprecated will be removed in version 2.0, use `parseType()` instead
+ */
+declare function parseNull(
+	value?: unknown,
+	key?: string,
+	source?: unknown
+): null;
 
 /**
  * Extract and validate nullable values
- * @deprecated will be removed in version 2.0, use parseType instead
+ * @deprecated will be removed in version 2.0, use `parseType()` instead
  */
 declare function parseNullable<T extends TypeGuard>(
 	type: T
 ): TransformFunction<InferTypeGuard<T> | null>;
 
-export { getNull, getNullable, isNull, isNullable, parseNull, parseNullable };
+export {
+	getNull,
+	getNullable,
+	isNull,
+	isNull as nulled,
+	isNullable,
+	isNullable as nullable,
+	isNullish,
+	isNullish as nullish,
+	parseNull,
+	parseNullable
+};

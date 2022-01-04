@@ -6,6 +6,8 @@ const {
 	getOptional,
 	isOptional,
 	isOptionalUndefined,
+	optional,
+	optionalUndef,
 	parseOptional
 } = require('r-assign/lib/optional');
 
@@ -23,6 +25,7 @@ test('getOptional', ({ end }) => {
 	equal(getOptionalString(null), '');
 
 	throws(() => {
+		// @ts-expect-error
 		getOptional();
 	}, TypeError('Invalid transform function provided'));
 
@@ -33,15 +36,19 @@ test('isOptional', ({ end }) => {
 
 	const isOptionalString = isOptional(isString);
 
+	equal(isOptional, optional);
+
 	ok(isOptionalString());
 	ok(isOptionalString(''));
 	notOk(isOptionalString(null));
 
 	throws(() => {
+		// @ts-expect-error
 		isOptional();
 	}, TypeError('Invalid type guard provided'));
 
 	throws(() => {
+		// @ts-expect-error
 		isOptional(isOptional(isString));
 	}, TypeError('Optional type cannot be wrapped in optional type'));
 
@@ -52,15 +59,19 @@ test('isOptionalUndefined', ({ end }) => {
 
 	const isOptionalString = isOptionalUndefined(isString);
 
+	equal(isOptionalUndefined, optionalUndef);
+
 	ok(isOptionalString());
 	ok(isOptionalString(''));
 	notOk(isOptionalString(null));
 
 	throws(() => {
+		// @ts-expect-error
 		isOptionalUndefined();
 	}, TypeError('Invalid type guard provided'));
 
 	throws(() => {
+		// @ts-expect-error
 		isOptionalUndefined(isOptionalUndefined(isString));
 	}, TypeError('Optional type cannot be wrapped in optional type'));
 

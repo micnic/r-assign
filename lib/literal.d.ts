@@ -1,9 +1,9 @@
 import type { TransformFunction } from 'r-assign';
-import type { Literal, TypeGuard } from 'r-assign/lib';
+import type { InferLiterals, Literal, Literals, TypeGuard } from 'r-assign/lib';
 
 /**
  * Extract literal values
- * @deprecated will be removed in version 2.0, use getType instead
+ * @deprecated will be removed in version 2.0, use `getType()` instead
  */
 declare function getLiteral<L extends Literal>(
 	literal: L
@@ -11,12 +11,12 @@ declare function getLiteral<L extends Literal>(
 
 /**
  * Extract union of literal values
- * @deprecated will be removed in version 2.0, use getType instead
+ * @deprecated will be removed in version 2.0, use `getType()` instead
  */
-declare function getLiteralOf<L extends Literal>(
-	literals: [L, L, ...L[]],
-	initial?: L
-): TransformFunction<L>;
+declare function getLiteralOf<L extends Literal, T extends Literals<L>>(
+	literals: T,
+	initial?: InferLiterals<L, T>
+): TransformFunction<InferLiterals<L, T>>;
 
 /**
  * Check for literal values
@@ -26,13 +26,13 @@ declare function isLiteral<L extends Literal>(literal: L): TypeGuard<L>;
 /**
  * Check for union of literal values
  */
-declare function isLiteralOf<L extends Literal>(
-	literals: [L, L, ...L[]]
-): TypeGuard<L>;
+declare function isLiteralOf<L extends Literal, T extends Literals<L>>(
+	literals: T
+): TypeGuard<InferLiterals<L, T>>;
 
 /**
  * Extract and validate literal values
- * @deprecated will be removed in version 2.0, use parseType instead
+ * @deprecated will be removed in version 2.0, use `parseType()` instead
  */
 declare function parseLiteral<L extends Literal>(
 	literal: L
@@ -40,18 +40,21 @@ declare function parseLiteral<L extends Literal>(
 
 /**
  * Extract and validate union of literal values
- * @deprecated will be removed in version 2.0, use parseType instead
+ * @deprecated will be removed in version 2.0, use `parseType()` instead
  */
-declare function parseLiteralOf<L extends Literal>(
-	literals: [L, L, ...L[]]
-): TransformFunction<L>;
+declare function parseLiteralOf<L extends Literal, T extends Literals<L>>(
+	literals: T
+): TransformFunction<InferLiterals<L, T>>;
 
 export {
 	getLiteral,
 	getLiteralOf,
 	isLiteral,
+	isLiteral as literal,
 	isLiteralOf,
+	isLiteralOf as literals,
 	parseLiteral,
-	parseLiteralOf,
-	Literal
+	parseLiteralOf
 };
+
+export type { Literal };

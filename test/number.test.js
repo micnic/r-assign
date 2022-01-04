@@ -1,13 +1,13 @@
 'use strict';
 
-/* eslint-disable no-new-wrappers */
-
 const { test, equal, notOk, ok, throws } = require('tap');
 const {
+	anyNumber,
 	getAnyNumber,
 	getNumber,
 	isAnyNumber,
 	isNumber,
+	number,
 	parseAnyNumber,
 	parseNumber
 } = require('r-assign/lib/number');
@@ -57,6 +57,7 @@ test('getAnyNumber', ({ end }) => {
 	equal(getNumberInfinityDefault(-Infinity), -Infinity);
 
 	throws(() => {
+		// @ts-expect-error
 		getAnyNumber(null);
 	}, TypeError(`${invalidDefaultValue}, ${expected} null`));
 
@@ -84,6 +85,7 @@ test('getNumber', ({ end }) => {
 	equal(getNumberOneDefault(-Infinity), 1);
 
 	throws(() => {
+		// @ts-expect-error
 		getNumber(null);
 	}, TypeError(`${invalidDefaultValue}, ${expectedFinite} null`));
 
@@ -103,6 +105,9 @@ test('getNumber', ({ end }) => {
 });
 
 test('isAnyNumber', ({ end }) => {
+
+	equal(isAnyNumber, anyNumber);
+
 	notOk(isAnyNumber());
 	ok(isAnyNumber(NaN));
 	ok(isAnyNumber(Infinity));
@@ -112,6 +117,9 @@ test('isAnyNumber', ({ end }) => {
 });
 
 test('isNumber', ({ end }) => {
+
+	equal(isNumber, number);
+
 	notOk(isNumber());
 	notOk(isNumber(NaN));
 	notOk(isNumber(Infinity));
@@ -127,6 +135,7 @@ test('parseAnyNumber', ({ end }) => {
 	equal(parseAnyNumber(-Infinity), -Infinity);
 
 	throws(() => {
+		// eslint-disable-next-line no-new-wrappers
 		parseAnyNumber(new Number);
 	}, TypeError(`${invalidValue}, ${expected} an instance of Number`));
 
@@ -145,6 +154,7 @@ test('parseNumber', ({ end }) => {
 	equal(parseNumber(0), 0);
 
 	throws(() => {
+		// eslint-disable-next-line no-new-wrappers
 		parseNumber(new Number);
 	}, TypeError(`${invalidValue}, ${expectedFinite} an instance of Number`));
 

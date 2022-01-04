@@ -1,44 +1,54 @@
 'use strict';
 
-const { test, notOk, ok, throws } = require('tap');
+const { test, equal, notOk, ok, throws } = require('tap');
 const {
+	anyDate,
+	asAnyDate,
+	asDate,
 	convertToAnyDate,
 	convertToDate,
+	date,
 	isAnyDate,
 	isDate
 } = require('r-assign/lib');
 
-test('convertToAnyDate', ({ end }) => {
+test('asAnyDate', ({ end }) => {
 
-	ok(convertToAnyDate(new Date()) instanceof Date);
-	ok(convertToAnyDate(new Date().getTime()) instanceof Date);
-	ok(convertToAnyDate(new Date().toString()) instanceof Date);
+	equal(asAnyDate, convertToAnyDate);
+
+	ok(asAnyDate(new Date()) instanceof Date);
+	ok(asAnyDate(new Date().getTime()) instanceof Date);
+	ok(asAnyDate(new Date().toString()) instanceof Date);
 
 	throws(() => {
-		convertToAnyDate();
+		asAnyDate();
 	}, TypeError('Invalid date value'));
 
 	end();
 });
 
-test('convertToDate', ({ end }) => {
+test('asDate', ({ end }) => {
 
-	ok(convertToDate(new Date()) instanceof Date);
-	ok(convertToDate(new Date().getTime()) instanceof Date);
-	ok(convertToDate(new Date().toString()) instanceof Date);
+	equal(asDate, convertToDate);
+
+	ok(asDate(new Date()) instanceof Date);
+	ok(asDate(new Date().getTime()) instanceof Date);
+	ok(asDate(new Date().toString()) instanceof Date);
 
 	throws(() => {
-		convertToDate();
+		asDate();
 	}, TypeError('Invalid date value'));
 
 	throws(() => {
-		convertToDate(NaN);
+		asDate(NaN);
 	}, TypeError('Invalid date value'));
 
 	end();
 });
 
 test('isAnyDate', ({ end }) => {
+
+	equal(isAnyDate, anyDate);
 
 	ok(isAnyDate(new Date()));
 	ok(isAnyDate(new Date(NaN)));
@@ -49,6 +59,8 @@ test('isAnyDate', ({ end }) => {
 });
 
 test('isDate', ({ end }) => {
+
+	equal(isDate, date);
 
 	ok(isDate(new Date()));
 

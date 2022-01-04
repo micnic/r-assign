@@ -1,18 +1,21 @@
 'use strict';
 
-/* eslint-disable no-new-wrappers */
-
-const { test, match, notOk, ok, throws } = require('tap');
+const { test, equal, match, notOk, ok, throws } = require('tap');
 const {
 	getObjectOf,
 	getStrictObjectOf,
 	isObjectOf,
+	isOptional,
+	isOptionalUndefined,
+	isRecordOf,
 	isStrictObjectOf,
+	isString,
+	object,
 	parseObjectOf,
-	parseStrictObjectOf
-} = require('r-assign/lib/object');
-const { isOptional, isOptionalUndefined } = require('r-assign/lib/optional');
-const { isString } = require('r-assign/lib/string');
+	parseStrictObjectOf,
+	parseType,
+	strictObject
+} = require('r-assign/lib');
 
 const { assign, create } = Object;
 
@@ -20,14 +23,16 @@ const circularRefShape = '{\n "obj": <Circular Reference>;\n}';
 const objectShape = '{\n "abc": string;\n}';
 const optionalObjectShape = '{\n "abc"?: string;\n}';
 const expected = `expected an object of shape ${objectShape}`;
+const expectedStrict = `expected an object of strict shape ${objectShape}`;
 const expectedOptional = `expected an object of shape ${optionalObjectShape}`;
 const invalidDefaultValue = 'Invalid default value type';
+const invalidMapping = 'Invalid object mapping provided';
+const invalidShape = 'Invalid shape provided';
 const invalidValue = 'Invalid value type';
 const received = 'but received null';
 const receivedEmptyObject = 'but received a value of type {}';
 const receivedObject = 'but received a value of type {\n "abc": number;\n}';
 const receivedCircularRef = `but received a value of type ${circularRefShape}`;
-const invalidShape = 'Shape is not an object';
 
 test('getObjectOf', ({ end }) => {
 
@@ -44,10 +49,12 @@ test('getObjectOf', ({ end }) => {
 	});
 
 	throws(() => {
+		// @ts-expect-error
 		getObjectOf({ abc: isString }, null);
 	}, TypeError(`${invalidDefaultValue}, ${expected} ${received}`));
 
 	throws(() => {
+		// @ts-expect-error
 		getObjectOf({ abc: isOptional(isString) }, null);
 	}, TypeError(`${invalidDefaultValue}, ${expectedOptional} ${received}`));
 
@@ -64,13 +71,16 @@ test('getStrictObjectOf', ({ end }) => {
 	match(getObjectABC({ abc: 'abc', def: 'def' }), { abc: '' });
 
 	throws(() => {
+		// @ts-expect-error
 		getStrictObjectOf({ abc: isString }, null);
-	}, TypeError(`${invalidDefaultValue}, ${expected} ${received}`));
+	}, TypeError(`${invalidDefaultValue}, ${expectedStrict} ${received}`));
 
 	end();
 });
 
 test('isObjectOf', ({ end }) => {
+
+	equal(isObjectOf, object);
 
 	ok(isObjectOf({})({}));
 	ok(isObjectOf({ a: isString })({ a: 'abc' }));
@@ -82,20 +92,40 @@ test('isObjectOf', ({ end }) => {
 	ok(isObjectOf({ a: isOptionalUndefined(isString) })({ a: 'abc' }));
 	ok(isObjectOf({ a: isOptionalUndefined(isString) })({ a: undefined }));
 	ok(isObjectOf({ a: isOptionalUndefined(isString) })({}));
-	notOk(isObjectOf({ a: isOptional(isString) })({ a: null }));
+	notOk(isObjectOf({ a: isOptionalUndefined(isString) })({ a: null }));
+
+	ok(isObjectOf({}, isRecordOf(isString, isString))({}));
+	ok(isObjectOf({}, isRecordOf(isString, isString))({ a: 'a' }));
 
 	throws(() => {
+		// @ts-expect-error
 		isObjectOf();
 	}, TypeError(invalidShape));
 
 	throws(() => {
+		// @ts-expect-error
 		isObjectOf(null);
 	}, TypeError(invalidShape));
+
+	throws(() => {
+		// @ts-expect-error
+		isObjectOf({}, isString);
+	}, TypeError(invalidMapping));
+
+	throws(() => {
+		isObjectOf({}, isStrictObjectOf({}));
+	}, TypeError(invalidMapping));
+
+	throws(() => {
+		parseType(isObjectOf({}, isObjectOf({ a: isString })))({});
+	});
 
 	end();
 });
 
 test('isStrictObjectOf', ({ end }) => {
+
+	equal(isStrictObjectOf, strictObject);
 
 	ok(isStrictObjectOf({ a: isString })({ a: 'abc' }));
 	ok(isStrictObjectOf({ a: isOptional(isString) })({ a: 'abc' }));
@@ -108,6 +138,11 @@ test('isStrictObjectOf', ({ end }) => {
 	notOk(isStrictObjectOf({ a: isString })({ a: 'abc', b: 'def' }));
 	notOk(isStrictObjectOf({ a: isOptional(isString) })({ a: undefined }));
 	notOk(isStrictObjectOf({ a: isOptionalUndefined(isString) })({ a: null }));
+
+	throws(() => {
+		// @ts-expect-error
+		isStrictObjectOf();
+	}, TypeError(invalidShape));
 
 	end();
 });
@@ -160,7 +195,7 @@ test('parseStrictObjectOf', ({ end }) => {
 
 	throws(() => {
 		parseObjectABC(null);
-	}, TypeError(`${invalidValue}, ${expected} ${received}`));
+	}, TypeError(`${invalidValue}, ${expectedStrict} ${received}`));
 
 	end();
 });

@@ -1,9 +1,8 @@
 'use strict';
 
-/* eslint-disable no-empty-function, no-new-wrappers */
-
-const { test, match, notOk, ok, throws } = require('tap');
+const { test, equal, match, notOk, ok, throws } = require('tap');
 const {
+	array,
 	getArrayOf,
 	isArrayOf,
 	parseArrayOf
@@ -37,14 +36,17 @@ test('getArrayOf', ({ end }) => {
 	match(getArrayOfString(['']), ['']);
 
 	throws(() => {
+		// @ts-expect-error
 		getArrayOf();
 	}, TypeError(invalidTypeGuard));
 
 	throws(() => {
+		// @ts-expect-error
 		getArrayOf(isString, null);
 	}, TypeError(`${invalidDefaultValue}, ${expectedSingle} ${received}`));
 
 	throws(() => {
+		// @ts-expect-error
 		getArrayOf(isUnionOf([isBoolean, isString]), null);
 	}, TypeError(`${invalidDefaultValue}, ${expectedUnion} ${received}`));
 
@@ -58,16 +60,20 @@ test('isArrayOf', ({ end }) => {
 
 	sparseArray[1] = true;
 
+	equal(isArrayOf, array);
+
 	ok(isArrayOf(isBoolean)([]));
 	ok(isArrayOf(isBoolean)([true]));
 	notOk(isArrayOf(isBoolean)(sparseArray));
 	notOk(isArrayOf(isBoolean)());
 
 	throws(() => {
+		// @ts-expect-error
 		isArrayOf();
 	}, TypeError(invalidTypeGuard));
 
 	throws(() => {
+		// @ts-expect-error
 		isArrayOf(isOptional(isString));
 	}, TypeError(invalidOptionalType));
 
@@ -81,6 +87,7 @@ test('parseArrayOf', ({ end }) => {
 	match(parseArrayOfStrings(['']), ['']);
 
 	throws(() => {
+		// @ts-expect-error
 		parseArrayOf(null);
 	}, TypeError(invalidTypeGuard));
 
@@ -97,6 +104,7 @@ test('parseArrayOf', ({ end }) => {
 	}, TypeError(`${invalidValue}, ${expectedSingle} ${receivedNullArray}`));
 
 	throws(() => {
+		// eslint-disable-next-line no-new-wrappers
 		parseArrayOfStrings([new String]);
 	}, TypeError(`${invalidValue}, ${expectedSingle} ${receivedStringArray}`));
 

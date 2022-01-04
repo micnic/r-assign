@@ -1,6 +1,6 @@
 {
 	"name": "r-assign",
-	"version": "1.4.0",
+	"version": "1.5.0",
 	"description": "Object.assign() with super powers",
 	"keywords": [
 		"assert",
@@ -47,23 +47,28 @@
 	],
 	"types": "index.d.ts",
 	"scripts": {
-		"check": "npm run eslint-check && npm run ts-check",
+		"check": "npm run eslint-check && npm run ts-check && npm run tsd-check",
 		"eslint-check": "eslint . --ext .js,.ts",
 		"eslint-fix": "npm run eslint-check -- --fix",
 		"prepublishOnly": "npm test && npm run check",
 		"test": "tap -b test/*.test.js",
 		"test-cov-html": "npm test -- --coverage-report=html",
 		"test-lcov": "npm test -- --coverage-report=lcov",
-		"ts-check": "tsc"
+		"ts-check": "tsc",
+		"tsd-check": "tsd"
 	},
 	"devDependencies": {
+		"@types/tap": "15.x",
 		"@typescript-eslint/eslint-plugin": "5.x",
 		"@typescript-eslint/parser": "5.x",
+		"benchmark": "2.x",
 		"eslint": "8.x",
-		"tap": "15.x",
-		"typescript": "4.x"
+		"tap": "16.x",
+		"tsd": "0.20.x",
+		"typescript": "4.x",
+		"zod": "3.x"
 	},
 	"engines": {
-		"node": ">=10.0"
+		"node": ">=12"
 	}
 }

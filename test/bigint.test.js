@@ -2,6 +2,7 @@
 
 const { test, equal, notOk, ok, throws } = require('tap');
 const {
+	bigint,
 	getBigInt,
 	isBigInt,
 	parseBigInt
@@ -31,10 +32,12 @@ test('getBigInt', ({ end }) => {
 	equal(getBigIntOne(0), 1n);
 
 	throws(() => {
+		// @ts-expect-error
 		getBigInt(null);
 	}, TypeError(`${invalidDefaultValue}, ${expected} ${receivedNull}`));
 
 	throws(() => {
+		// @ts-expect-error
 		getBigInt(0);
 	}, TypeError(`${invalidDefaultValue}, ${expected} ${receivedNumber}`));
 
@@ -42,6 +45,8 @@ test('getBigInt', ({ end }) => {
 });
 
 test('isBigInt', ({ end }) => {
+	equal(isBigInt, bigint);
+
 	notOk(isBigInt());
 	notOk(isBigInt(0));
 	ok(isBigInt(0n));

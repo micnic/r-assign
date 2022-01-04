@@ -1,5 +1,3 @@
-/* eslint-disable strict */
-
 import type { TypeGuard } from 'r-assign/lib';
 
 /**
@@ -7,4 +5,7 @@ import type { TypeGuard } from 'r-assign/lib';
  */
 declare const isUndefined: TypeGuard<undefined>;
 
-export { isUndefined };
+export {
+	isUndefined,
+	isUndefined as undef
+};

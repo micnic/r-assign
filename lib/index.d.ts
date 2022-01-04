@@ -1,10 +1,17 @@
-type Instance<T = any> = new (...args: any) => T;
+type Constructor<T = any> = new (...args: any) => T;
 
-type InferInstance<T extends Instance> = T extends Instance<infer I>
+type InferConstructor<T extends Constructor> = T extends Constructor<infer I>
 	? I
 	: never;
 
 type Literal = bigint | boolean | null | number | string | undefined;
+type Literals<L extends Literal> = [L, L, ...L[]];
+
+type InferLiterals<
+	L extends Literal,
+	T extends Literals<L>
+> = T extends (infer S)[] ? S : never;
+
 type TypeGuard<T = any> = ((value?: any) => value is T) & {};
 type AnyTag = { any: true };
 type AnyTypeGuard = TypeGuard & AnyTag;
@@ -27,12 +34,31 @@ type Intersection = [
 	...TypeGuard[]
 ];
 
-type InferIntersection<T extends Intersection> = {
-	[K in keyof T]: T[K] extends TypeGuard ? (parameter: T[K]) => void : never;
-}[number] extends (k: TypeGuard<infer I>) => void
-	? any extends I
-		? never
-		: I
+type RemapObject<T> = T extends any[] | Function ? T : { [K in keyof T]: T[K] };
+
+type InferIntersection<T extends Intersection> = T extends [infer F, infer S]
+	? F extends TypeGuard
+		? S extends TypeGuard
+			? InferTypeGuard<F> & InferTypeGuard<S> extends infer I
+				? RemapObject<I>
+				: never
+			: never
+		: never
+	: T extends [infer F, infer S, ...infer R]
+	? F extends TypeGuard
+		? S extends TypeGuard
+			? R extends TypeGuard[]
+				? [
+						TypeGuard<InferTypeGuard<F> & InferTypeGuard<S>>,
+						...R
+				] extends infer I
+					? I extends Intersection
+						? InferIntersection<I>
+						: never
+					: never
+				: never
+			: never
+		: never
 	: never;
 
 type Stringify<T> = T extends TypeGuard<Literal>
@@ -41,7 +67,7 @@ type Stringify<T> = T extends TypeGuard<Literal>
 	? `${T}`
 	: never;
 
-type TemplateLiteral<L extends Literal = any> = [] | (TypeGuard<L> | L)[];
+type TemplateLiteral<L extends Literal = any> = ((TypeGuard<L> | L)[] | []);
 
 type InferTemplateLiteral<T extends TemplateLiteral> = T extends []
 	? ''
@@ -61,24 +87,10 @@ type InferTemplateLiteral<T extends TemplateLiteral> = T extends []
 		: never
 	: never;
 
-type Tuple = [] | TypeGuard[];
-
-type InferTupleRest<T extends Tuple> = T extends []
-	? T
-	: T extends [infer G]
-	? G extends OptionalTypeGuard
-		? [InferTypeGuard<G>?]
-		: never
-	: T extends [infer H, ...infer R]
-	? H extends OptionalTypeGuard
-		? R extends OptionalTypeGuard[]
-			? [InferTypeGuard<H>?, ...InferTupleRest<R>]
-			: never
-		: never
-	: never;
+type Tuple = TypeGuard[] | [];
 
 type InferTuple<T extends Tuple> = T extends []
-	? T
+	? []
 	: T extends [infer G]
 	? G extends OptionalTypeGuard
 		? [InferTypeGuard<G>?]
@@ -87,15 +99,11 @@ type InferTuple<T extends Tuple> = T extends []
 		: never
 	: T extends [infer H, ...infer R]
 	? H extends OptionalTypeGuard
-		? R extends OptionalTypeGuard[]
-			? [InferTypeGuard<H>?, ...InferTupleRest<R>]
-			: R extends TypeGuard[]
-			? [InferTypeGuard<H>?, ...InferTupleRest<R>]
+		? R extends Tuple
+			? [InferTypeGuard<H>?, ...InferTuple<R>]
 			: never
 		: H extends TypeGuard
-		? R extends OptionalTypeGuard[]
-			? [InferTypeGuard<H>, ...InferTuple<R>]
-			: R extends TypeGuard[]
+		? R extends Tuple
 			? [InferTypeGuard<H>, ...InferTuple<R>]
 			: never
 		: never
@@ -106,9 +114,7 @@ type InferFunction<
 	R extends NotOptionalTypeGuard<TypeGuard>
 > = ((...args: InferTuple<T>) => InferTypeGuard<R>) & {};
 
-type Shape = {
-	[key: string]: TypeGuard;
-};
+type Shape = Record<string, TypeGuard>;
 
 type KeysOfType<T, U> = {
 	[K in keyof T]: T[K] extends U ? K : never;
@@ -120,10 +126,17 @@ type OptionalShape<S extends Shape, T extends keyof S> = {
 		: never;
 } & {};
 
-type InferShape<S extends Shape> = OptionalShape<
-	S,
-	KeysOfType<S, OptionalTypeGuard>
-> & {};
+type InferShape<
+	S extends Shape,
+	M extends TypeGuard<Record<keyof any, any>> | undefined = undefined
+> = RemapObject<
+	OptionalShape<S, KeysOfType<S, OptionalTypeGuard>> &
+		(M extends undefined
+			? {}
+			: M extends TypeGuard
+			? InferTypeGuard<M>
+			: never)
+>;
 
 type Union = [
 	TypeGuard,
@@ -132,7 +145,7 @@ type Union = [
 ];
 
 type ValidateUnion<T extends TypeGuard[]> = T extends []
-	? T
+	? []
 	: T extends [infer G]
 	? G extends AnyTypeGuard
 		? never
@@ -161,6 +174,8 @@ type InferUnion<T extends Union> = ValidateUnion<T> extends TypeGuard<
 		: U
 	: never;
 
+type ReplaceFunction<T> = (value: T) => T;
+
 export * from 'r-assign/lib/any';
 export * from 'r-assign/lib/array';
 export * from 'r-assign/lib/bigint';
@@ -176,6 +191,7 @@ export * from 'r-assign/lib/number';
 export * from 'r-assign/lib/object';
 export * from 'r-assign/lib/optional';
 export * from 'r-assign/lib/parse-type';
+export * from 'r-assign/lib/record';
 export * from 'r-assign/lib/string';
 export * from 'r-assign/lib/symbol';
 export * from 'r-assign/lib/template-literal';
@@ -183,15 +199,18 @@ export * from 'r-assign/lib/tuple';
 export * from 'r-assign/lib/undefined';
 export * from 'r-assign/lib/union';
 
-export {
+export type {
 	AnyTypeGuard,
 	AnyTypeGuard as ATG,
+	Constructor,
+	InferConstructor,
+	InferConstructor as InferC,
 	InferFunction,
 	InferFunction as InferF,
-	InferInstance,
-	InferInstance as InferIns,
 	InferIntersection,
 	InferIntersection as InferInt,
+	InferLiterals,
+	InferLiterals as InferL,
 	InferShape,
 	InferShape as InferS,
 	InferTemplateLiteral,
@@ -202,13 +221,15 @@ export {
 	InferTypeGuard as InferTG,
 	InferUnion,
 	InferUnion as InferU,
-	Instance,
 	Intersection,
 	Literal,
+	Literals,
 	NotOptionalTypeGuard,
 	NotOptionalTypeGuard as NOTG,
 	OptionalTypeGuard,
 	OptionalTypeGuard as OTG,
+	ReplaceFunction,
+	ReplaceFunction as RF,
 	Shape,
 	TemplateLiteral,
 	TemplateLiteral as TL,

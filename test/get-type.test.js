@@ -3,9 +3,7 @@
 const { test, equal, match, throws } = require('tap');
 const { getType } = require('r-assign/lib/get-type');
 const { isArrayOf } = require('r-assign/lib/array');
-const { isBoolean } = require('r-assign/lib/boolean');
 const { isFunction } = require('r-assign/lib/function');
-const { isIntersectionOf } = require('r-assign/lib/intersection');
 const { isNumber } = require('r-assign/lib/number');
 const { isObjectOf } = require('r-assign/lib/object');
 const { isOptional } = require('r-assign/lib/optional');
@@ -17,12 +15,24 @@ const expected = 'expected a string value';
 const invalidDefaultValue = 'Invalid default value type';
 const receivedArray = 'but received a value of type string[]';
 
+/**
+ * Append dot to the provided string
+ * @param {string} string
+ * @returns {string}
+ */
+const appendDot = (string) => `${string}.`;
+
 test('getType', ({ end }) => {
 
 	const getString = getType(isString, '');
 
 	equal(getString('abc'), 'abc');
 	equal(getString(), '');
+
+	const getStringWithDot = getType(isString, '', appendDot);
+
+	equal(getStringWithDot('abc'), 'abc.');
+	equal(getStringWithDot(), '.');
 
 	const getStringTuple = getType(isTupleOf([isString]), ['']);
 
@@ -40,14 +50,6 @@ test('getType', ({ end }) => {
 	equal(getStringOrNumber(0), 0);
 	equal(getStringOrNumber(), '');
 
-	const getIntersectBNS = getType(isIntersectionOf([
-		isUnionOf([isBoolean, isNumber]),
-		isUnionOf([isNumber, isString])
-	]), 0);
-
-	equal(getIntersectBNS(1), 1);
-	equal(getIntersectBNS(), 0);
-
 	const getObjectOfString = getType(isObjectOf({
 		a: isOptional(isString)
 	}), {});
@@ -61,6 +63,7 @@ test('getType', ({ end }) => {
 	const someFunction = getFunction(() => null);
 
 	throws(() => {
+		// @ts-expect-error
 		someFunction(null);
 	}, TypeError('Invalid function arguments'));
 
@@ -68,6 +71,7 @@ test('getType', ({ end }) => {
 		someFunction();
 	}, TypeError('Invalid function return, expected void'));
 
+	// @ts-expect-error
 	const getOtherFunction = getType(isFunction([], isString), () => null);
 	const someOtherFunction = getOtherFunction(() => '');
 	const someOtherDefaultFunction = getOtherFunction();
@@ -79,18 +83,22 @@ test('getType', ({ end }) => {
 	}, TypeError('Invalid function return'));
 
 	throws(() => {
+		// @ts-expect-error
 		getType();
 	}, TypeError('Invalid type guard provided'));
 
 	throws(() => {
+		// @ts-expect-error
 		getType(isString, ['a', 'b']);
 	}, TypeError(`${invalidDefaultValue}, ${expected} ${receivedArray}`));
 
 	throws(() => {
-		getType(isOptional(isString));
+		// @ts-expect-error
+		getType(isOptional(isString), '');
 	}, TypeError('Optional type guard cannot be used as base'));
 
 	throws(() => {
+		// @ts-expect-error
 		getType(isString);
 	}, TypeError(`${invalidDefaultValue}, ${expected} but received undefined`));
 

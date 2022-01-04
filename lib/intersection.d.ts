@@ -3,7 +3,7 @@ import type { InferIntersection, Intersection, TypeGuard } from 'r-assign/lib';
 
 /**
  * Extract intersection type values
- * @deprecated will be removed in version 2.0, use getType instead
+ * @deprecated will be removed in version 2.0, use `getType()` instead
  */
 declare function getIntersectionOf<I extends Intersection>(
 	intersection: I,
@@ -21,7 +21,7 @@ declare function isIntersectionOf<I extends Intersection>(
 
 /**
  * Extract and validate intersection type values
- * @deprecated will be removed in version 2.0, use parseType instead
+ * @deprecated will be removed in version 2.0, use `parseType()` instead
  */
 declare function parseIntersectionOf<I extends Intersection>(
 	intersection: I
@@ -30,7 +30,11 @@ declare function parseIntersectionOf<I extends Intersection>(
 export {
 	getIntersectionOf,
 	isIntersectionOf,
-	parseIntersectionOf,
+	isIntersectionOf as intersection,
+	parseIntersectionOf
+};
+
+export type {
 	InferIntersection,
 	Intersection
 };

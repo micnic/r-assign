@@ -1,8 +1,9 @@
 'use strict';
 
-const { test, match, notOk, ok, throws } = require('tap');
+const { test, equal, match, notOk, ok, throws } = require('tap');
 const {
 	getInstanceOf,
+	instance,
 	isInstanceOf,
 	parseInstanceOf
 } = require('r-assign/lib/instance');
@@ -20,6 +21,7 @@ test('getInstanceOf', ({ end }) => {
 	match(getDate(new Date()), new Date());
 
 	throws(() => {
+		// @ts-expect-error
 		getInstanceOf(Date);
 	}, TypeError(`${invalidDefaultValue}, ${expected} ${received}`));
 
@@ -30,10 +32,13 @@ test('isInstanceOf', ({ end }) => {
 
 	const isDate = isInstanceOf(Date);
 
+	equal(isInstanceOf, instance);
+
 	ok(isDate(new Date()));
 	notOk(isDate(null));
 
 	throws(() => {
+		// @ts-expect-error
 		isInstanceOf();
 	}, TypeError('Invalid constructor provided'));
 

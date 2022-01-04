@@ -1,12 +1,25 @@
 'use strict';
 
-const { test, equal, ok } = require('tap');
+const { test, ok } = require('tap');
 const lib = require('r-assign/lib');
 
+const libKeys = Object.keys(lib);
+
 const methods = [
+	'any',
+	'anyDate',
+	'anyNumber',
+	'array',
+	'asAnyDate',
+	'asDate',
+	'asString',
+	'bigint',
+	'boolean',
 	'convertToAnyDate',
 	'convertToDate',
 	'convertToString',
+	'date',
+	'func',
 	'getAny',
 	'getAnyNumber',
 	'getArrayOf',
@@ -27,6 +40,8 @@ const methods = [
 	'getTupleOf',
 	'getType',
 	'getUnionOf',
+	'instance',
+	'intersection',
 	'isAny',
 	'isAnyDate',
 	'isAnyNumber',
@@ -41,10 +56,12 @@ const methods = [
 	'isLiteralOf',
 	'isNull',
 	'isNullable',
+	'isNullish',
 	'isNumber',
 	'isObjectOf',
 	'isOptional',
 	'isOptionalUndefined',
+	'isRecordOf',
 	'isStrictObjectOf',
 	'isString',
 	'isSymbol',
@@ -52,6 +69,15 @@ const methods = [
 	'isTupleOf',
 	'isUndefined',
 	'isUnionOf',
+	'literal',
+	'literals',
+	'nullable',
+	'nulled',
+	'nullish',
+	'number',
+	'object',
+	'optional',
+	'optionalUndef',
 	'parseAny',
 	'parseAnyNumber',
 	'parseArrayOf',
@@ -71,11 +97,26 @@ const methods = [
 	'parseSymbol',
 	'parseTupleOf',
 	'parseType',
-	'parseUnionOf'
+	'parseUnionOf',
+	'record',
+	'strictObject',
+	'string',
+	'symbol',
+	'templateLiteral',
+	'tuple',
+	'undef',
+	'union'
 ];
 
 test('rAssign lib exports', ({ end }) => {
-	equal(Object.keys(lib).length, methods.length);
-	methods.forEach((method) => ok(method in lib));
+
+	methods.forEach((method) => {
+		ok(method in lib, `Checked key "${method}" is exported`);
+	});
+
+	libKeys.forEach((key) => {
+		ok(methods.includes(key), `Exported key "${key}" is checked`);
+	});
+
 	end();
 });
