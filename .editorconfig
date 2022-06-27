@@ -7,7 +7,8 @@ indent_size = 4
 indent_style = tab
 insert_final_newline = false
 tab_width = 4
+trim_trailing_whitespace = true
 
 [**.md]
-indent_size = 4
+# Indent markdown with spaces as editor config is not available everywhere
 indent_style = space
