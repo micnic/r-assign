@@ -1,16 +1,21 @@
 'use strict';
 
 const { test, match, ok, throws } = require('tap');
-const { isAny } = require('r-assign/lib/any');
-const { isNumber } = require('r-assign/lib/number');
-const { isObjectOf } = require('r-assign/lib/object');
-const { isOptional } = require('r-assign/lib/optional');
-const { isString } = require('r-assign/lib/string');
 const {
 	getIntersectionOf,
+	isAny,
 	isIntersectionOf,
+	isNumber,
+	isObjectOf,
+	isOptional,
+	isString,
 	parseIntersectionOf
-} = require('r-assign/lib/intersection');
+} = require('r-assign/lib');
+
+/**
+ * @template [T = any]
+ * @typedef {import('r-assign/lib').TG<T>} TG
+ */
 
 const numberObject = '{\n "number": number;\n}';
 const stringObject = '{\n "string": string;\n}';
@@ -22,11 +27,17 @@ const received = 'but received null';
 
 test('getIntersectionOf', ({ end }) => {
 
-	const getIntersectionOfNumberString = getIntersectionOf([isObjectOf({
+	/** @type {[TG<{ number: number }>, TG<{ string: string }>]} */
+	const intersection = [isObjectOf({
 		number: isNumber
 	}), isObjectOf({
 		string: isString
-	})], { number: 0, string: '' });
+	})];
+
+	const getIntersectionOfNumberString = getIntersectionOf(
+		intersection,
+		{ number: 0, string: '' }
+	);
 
 	match(getIntersectionOfNumberString(), { number: 0, string: '' });
 	match(getIntersectionOfNumberString(null), { number: 0, string: '' });
@@ -43,6 +54,7 @@ test('getIntersectionOf', ({ end }) => {
 			number: isNumber
 		}), isObjectOf({
 			string: isString
+		// @ts-expect-error
 		})], null);
 	}, TypeError(`${invalidDefaultValue}, ${expected} ${received}`));
 
@@ -58,14 +70,17 @@ test('isIntersectionOf', ({ end }) => {
 	})])({ number: 0, string: '' }));
 
 	throws(() => {
+		// @ts-expect-error
 		isIntersectionOf();
 	}, TypeError('Invalid type guards provided'));
 
 	throws(() => {
+		// @ts-expect-error
 		isIntersectionOf([]);
 	}, TypeError('Not enough type guards, at least two expected'));
 
 	throws(() => {
+		// @ts-expect-error
 		isIntersectionOf([null, null]);
 	}, TypeError('Invalid type guard provided'));
 

@@ -5,6 +5,7 @@ const rAssign = require('r-assign');
 
 test('No arguments', ({ end }) => {
 	throws(() => {
+		// @ts-expect-error
 		rAssign();
 	});
 	end();
@@ -12,6 +13,7 @@ test('No arguments', ({ end }) => {
 
 test('Invalid schema', ({ end }) => {
 	throws(() => {
+		// @ts-expect-error
 		rAssign({ data: null }, {});
 	});
 	end();
