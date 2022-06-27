@@ -18,7 +18,10 @@
 		"target": "es2020"
 	},
 	"include": [
+		"index.d.ts",
 		"index.js",
-		"lib"
+		"lib",
+		"test",
+		"test-d"
 	]
 }
