@@ -15,4 +15,12 @@ declare function isTemplateLiteralOf<
 	T extends TemplateLiteral<L>
 >(template: T): TypeGuard<InferTemplateLiteral<T>>;
 
-export { isTemplateLiteralOf, InferTemplateLiteral, TemplateLiteral };
+export {
+	isTemplateLiteralOf,
+	isTemplateLiteralOf as templateLiteral
+};
+
+export type {
+	InferTemplateLiteral,
+	TemplateLiteral
+};
