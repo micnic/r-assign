@@ -1,5 +1,8 @@
 'use strict';
 
+const { hasOneElement } = require('r-assign/lib/internal/array-checks');
+const { forIn } = require('r-assign/lib/internal/object-utils');
+
 /**
  * @template [T = any]
  * @typedef {import('r-assign').TransformSchema<T>} TransformSchema
@@ -10,8 +13,7 @@
  * @typedef {import('r-assign').InferType<S>} InferType
  */
 
-const { assign, prototype } = Object;
-const { hasOwnProperty } = prototype;
+const { assign } = Object;
 
 const invalidSchema = 'Invalid schema argument type, object expected';
 
@@ -24,7 +26,7 @@ const invalidSchema = 'Invalid schema argument type, object expected';
 const getSource = (sources) => {
 
 	// Check for one source object
-	if (sources.length === 1 && typeof sources[0] === 'object') {
+	if (hasOneElement(sources) && typeof sources[0] === 'object') {
 		return sources[0];
 	}
 
@@ -43,9 +45,8 @@ const invalidSchemaProperty = (key) => {
 /**
  * Assign object properties and transform result based on the provided schema
  * @template {TransformSchema<any>} S
- * @template {Record<string, any>} T
  * @param {S} schema
- * @param {T[]} sources
+ * @param {Record<string, any>[]} sources
  * @returns {InferType<S>}
  */
 const rAssign = (schema, ...sources) => {
@@ -60,24 +61,20 @@ const rAssign = (schema, ...sources) => {
 	const source = getSource(sources);
 
 	// Loop through schema properties to select them
-	for (const key in schema) {
-		if (hasOwnProperty.call(schema, key)) {
+	forIn(schema, (transform, key) => {
 
-			const transform = schema[key];
-
-			// Check for valid schema properties
-			if (typeof transform !== 'function') {
-				throw TypeError(invalidSchemaProperty(key));
-			}
-
-			const value = transform(source[key], key, source);
-
-			// Skip values that are undefined
-			if (typeof value !== 'undefined') {
-				result[key] = value;
-			}
+		// Check for valid schema properties
+		if (typeof transform !== 'function') {
+			throw TypeError(invalidSchemaProperty(key));
 		}
-	}
+
+		const value = transform(source[key], key, source);
+
+		// Skip values that are undefined
+		if (value !== undefined) {
+			result[key] = value;
+		}
+	});
 
 	return result;
 };
