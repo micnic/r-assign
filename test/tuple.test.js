@@ -1,10 +1,11 @@
 'use strict';
 
-const { test, match, notOk, ok, throws } = require('tap');
+const { test, equal, match, notOk, ok, throws } = require('tap');
 const {
 	getTupleOf,
 	isTupleOf,
-	parseTupleOf
+	parseTupleOf,
+	tuple
 } = require('r-assign/lib/tuple');
 const { isOptional, isOptionalUndefined } = require('r-assign/lib/optional');
 const { isString } = require('r-assign/lib/string');
@@ -23,6 +24,7 @@ test('getTupleOf', ({ end }) => {
 	match(getTupleOfString([]), ['abc']);
 
 	throws(() => {
+		// @ts-expect-error
 		getTupleOf([isString]);
 	}, TypeError(`${invalidDefaultValue}, ${expected} but received undefined`));
 
@@ -32,6 +34,8 @@ test('getTupleOf', ({ end }) => {
 test('isTupleOf', ({ end }) => {
 
 	const isEmptyTuple = isTupleOf([]);
+
+	equal(isTupleOf, tuple);
 
 	ok(isEmptyTuple([]));
 	notOk(isEmptyTuple([undefined]));
@@ -237,10 +241,12 @@ test('isTupleOf', ({ end }) => {
 	notOk(isTupleOfUUU([null]));
 
 	throws(() => {
+		// @ts-expect-error
 		isTupleOf();
 	}, TypeError('Invalid type guards provided'));
 
 	throws(() => {
+		// @ts-expect-error
 		isTupleOf([null]);
 	}, TypeError('Invalid type guard provided'));
 

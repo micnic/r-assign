@@ -1,16 +1,21 @@
 'use strict';
 
 const { test, equal, notOk, ok, throws } = require('tap');
-const { isAny } = require('r-assign/lib/any');
-const { isBoolean } = require('r-assign/lib/boolean');
-const { isNumber } = require('r-assign/lib/number');
-const { isOptional } = require('r-assign/lib/optional');
-const { isString } = require('r-assign/lib/string');
 const {
 	getUnionOf,
+	isAny,
+	isArrayOf,
+	isBoolean,
+	isLiteral,
+	isLiteralOf,
+	isNumber,
+	isOptional,
+	isString,
+	isTemplateLiteralOf,
 	isUnionOf,
-	parseUnionOf
-} = require('r-assign/lib/union');
+	parseUnionOf,
+	union
+} = require('r-assign/lib');
 
 const expected = 'expected an union of (string | number)';
 const invalidDefaultValue = 'Invalid default value type';
@@ -28,6 +33,7 @@ test('getUnionOf', ({ end }) => {
 	equal(getStringOrNumber('data'), 'data');
 
 	throws(() => {
+		// @ts-expect-error
 		getUnionOf([isString, isNumber], null);
 	}, TypeError(`${invalidDefaultValue}, ${expected} but received null`));
 
@@ -36,20 +42,50 @@ test('getUnionOf', ({ end }) => {
 
 test('isUnionOf', ({ end }) => {
 
+	equal(isUnionOf, union);
+
 	ok(isUnionOf([isBoolean, isNumber])(true));
-	ok(isUnionOf([isBoolean, isBoolean])(true));
 	ok(isUnionOf([isBoolean, isNumber])(0));
+	ok(isUnionOf([isLiteral('a'), isString])(''));
+	ok(isUnionOf([isLiteral('a'), isLiteralOf(['a', 'b'])])('a'));
+	ok(isUnionOf([isLiteralOf(['a', 0, 1]), isString])('a'));
+	ok(isUnionOf([isLiteralOf(['a', 0]), isString])('a'));
+	ok(isUnionOf([isTemplateLiteralOf([isNumber]), isString])(''));
+
+	// TODO: add a check for equivalent types
+	ok(isUnionOf([isArrayOf(isBoolean), isArrayOf(isBoolean)])([true]));
+
 	notOk(isUnionOf([isBoolean, isNumber])(''));
 
+	const isBooleanOrNumberOrString = isUnionOf([
+		isBoolean,
+		isUnionOf([isNumber, isString])
+	]);
+
+	ok(isBooleanOrNumberOrString(true));
+	ok(isBooleanOrNumberOrString(0));
+	ok(isBooleanOrNumberOrString(''));
+	notOk(isBooleanOrNumberOrString());
+
+	equal(isUnionOf([isBoolean, isBoolean]), isBoolean);
+
 	throws(() => {
+		// @ts-expect-error
 		isUnionOf();
 	}, TypeError('Invalid type guards provided'));
 
 	throws(() => {
+		// @ts-expect-error
 		isUnionOf([]);
 	}, TypeError('Not enough type guards, at least two expected'));
 
 	throws(() => {
+		// @ts-expect-error
+		isUnionOf(Array(1 + 1));
+	}, TypeError('Not enough type guards, at least two expected'));
+
+	throws(() => {
+		// @ts-expect-error
 		isUnionOf([null, null]);
 	}, TypeError('Invalid type guard provided'));
 
