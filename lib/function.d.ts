@@ -20,4 +20,9 @@ declare function isFunction<T extends Tuple>(
 	args: T
 ): TypeGuard<InferFunction<T, TypeGuard<void>>>;
 
-export { isFunction, InferFunction };
+export {
+	isFunction,
+	isFunction as func
+};
+
+export type { InferFunction };
