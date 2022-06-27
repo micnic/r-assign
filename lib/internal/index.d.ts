@@ -1,99 +1,143 @@
 import type {
+	Constructor,
 	Intersection,
 	Literal,
 	Shape,
-	TemplateLiteral,
 	Tuple,
 	TypeGuard,
 	Union
 } from 'r-assign/lib';
 
-type ArrayTypeGuardMeta = {
+type StringifiedTemplateLiteral<L extends Literal> = (TypeGuard<L> | string)[];
+type ReducibleTemplateLiteral<S extends string> = (TypeGuard<S> | S)[];
+
+type BaseTypeGuardMeta = {
+	annotation: string;
+	description: string;
+};
+
+type AnyTypeGuardMeta = BaseTypeGuardMeta & {
+	classification: 'any';
+};
+
+type ArrayTypeGuardMeta = BaseTypeGuardMeta & {
 	classification: 'array';
 	type: TypeGuard;
 };
 
-type FunctionTypeGuardMeta = {
+type FunctionTypeGuardMeta = BaseTypeGuardMeta & {
 	classification: 'function';
-	args: TypeGuard;
+	args: TypeGuard<any[] | []>;
 	result: TypeGuard | undefined;
 };
 
-type IntersectionTypeGuardMeta = {
-	classification: 'intersection';
-	types: Intersection;
+type InstanceTypeGuardMeta = BaseTypeGuardMeta & {
+	classification: 'instance';
+	constructor: Constructor;
 };
 
-type LiteralTypeGuardMeta = {
+type IntersectionTypeGuardMeta = BaseTypeGuardMeta & {
+	classification: 'intersection';
+	types: Intersection
+};
+
+type LiteralTypeGuardMeta = BaseTypeGuardMeta & {
 	classification: 'literal';
 	literal: Literal;
 };
 
-type LiteralsTypeGuardMeta = {
+type LiteralsTypeGuardMeta = BaseTypeGuardMeta & {
 	classification: 'literals';
 	literals: Literal[];
 };
 
-type NullableTypeGuardMeta = {
-	classification: 'nullable';
-	type: TypeGuard;
-};
-
-type ObjectTypeGuardMeta = {
+type ObjectTypeGuardMeta = BaseTypeGuardMeta & {
 	classification: 'object';
+	mapping?: TypeGuard<Record<keyof any, any>> | undefined;
 	shape: Shape;
+	strict: boolean;
 };
 
-type OptionalTypeGuardMeta = {
+type OptionalTypeGuardMeta = BaseTypeGuardMeta & {
 	classification: 'optional';
 	undef: boolean;
 	type: TypeGuard;
 };
 
-type PrimitiveTypeGuardMeta = {
+type PrimitiveTypeGuardMeta = BaseTypeGuardMeta & {
 	classification: 'primitive';
-	type: 'bigint' | 'boolean' | 'number' | 'string' | 'symbol';
-};
-
-type TemplateLiteralTypeGuardMeta = {
-	classification: 'template-literal';
-	template: TemplateLiteral;
-};
-
-type TupleTypeGuardMeta = {
-	classification: 'tuple';
-	types: Tuple;
-};
-
-type UnionTypeGuardMeta = {
-	classification: 'union';
-	types: Union;
-};
-
-type TypeGuardMeta = {
-	annotation: string;
-	description: string;
 } & (
-	| { classification: 'any' | 'instance' }
+	| { primitive: 'bigint' | 'boolean' | 'string' | 'symbol' }
+	| { primitive: 'number'; finite: boolean }
+);
+
+type RecordTypeGuardMeta = BaseTypeGuardMeta & {
+	classification: 'record';
+	keys: TypeGuard<keyof any>;
+	values: TypeGuard;
+};
+
+type TemplateLiteralTypeGuardMeta = BaseTypeGuardMeta & {
+	classification: 'template-literal';
+	regexp: RegExp;
+	template: StringifiedTemplateLiteral<any>;
+};
+
+type TupleTypeGuardMeta = BaseTypeGuardMeta & {
+	classification: 'tuple';
+	tuple: Tuple;
+};
+
+type UnionTypeGuardMeta = BaseTypeGuardMeta & {
+	classification: 'union';
+	union: Union;
+};
+
+type TypeGuardMeta =
+	| AnyTypeGuardMeta
 	| ArrayTypeGuardMeta
 	| FunctionTypeGuardMeta
+	| InstanceTypeGuardMeta
 	| IntersectionTypeGuardMeta
 	| LiteralTypeGuardMeta
 	| LiteralsTypeGuardMeta
-	| NullableTypeGuardMeta
 	| ObjectTypeGuardMeta
 	| OptionalTypeGuardMeta
 	| PrimitiveTypeGuardMeta
+	| RecordTypeGuardMeta
 	| TemplateLiteralTypeGuardMeta
 	| TupleTypeGuardMeta
-	| UnionTypeGuardMeta
-);
+	| UnionTypeGuardMeta;
 
 type TypeClassification = TypeGuardMeta['classification'];
 
 export type {
+	ArrayTypeGuardMeta,
+	ArrayTypeGuardMeta as ArTGM,
+	FunctionTypeGuardMeta,
+	FunctionTypeGuardMeta as FTGM,
+	LiteralTypeGuardMeta,
+	LiteralTypeGuardMeta as LTGM,
+	LiteralsTypeGuardMeta,
+	LiteralsTypeGuardMeta as LsTGM,
+	ObjectTypeGuardMeta,
+	ObjectTypeGuardMeta as ObTGM,
+	PrimitiveTypeGuardMeta,
+	PrimitiveTypeGuardMeta as PTGM,
+	RecordTypeGuardMeta,
+	RecordTypeGuardMeta as RTGM,
+	ReducibleTemplateLiteral,
+	ReducibleTemplateLiteral as RTL,
+	StringifiedTemplateLiteral,
+	StringifiedTemplateLiteral as STL,
+	TemplateLiteralTypeGuardMeta,
+	TemplateLiteralTypeGuardMeta as TLTGM,
+	TupleTypeGuardMeta,
+	TupleTypeGuardMeta as TTGM,
 	TypeGuardMeta,
 	TypeGuardMeta as TGM,
 	TypeClassification,
-	TypeClassification as TC
+	TypeClassification as TC,
+	UnionTypeGuardMeta,
+	UnionTypeGuardMeta as UTGM
 };
