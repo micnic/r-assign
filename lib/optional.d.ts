@@ -8,7 +8,7 @@ import type {
 
 /**
  * Extract optional values
- * @deprecated will be removed in version 2.0, use getType instead
+ * @deprecated will be removed in version 2.0, use `getType()` instead
  */
 declare function getOptional<T extends TransformFunction>(
 	transform: T
@@ -32,10 +32,17 @@ declare function isOptionalUndefined<T extends TypeGuard>(
 
 /**
  * Extract and validate optional values
- * @deprecated will be removed in version 2.0, use parseType instead
+ * @deprecated will be removed in version 2.0, use `parseType()` instead
  */
 declare function parseOptional<T extends TypeGuard>(
 	type: NotOptionalTypeGuard<T>
 ): TransformFunction<InferTypeGuard<T> | undefined>;
 
-export { getOptional, isOptional, isOptionalUndefined, parseOptional };
+export {
+	getOptional,
+	isOptional,
+	isOptional as optional,
+	isOptionalUndefined,
+	isOptionalUndefined as optionalUndef,
+	parseOptional
+};
