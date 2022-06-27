@@ -1,34 +1,38 @@
 import type { TransformFunction } from 'r-assign';
-import type { InferInstance, Instance, TypeGuard } from 'r-assign/lib';
+import type { Constructor, InferConstructor, TypeGuard } from 'r-assign/lib';
 
 /**
  * Extract instance values
- * @deprecated will be removed in version 2.0, use getType instead
+ * @deprecated will be removed in version 2.0, use `getType()` instead
  */
-declare function getInstanceOf<I extends Instance>(
-	type: I,
-	initial: InferInstance<I>
-): TransformFunction<InferInstance<I>>;
+declare function getInstanceOf<C extends Constructor>(
+	type: C,
+	initial: InferConstructor<C>
+): TransformFunction<InferConstructor<C>>;
 
 /**
  * Check for instance values
  */
-declare function isInstanceOf<I extends Instance>(
-	type: I
-): TypeGuard<InferInstance<I>>;
+declare function isInstanceOf<C extends Constructor>(
+	type: C
+): TypeGuard<InferConstructor<C>>;
 
 /**
  * Extract and validate instance values
- * @deprecated will be removed in version 2.0, use parseType instead
+ * @deprecated will be removed in version 2.0, use `parseType()` instead
  */
-declare function parseInstanceOf<I extends Instance>(
-	type: I
-): TransformFunction<InferInstance<I>>;
+declare function parseInstanceOf<C extends Constructor>(
+	type: C
+): TransformFunction<InferConstructor<C>>;
 
 export {
 	getInstanceOf,
 	isInstanceOf,
-	parseInstanceOf,
-	InferInstance,
-	Instance
+	isInstanceOf as instance,
+	parseInstanceOf
+};
+
+export type {
+	Constructor,
+	InferConstructor
 };
