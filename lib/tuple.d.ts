@@ -3,7 +3,7 @@ import type { InferTuple, Tuple, TypeGuard } from 'r-assign/lib';
 
 /**
  * Extract tuple values
- * @deprecated will be removed in version 2.0, use getType instead
+ * @deprecated will be removed in version 2.0, use `getType()` instead
  */
 declare function getTupleOf<T extends Tuple>(
 	tuple: T,
@@ -19,10 +19,20 @@ declare function isTupleOf<T extends Tuple>(
 
 /**
  * Extract and validate tuple values
- * @deprecated will be removed in version 2.0, use parseType instead
+ * @deprecated will be removed in version 2.0, use `parseType()` instead
  */
 declare function parseTupleOf<T extends Tuple>(
 	tuple: T
 ): TransformFunction<InferTuple<T>>;
 
-export { getTupleOf, isTupleOf, parseTupleOf, InferTuple, Tuple };
+export {
+	getTupleOf,
+	isTupleOf,
+	isTupleOf as tuple,
+	parseTupleOf
+};
+
+export type {
+	InferTuple,
+	Tuple
+};
