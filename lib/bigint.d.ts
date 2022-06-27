@@ -3,7 +3,7 @@ import type { TypeGuard } from 'r-assign/lib';
 
 /**
  * Extract BigInt values
- * @deprecated will be removed in version 2.0, use getType instead
+ * @deprecated will be removed in version 2.0, use `getType()` instead
  */
 declare function getBigInt(initial?: bigint): TransformFunction<bigint>;
 
@@ -14,8 +14,17 @@ declare const isBigInt: TypeGuard<bigint>;
 
 /**
  * Extract and validate BigInt values
- * @deprecated will be removed in version 2.0, use parseType instead
+ * @deprecated will be removed in version 2.0, use `parseType()` instead
  */
-declare const parseBigInt: TransformFunction<bigint>;
+declare function parseBigInt(
+	value?: unknown,
+	key?: string,
+	source?: unknown
+): bigint;
 
-export { getBigInt, isBigInt, parseBigInt };
+export {
+	getBigInt,
+	isBigInt,
+	isBigInt as bigint,
+	parseBigInt
+};
