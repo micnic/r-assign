@@ -13,6 +13,7 @@ const methods = [
 	'asAnyDate',
 	'asDate',
 	'asString',
+	'assertType',
 	'bigint',
 	'boolean',
 	'convertToAnyDate',
