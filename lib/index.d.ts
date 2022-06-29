@@ -148,6 +148,7 @@ type ReplaceFunction<T> = (value: T) => T;
 
 export * from 'r-assign/lib/any';
 export * from 'r-assign/lib/array';
+export * from 'r-assign/lib/assert-type';
 export * from 'r-assign/lib/bigint';
 export * from 'r-assign/lib/boolean';
 export * from 'r-assign/lib/date';
