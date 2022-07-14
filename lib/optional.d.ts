@@ -15,7 +15,7 @@ declare function getOptional<T extends TransformFunction>(
 ): TransformFunction<ReturnType<T> | undefined>;
 
 /**
- * Check for optional values
+ * Check for strict optional values
  * @note Does not accept `isOptional*` type guard as it is invalid syntax
  */
 declare function isOptional<T extends TypeGuard>(
@@ -23,7 +23,7 @@ declare function isOptional<T extends TypeGuard>(
 ): OptionalTypeGuard<InferTypeGuard<T>>;
 
 /**
- * Check for optional values
+ * Check for optional or undefined values
  * @note Does not accept `isOptional*` type guard as it is invalid syntax
  */
 declare function isOptionalUndefined<T extends TypeGuard>(
