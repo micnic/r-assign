@@ -12,6 +12,10 @@ type InferLiterals<
 	T extends Literals<L>
 > = T extends (infer S)[] ? S : never;
 
+type PartialUndefined<T> = {
+	[P in keyof T]?: T[P] | undefined;
+};
+
 type TypeGuard<T = any> = ((value?: any) => value is T) & {};
 type OptionalTag = { optional: true };
 type OptionalTypeGuard<T = any> = TypeGuard<T | undefined> & OptionalTag;
@@ -199,6 +203,8 @@ export type {
 	NotOptionalTypeGuard as NOTG,
 	OptionalTypeGuard,
 	OptionalTypeGuard as OTG,
+	PartialUndefined,
+	PartialUndefined as PU,
 	ReplaceFunction,
 	ReplaceFunction as RF,
 	Shape,

@@ -1,6 +1,7 @@
 import type {
 	InferTypeGuard,
 	NotOptionalTypeGuard,
+	PartialUndefined,
 	TypeGuard
 } from 'r-assign/lib';
 
@@ -18,11 +19,17 @@ declare function isPartial<T extends TypeGuard<Record<keyof any, any> | any[]>>(
  */
 declare function isPartialUndefined<
 	T extends TypeGuard<Record<keyof any, any> | any[]>
->(type: NotOptionalTypeGuard<T>): TypeGuard<Partial<InferTypeGuard<T>>>;
+>(
+	type: NotOptionalTypeGuard<T>
+): TypeGuard<PartialUndefined<InferTypeGuard<T>>>;
 
 export {
 	isPartial,
 	isPartial as partial,
 	isPartialUndefined,
 	isPartialUndefined as partialUndef
+};
+
+export type {
+	PartialUndefined
 };

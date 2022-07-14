@@ -15,7 +15,7 @@ declare function getLiteral<L extends Literal>(
  */
 declare function getLiteralOf<L extends Literal, T extends Literals<L>>(
 	literals: T,
-	initial?: InferLiterals<L, T>
+	initial: InferLiterals<L, T>
 ): TransformFunction<InferLiterals<L, T>>;
 
 /**
