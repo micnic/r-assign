@@ -1,20 +1,20 @@
 'use strict';
 
 const { test, equal, notOk, ok, throws } = require('tap');
-const { isOptional } = require('r-assign/lib/optional');
-const { getString, isString } = require('r-assign/lib/string');
 const {
 	getNull,
 	getNullable,
 	isNull,
 	isNullable,
 	isNullish,
+	isOptional,
+	isString,
 	nullable,
 	nulled,
 	nullish,
 	parseNull,
 	parseNullable
-} = require('r-assign/lib/null');
+} = require('r-assign/lib');
 
 const expectedNull = 'expected a null value';
 const expectedNullable = 'expected an union of (string | null)';
@@ -30,9 +30,9 @@ test('getNull', ({ end }) => {
 
 test('getNullable', ({ end }) => {
 
-	const getNullableString = getNullable(getString());
+	const getNullableString = getNullable(isString);
 
-	equal(getNullableString(), '');
+	equal(getNullableString(), null);
 	equal(getNullableString(''), '');
 	equal(getNullableString('data'), 'data');
 	equal(getNullableString(null), null);
@@ -40,7 +40,7 @@ test('getNullable', ({ end }) => {
 	throws(() => {
 		// @ts-expect-error
 		getNullable();
-	}, TypeError('Invalid transform function provided'));
+	}, TypeError('Invalid type guard provided'));
 
 	end();
 });

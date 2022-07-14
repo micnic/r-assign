@@ -122,7 +122,7 @@ expectType<TypeGuard<0 | 0n | '' | false | null | undefined>>(
 expectType<TransformFunction<0>>(lib.getLiteral(0));
 // @ts-expect-error
 expectDeprecated(lib.getLiteral());
-expectType<TransformFunction<0 | 1>>(lib.getLiteralOf([0, 1]));
+expectType<TransformFunction<0 | 1>>(lib.getLiteralOf([0, 1], 0));
 // @ts-expect-error
 expectDeprecated(lib.getLiteralOf());
 expectType<TransformFunction<0>>(lib.parseLiteral(0));
@@ -143,7 +143,7 @@ expectType<TypeGuard<string | null | undefined>>(lib.nullish(lib.string));
 // Null deprecated
 expectType<TransformFunction<null>>(lib.getNull);
 expectDeprecated(lib.getNull());
-expectType<TransformFunction<string | null>>(lib.getNullable(lib.getString()));
+expectType<TransformFunction<string | null>>(lib.getNullable(lib.string));
 // @ts-expect-error
 expectDeprecated(lib.getNullable());
 expectType<TransformFunction<null>>(lib.parseNull);
@@ -205,18 +205,6 @@ expectType<OptionalTypeGuard<string>>(lib.optional(lib.string));
 expectType<OptionalTypeGuard<string | undefined>>(
 	lib.optionalUndef(lib.string)
 );
-
-// Optional deprecated
-expectType<TransformFunction<string | undefined>>(
-	lib.getOptional(lib.getString())
-);
-// @ts-expect-error
-expectDeprecated(lib.getOptional());
-expectType<TransformFunction<string | undefined>>(
-	lib.parseOptional(lib.string)
-);
-// @ts-expect-error
-expectDeprecated(lib.parseOptional());
 
 // Parse type
 expectType<TransformFunction<string>>(lib.parseType(lib.string));

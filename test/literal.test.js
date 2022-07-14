@@ -37,7 +37,7 @@ test('getLiteral', ({ end }) => {
 
 test('getLiteralOf', ({ end }) => {
 
-	const getLiteralAB = getLiteralOf(['a', 'b']);
+	const getLiteralAB = getLiteralOf(['a', 'b'], 'a');
 
 	equal(getLiteralAB(), 'a');
 	equal(getLiteralAB('b'), 'b');

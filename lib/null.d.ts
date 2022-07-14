@@ -11,9 +11,9 @@ declare function getNull(value?: unknown, key?: string, source?: unknown): null;
  * Extract nullable values
  * @deprecated will be removed in version 2.0, use `getType()` instead
  */
-declare function getNullable<T extends TransformFunction>(
-	transform: T
-): TransformFunction<ReturnType<T> | null>;
+declare function getNullable<T extends TypeGuard>(
+	type: T
+): TransformFunction<InferTypeGuard<T> | null>;
 
 /**
  * Check for null values
