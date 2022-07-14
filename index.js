@@ -1,7 +1,7 @@
 'use strict';
 
 const { hasOneElement } = require('r-assign/lib/internal/array-checks');
-const { forIn } = require('r-assign/lib/internal/object-utils');
+const { forMap } = require('r-assign/lib/internal/object-utils');
 
 /**
  * @template [T = any]
@@ -56,12 +56,10 @@ const rAssign = (schema, ...sources) => {
 		throw TypeError(invalidSchema);
 	}
 
-	/** @type {any} */ // TODO: find a way to replace with a specific type
-	const result = {};
 	const source = getSource(sources);
 
-	// Loop through schema properties to select them
-	forIn(schema, (transform, key) => {
+	/** @type {any} */
+	const result = forMap(schema, (transform, key) => {
 
 		// Check for valid schema properties
 		if (typeof transform !== 'function') {
@@ -71,9 +69,11 @@ const rAssign = (schema, ...sources) => {
 		const value = transform(source[key], key, source);
 
 		// Skip values that are undefined
-		if (value !== undefined) {
-			result[key] = value;
+		if (value === undefined) {
+			return undefined;
 		}
+
+		return value;
 	});
 
 	return result;

@@ -221,12 +221,30 @@ expectDeprecated(lib.parseOptional());
 // Parse type
 expectType<TransformFunction<string>>(lib.parseType(lib.string));
 
+// Partial
+expectType<TypeGuard<[string?]>>(lib.isPartial(lib.tuple([lib.string])));
+expectType<TypeGuard<[(string | undefined)?]>>(
+	lib.isPartialUndefined(lib.tuple([lib.string]))
+);
+expectType<TypeGuard<[string?]>>(lib.partial(lib.tuple([lib.string])));
+expectType<TypeGuard<[(string | undefined)?]>>(
+	lib.partialUndef(lib.tuple([lib.string]))
+);
+
 // Record
 expectType<TypeGuard<Record<string, string>>>(
 	lib.isRecordOf(lib.string, lib.string)
 );
 expectType<TypeGuard<Record<string, string>>>(
 	lib.record(lib.string, lib.string)
+);
+
+// Required
+expectType<TypeGuard<[string]>>(
+	lib.isRequired(lib.tuple([lib.optional(lib.string)]))
+);
+expectType<TypeGuard<[string]>>(
+	lib.required(lib.tuple([lib.optional(lib.string)]))
 );
 
 // String

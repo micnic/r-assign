@@ -2,6 +2,7 @@ import type {
 	Constructor,
 	Intersection,
 	Literal,
+	OptionalTypeGuard,
 	Shape,
 	Tuple,
 	TypeGuard,
@@ -60,8 +61,9 @@ type ObjectTypeGuardMeta = BaseTypeGuardMeta & {
 
 type OptionalTypeGuardMeta = BaseTypeGuardMeta & {
 	classification: 'optional';
-	undef: boolean;
+	main: OptionalTypeGuard;
 	type: TypeGuard;
+	undef: boolean;
 };
 
 type PrimitiveTypeGuardMeta = BaseTypeGuardMeta & {
