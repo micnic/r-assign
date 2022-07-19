@@ -57,8 +57,11 @@ Reasons to use `r-assign`:
   - [Union](#union)
   - [Intersection](#intersection)
   - [Optional](#optional)
+  - [Partial](#partial)
+  - [Required](#required)
 - [Parsing data](#parsing-data)
 - [Getting data](#getting-data)
+- [Type assertions](#type-assertions)
 - [Converting data](#converting-data)
 - [Working with TypeScript](#working-with-typescript)
 - [Mapping properties](#mapping-properties)
@@ -762,6 +765,133 @@ object({
 });
 ```
 
+### Partial
+
+```js
+import {
+    isPartial,
+    isPartialUndefined,
+    partial,
+    partialUndef
+} from 'r-assign/lib/partial';
+import { isNumber, number } from 'r-assign/lib/number';
+import { isObjectOf, object, } from 'r-assign/lib/object';
+import { isString, string } from 'r-assign/lib/string';
+import { isTupleOf, tuple } from 'r-assign/lib/tuple';
+
+const isPartialTuple = isPartial(isTupleOf([isString]));
+
+isPartialTuple(['abc']); // => true
+isPartialTuple([]); // => true
+isPartialTuple([undefined]); // => false, strict optional is used
+
+// Alias:
+partial(tuple([string]));
+
+const isPartialUndefinedTuple = isPartialUndefined(isTupleOf([isString]));
+
+isPartialUndefinedTuple(['abc']); // => true
+isPartialUndefinedTuple([]); // => true
+isPartialUndefinedTuple([undefined]); // => true
+
+// Alias:
+partialUndef(tuple([string]));
+
+const isPartialObject = isPartial(isObjectOf({
+    name: isString,
+    age: isNumber
+}));
+
+isPartialObject({
+    name: 'John',
+    age: 22
+}); // => true
+isPartialObject({
+    name: 'John'
+}); // => true
+isPartialObject({
+    age: 22
+}); // => true
+isPartialObject({}); // => true, all properties are optional
+isPartialObject({
+    name: 'John',
+    age: undefined
+}); // => false, properties are strict optional
+
+// Alias:
+partial(object({
+    name: string,
+    age: number
+}));
+
+const isPartialUndefinedObject = isPartialUndefined(isObjectOf({
+    name: isString,
+    age: isNumber
+}));
+
+isPartialUndefinedObject({
+    name: 'John',
+    age: 22
+}); // => true
+isPartialUndefinedObject({
+    name: 'John'
+}); // => true
+isPartialUndefinedObject({
+    name: 'John',
+    age: undefined
+}); // => true
+
+// Alias:
+partialUndef(object({
+    name: string,
+    age: number
+}));
+```
+
+### Required
+
+```js
+import {
+    isRequired,
+    required
+} from 'r-assign/lib/required';
+import {
+    isOptional,
+    optional
+} from 'r-assign/lib/optional';
+import { isNumber, number } from 'r-assign/lib/number';
+import { isObjectOf, object, } from 'r-assign/lib/object';
+import { isString, string } from 'r-assign/lib/string';
+import { isTupleOf, tuple } from 'r-assign/lib/tuple';
+
+const isRequiredTuple = isRequired(isTupleOf([isOptional(isString)]));
+
+isRequiredTuple(['abc']); // => true
+isRequiredTuple([]); // => false, is required already
+
+// Alias:
+partial(tuple([optional(string)]));
+
+const isRequiredObject = isRequired(isObjectOf({
+    name: isString,
+    age: isOptional(isNumber)
+}));
+
+isRequiredObject({
+    name: 'John',
+    age: 22
+}); // => true
+isRequiredObject({
+    name: 'John'
+}); // => false, is required already
+
+// Alias:
+required(object({
+    name: string,
+    age: optional(number)
+}));
+```
+
 ## Parsing data
 `r-assign` allows parsing provided values, it will validate them based on the
 defined schemas, will throw an error in case they do not match or just return
@@ -801,6 +931,24 @@ import { isString } from 'r-assign/lib/string';
 const result = rAssign({
     data: getType(isString, 'abc') // Default value will be "abc"
 }, { /* Unknown data */ });
+```
+
+## Type assertions
+`r-assign` also provides a way to assert the type of the input, it will throw an
+error if the input does not match the defined type. Thrown error message can be
+customized. This is useful for validating functions input or for debugging
+purposes.
+
+```js
+import { assertType } from 'r-assign/lib/assert-type';
+import { isString } from 'r-assign/lib/string';
+
+const expectString = (value) => {
+    assertType(isString, value, 'Expected string');
+
+    // value is string
+    // Do something with value
+};
 ```
 
 ## Converting data
