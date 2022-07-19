@@ -10,7 +10,8 @@ import type {
  */
 declare function assertType<T extends TypeGuard>(
 	type: NotOptionalTypeGuard<T>,
-	value: unknown
+	value: unknown,
+	message?: string
 ): asserts value is InferTypeGuard<T>;
 
 export { assertType };
