@@ -1,6 +1,6 @@
 'use strict';
 
-const { test, equal, notOk, ok, throws } = require('tap');
+const { test, equal, match, notOk, ok, throws } = require('tap');
 const {
 	getUnionOf,
 	isAny,
@@ -9,6 +9,7 @@ const {
 	isLiteral,
 	isLiteralOf,
 	isNumber,
+	isObjectOf,
 	isOptional,
 	isString,
 	isTemplateLiteralOf,
@@ -31,6 +32,21 @@ test('getUnionOf', ({ end }) => {
 	equal(getStringOrNumber(1), 1);
 	equal(getStringOrNumber(''), '');
 	equal(getStringOrNumber('data'), 'data');
+
+	match(
+		getUnionOf(
+			[isObjectOf({ prop: isString }), isObjectOf({ prop: isNumber })],
+			{ prop: 'data' }
+		)(),
+		{ prop: 'data' }
+	);
+	match(
+		getUnionOf(
+			[isObjectOf({ prop: isString }), isObjectOf({ prop: isNumber })],
+			{ prop: 'data' }
+		)({ prop: 'prop' }),
+		{ prop: 'prop' }
+	);
 
 	throws(() => {
 		// @ts-expect-error

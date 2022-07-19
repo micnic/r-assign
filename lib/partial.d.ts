@@ -7,7 +7,7 @@ import type {
 
 /**
  * Check for values that have all properties strict optional
- * @note Accepts only object and tuple type guards
+ * @note Accepts only object, record, array and tuple type guards
  */
 declare function isPartial<T extends TypeGuard<Record<keyof any, any> | any[]>>(
 	type: NotOptionalTypeGuard<T>
@@ -15,7 +15,7 @@ declare function isPartial<T extends TypeGuard<Record<keyof any, any> | any[]>>(
 
 /**
  * Check for values that have all properties optional or undefined
- * @note Accepts only object and tuple type guards
+ * @note Accepts only object, record, array and tuple type guards
  */
 declare function isPartialUndefined<
 	T extends TypeGuard<Record<keyof any, any> | any[]>

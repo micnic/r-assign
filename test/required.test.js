@@ -5,6 +5,7 @@ const {
 	isObjectOf,
 	isOptional,
 	isOptionalUndefined,
+	isRecordOf,
 	isRequired,
 	isStrictObjectOf,
 	isString,
@@ -21,6 +22,27 @@ test('isRequired', ({ end }) => {
 		isRequired(isObjectOf({ a: isOptional(isString) }))({ a: undefined })
 	);
 	notOk(isRequired(isObjectOf({ a: isOptional(isString) }))({}));
+
+	ok(
+		isRequired(
+			isObjectOf({ a: isOptional(isString) }, isRecordOf(isString))
+		)({ a: 'abc' })
+	);
+	ok(
+		isRequired(
+			isObjectOf({ a: isOptional(isString) }, isRecordOf(isString))
+		)({ a: 'abc', b: 'def' })
+	);
+	notOk(
+		isRequired(
+			isObjectOf({ a: isOptional(isString) }, isRecordOf(isString))
+		)({ a: undefined })
+	);
+	notOk(
+		isRequired(
+			isObjectOf({ a: isOptional(isString) }, isRecordOf(isString))
+		)({})
+	);
 
 	ok(
 		isRequired(isObjectOf({ a: isOptionalUndefined(isString) }))({

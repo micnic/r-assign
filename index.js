@@ -1,7 +1,6 @@
 'use strict';
 
 const { hasOneElement } = require('r-assign/lib/internal/array-checks');
-const { forMap } = require('r-assign/lib/internal/object-utils');
 
 /**
  * @template [T = any]
@@ -13,7 +12,7 @@ const { forMap } = require('r-assign/lib/internal/object-utils');
  * @typedef {import('r-assign').InferType<S>} InferType
  */
 
-const { assign } = Object;
+const { assign, entries } = Object;
 
 const invalidSchema = 'Invalid schema argument type, object expected';
 
@@ -59,7 +58,10 @@ const rAssign = (schema, ...sources) => {
 	const source = getSource(sources);
 
 	/** @type {any} */
-	const result = forMap(schema, (transform, key) => {
+	const result = {};
+
+	// Populate result properties
+	entries(schema).forEach(([key, transform]) => {
 
 		// Check for valid schema properties
 		if (typeof transform !== 'function') {
@@ -69,11 +71,9 @@ const rAssign = (schema, ...sources) => {
 		const value = transform(source[key], key, source);
 
 		// Skip values that are undefined
-		if (value === undefined) {
-			return undefined;
+		if (value !== undefined) {
+			result[key] = value;
 		}
-
-		return value;
 	});
 
 	return result;
