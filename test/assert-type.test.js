@@ -16,6 +16,10 @@ test('assertType', ({ end }) => {
 	}, TypeError(`${invalidValue}, ${expected} ${received}`));
 
 	throws(() => {
+		assertType(isString, 0, 'Custom error message');
+	}, TypeError('Custom error message'));
+
+	throws(() => {
 		// @ts-expect-error
 		assertType(isOptional(isString), '');
 	}, TypeError('Optional type guard cannot be used as base'));
