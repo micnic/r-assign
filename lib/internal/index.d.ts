@@ -3,12 +3,12 @@ import type {
 	Intersection,
 	Literal,
 	OptionalTypeGuard,
-	Shape,
 	Tuple,
 	TypeGuard,
 	Union
 } from 'r-assign/lib';
 
+type ShapeEntries = [string, TypeGuard][];
 type StringifiedTemplateLiteral<L extends Literal> = (TypeGuard<L> | string)[];
 type ReducibleTemplateLiteral<S extends string> = (TypeGuard<S> | S)[];
 
@@ -54,8 +54,9 @@ type LiteralsTypeGuardMeta = BaseTypeGuardMeta & {
 
 type ObjectTypeGuardMeta = BaseTypeGuardMeta & {
 	classification: 'object';
+	entries: ShapeEntries;
+	keys: string[];
 	mapping?: TypeGuard<Record<keyof any, any>> | undefined;
-	shape: Shape;
 	strict: boolean;
 };
 
@@ -130,6 +131,8 @@ export type {
 	RecordTypeGuardMeta as RTGM,
 	ReducibleTemplateLiteral,
 	ReducibleTemplateLiteral as RTL,
+	ShapeEntries,
+	ShapeEntries as SE,
 	StringifiedTemplateLiteral,
 	StringifiedTemplateLiteral as STL,
 	TemplateLiteralTypeGuardMeta,

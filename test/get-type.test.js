@@ -62,6 +62,14 @@ test('getType', ({ end }) => {
 	equal(getIntersectBNS(1), 1);
 	equal(getIntersectBNS(), 0);
 
+	match(
+		getType(
+			isIntersectionOf([isFunction([isString]), isFunction([isNumber])]),
+			() => { /* Noop */ }
+		)(),
+		() => { /* Noop */ }
+	);
+
 	const getObjectOfString = getType(isObjectOf({
 		a: isOptional(isString)
 	}), {});

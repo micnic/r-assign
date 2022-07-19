@@ -2,11 +2,13 @@
 
 const { test, equal, notOk, ok, throws } = require('tap');
 const {
+	isArrayOf,
 	isObjectOf,
 	isOptional,
 	isOptionalUndefined,
 	isPartial,
 	isPartialUndefined,
+	isRecordOf,
 	isStrictObjectOf,
 	isString,
 	isTupleOf,
@@ -18,6 +20,11 @@ test('isPartial', ({ end }) => {
 
 	equal(isPartial, partial);
 
+	ok(isPartial(isArrayOf(isString))(['abc']));
+	ok(isPartial(isArrayOf(isString))([undefined]));
+	ok(isPartial(isArrayOf(isString))([]));
+	notOk(isPartial(isArrayOf(isString))([1]));
+
 	ok(isPartial(isObjectOf({ a: isString }))({}));
 	ok(isPartial(isObjectOf({ a: isOptional(isString) }))({}));
 	ok(isPartial(isObjectOf({ a: isOptionalUndefined(isString) }))({}));
@@ -25,6 +32,54 @@ test('isPartial', ({ end }) => {
 	ok(isPartial(isObjectOf({ a: isString }))({ a: 'abc', b: 'def' }));
 	ok(isPartial(isObjectOf({ a: isString }))({ b: 'def' }));
 	notOk(isPartial(isObjectOf({ a: isString }))({ a: undefined }));
+
+	ok(isPartial(isObjectOf({ a: isString }, isRecordOf(isString)))({}));
+	ok(
+		isPartial(
+			isObjectOf({ a: isOptional(isString) }, isRecordOf(isString))
+		)({})
+	);
+	ok(
+		isPartial(
+			isObjectOf(
+				{ a: isOptionalUndefined(isString) },
+				isRecordOf(isString)
+			)
+		)({})
+	);
+	ok(
+		isPartial(isObjectOf({ a: isString }, isRecordOf(isString)))({
+			a: 'abc'
+		})
+	);
+	ok(
+		isPartial(isObjectOf({ a: isString }, isRecordOf(isString)))({
+			a: 'abc',
+			b: 'def'
+		})
+	);
+	ok(
+		isPartial(isObjectOf({ a: isString }, isRecordOf(isString)))({
+			b: 'def'
+		})
+	);
+	ok(
+		isPartial(isObjectOf({ a: isString }, isRecordOf(isString)))({
+			a: 'abc',
+			b: undefined
+		})
+	);
+	notOk(
+		isPartial(isObjectOf({ a: isString }, isRecordOf(isString)))({
+			a: undefined
+		})
+	);
+	notOk(
+		isPartial(isObjectOf({ a: isString }, isRecordOf(isString)))({
+			a: undefined,
+			b: undefined
+		})
+	);
 
 	ok(isPartial(isStrictObjectOf({ a: isString }))({}));
 	ok(isPartial(isStrictObjectOf({ a: isOptional(isString) }))({}));
