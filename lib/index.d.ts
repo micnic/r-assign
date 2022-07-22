@@ -169,6 +169,7 @@ export * from 'r-assign/lib/parse-type';
 export * from 'r-assign/lib/partial';
 export * from 'r-assign/lib/record';
 export * from 'r-assign/lib/required';
+export * from 'r-assign/lib/same';
 export * from 'r-assign/lib/string';
 export * from 'r-assign/lib/symbol';
 export * from 'r-assign/lib/template-literal';

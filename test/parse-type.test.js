@@ -3,6 +3,7 @@
 const { test, equal, throws } = require('tap');
 const {
 	isOptional,
+	isNumber,
 	isString,
 	isTemplateLiteralOf,
 	parseType
@@ -53,6 +54,11 @@ test('parseType', ({ end }) => {
 	throws(() => {
 		parseType(isTemplateLiteralOf(['a-', isString]))('');
 	}, TypeError(`${invalidValue}, ${expectedTL} but received ""`));
+
+	throws(() => {
+		// @ts-expect-error
+		parseType(isNumber, appendDot)(0);
+	});
 
 	end();
 });

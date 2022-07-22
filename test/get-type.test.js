@@ -75,6 +75,7 @@ test('getType', ({ end }) => {
 	}), {});
 
 	match(getObjectOfString({ a: 'abc' }), { a: 'abc' });
+	match(getObjectOfString({ a: 'abc', b: 'def' }), { a: 'abc' });
 	match(getObjectOfString({ a: 0 }), {});
 	match(getObjectOfString({}), {});
 	match(getObjectOfString(), {});
