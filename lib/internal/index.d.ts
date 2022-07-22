@@ -23,6 +23,7 @@ type AnyTypeGuardMeta = BaseTypeGuardMeta & {
 
 type ArrayTypeGuardMeta = BaseTypeGuardMeta & {
 	classification: 'array';
+	same: boolean;
 	type: TypeGuard;
 };
 
@@ -57,6 +58,7 @@ type ObjectTypeGuardMeta = BaseTypeGuardMeta & {
 	entries: ShapeEntries;
 	keys: string[];
 	mapping?: TypeGuard<Record<keyof any, any>> | undefined;
+	same: boolean;
 	strict: boolean;
 };
 
@@ -77,6 +79,7 @@ type PrimitiveTypeGuardMeta = BaseTypeGuardMeta & {
 type RecordTypeGuardMeta = BaseTypeGuardMeta & {
 	classification: 'record';
 	keys: TypeGuard<keyof any>;
+	same: boolean;
 	values: TypeGuard;
 };
 
@@ -88,6 +91,7 @@ type TemplateLiteralTypeGuardMeta = BaseTypeGuardMeta & {
 
 type TupleTypeGuardMeta = BaseTypeGuardMeta & {
 	classification: 'tuple';
+	same: boolean;
 	tuple: Tuple;
 };
 

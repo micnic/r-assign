@@ -104,6 +104,8 @@ const methods = [
 	'partialUndef',
 	'record',
 	'required',
+	'same',
+	'setSame',
 	'strictObject',
 	'string',
 	'symbol',
