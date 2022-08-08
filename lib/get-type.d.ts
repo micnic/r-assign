@@ -2,7 +2,7 @@ import type { TransformFunction } from 'r-assign';
 import type {
 	InferTypeGuard,
 	NotOptionalTypeGuard,
-	ReplaceFunction,
+	RefineFunction,
 	TypeGuard
 } from 'r-assign/lib';
 
@@ -13,7 +13,7 @@ import type {
 declare function getType<T extends TypeGuard>(
 	type: NotOptionalTypeGuard<T>,
 	initial: InferTypeGuard<T>,
-	replace?: ReplaceFunction<InferTypeGuard<T>>
+	refine?: RefineFunction<InferTypeGuard<T>>
 ): TransformFunction<InferTypeGuard<T>>;
 
 export { getType };

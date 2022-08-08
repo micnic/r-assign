@@ -148,7 +148,7 @@ type Union = [
 
 type InferUnion<T extends Union> = T extends TypeGuard<infer U>[] ? U : never;
 
-type ReplaceFunction<T> = (value: T) => T;
+type RefineFunction<T> = (value: T) => T;
 
 export * from 'r-assign/lib/any';
 export * from 'r-assign/lib/array';
@@ -206,8 +206,8 @@ export type {
 	OptionalTypeGuard as OTG,
 	PartialUndefined,
 	PartialUndefined as PU,
-	ReplaceFunction,
-	ReplaceFunction as RF,
+	RefineFunction,
+	RefineFunction as RF,
 	Shape,
 	TemplateLiteral,
 	TemplateLiteral as TL,
