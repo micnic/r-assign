@@ -15,6 +15,7 @@ declare function getNumber(initial?: number): TransformFunction<number>;
 
 /**
  * Check for number values
+ * @deprecated will be removed in version 2.0
  */
 declare const isAnyNumber: TypeGuard<number>;
 

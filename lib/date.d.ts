@@ -3,6 +3,7 @@ import type { TypeGuard } from 'r-assign/lib';
 
 /**
  * Transform number or string values to date
+ * @deprecated will be removed in version 2.0
  */
 declare const asAnyDate: TransformFunction<Date>;
 
@@ -13,7 +14,7 @@ declare const asDate: TransformFunction<Date>;
 
 /**
  * Transform number or string values to date
- * @deprecated will be removed in version 2.0, use `asAnyDate()` instead
+ * @deprecated will be removed in version 2.0
  */
 declare function convertToAnyDate(
 	value?: unknown,
@@ -33,6 +34,7 @@ declare function convertToDate(
 
 /**
  * Check for date values
+ * @deprecated will be removed in version 2.0
  */
 declare const isAnyDate: TypeGuard<Date>;
 
