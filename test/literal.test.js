@@ -13,7 +13,7 @@ const {
 } = require('r-assign/lib/literal');
 
 const expectedFalse = 'expected false literal';
-const expectedLiterals = 'expected a union of literals ("a" | "b")';
+const expectedLiterals = 'expected a union of literals "a" | "b"';
 const invalidDefaultValue = 'Invalid default value type';
 const invalidValue = 'Invalid value type';
 const received = 'but received null';

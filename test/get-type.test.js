@@ -116,7 +116,7 @@ test('getType', ({ end }) => {
 	throws(() => {
 		// @ts-expect-error
 		getType(isOptional(isString), '');
-	}, TypeError('Optional type guard cannot be used as base'));
+	}, TypeError('Invalid use of optional type'));
 
 	throws(() => {
 		// @ts-expect-error

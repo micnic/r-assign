@@ -18,7 +18,7 @@ const {
 	union
 } = require('r-assign/lib');
 
-const expected = 'expected an union of (string | number)';
+const expected = 'expected an union of string | number';
 const invalidDefaultValue = 'Invalid default value type';
 const invalidOptionalType = 'Optional type cannot be used in union declaration';
 const invalidValue = 'Invalid value type';
@@ -60,6 +60,7 @@ test('isUnionOf', ({ end }) => {
 
 	equal(isUnionOf, union);
 
+	ok(isUnionOf([isBoolean, isNumber, isAny])(''));
 	ok(isUnionOf([isBoolean, isNumber])(true));
 	ok(isUnionOf([isBoolean, isNumber])(0));
 	ok(isUnionOf([isLiteral('a'), isString])(''));
@@ -104,10 +105,6 @@ test('isUnionOf', ({ end }) => {
 		// @ts-expect-error
 		isUnionOf([null, null]);
 	}, TypeError('Invalid type guard provided'));
-
-	throws(() => {
-		isUnionOf([isAny, isString]);
-	}, TypeError('Provided union of any'));
 
 	throws(() => {
 		isUnionOf([isOptional(isString), isString]);

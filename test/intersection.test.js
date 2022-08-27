@@ -1,9 +1,10 @@
 'use strict';
 
-const { test, match, ok, throws } = require('tap');
+const { test, match, notOk, ok, throws } = require('tap');
 const {
 	getIntersectionOf,
 	isAny,
+	isBoolean,
 	isIntersectionOf,
 	isNumber,
 	isObjectOf,
@@ -63,11 +64,29 @@ test('getIntersectionOf', ({ end }) => {
 
 test('isIntersectionOf', ({ end }) => {
 
+	ok(isIntersectionOf([isBoolean, isNumber, isAny])(''));
+
 	ok(isIntersectionOf([isObjectOf({
 		number: isNumber
 	}), isObjectOf({
 		string: isString
 	})])({ number: 0, string: '' }));
+
+	ok(isIntersectionOf([isObjectOf({
+		boolean: isBoolean
+	}), isObjectOf({
+		number: isNumber
+	}), isObjectOf({
+		string: isString
+	})])({ boolean: false, number: 0, string: '' }));
+
+	notOk(isIntersectionOf([isObjectOf({
+		boolean: isBoolean
+	}), isObjectOf({
+		number: isNumber
+	}), isObjectOf({
+		string: isString
+	})])({ boolean: false, number: 0 }));
 
 	throws(() => {
 		// @ts-expect-error
@@ -83,10 +102,6 @@ test('isIntersectionOf', ({ end }) => {
 		// @ts-expect-error
 		isIntersectionOf([null, null]);
 	}, TypeError('Invalid type guard provided'));
-
-	throws(() => {
-		isIntersectionOf([isAny, isString]);
-	}, TypeError('Provided intersection of any'));
 
 	throws(() => {
 		isIntersectionOf([isNumber, isString]);

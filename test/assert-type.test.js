@@ -22,7 +22,7 @@ test('assertType', ({ end }) => {
 	throws(() => {
 		// @ts-expect-error
 		assertType(isOptional(isString), '');
-	}, TypeError('Optional type guard cannot be used as base'));
+	}, TypeError('Invalid use of optional type'));
 
 	end();
 });

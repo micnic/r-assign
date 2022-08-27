@@ -1,6 +1,6 @@
 'use strict';
 
-const { test, equal, match, notOk, ok, throws } = require('tap');
+const { test, equal, match, notOk, only, ok, throws } = require('tap');
 const {
 	getTupleOf,
 	isTupleOf,
@@ -31,7 +31,7 @@ test('getTupleOf', ({ end }) => {
 	end();
 });
 
-test('isTupleOf', ({ end }) => {
+only('isTupleOf', ({ end }) => {
 
 	const isEmptyTuple = isTupleOf([]);
 
@@ -256,7 +256,7 @@ test('isTupleOf', ({ end }) => {
 			isOptional(isString),
 			isString
 		]);
-	}, TypeError('Optional element on invalid index'));
+	}, TypeError('A required element cannot follow an optional element'));
 
 	throws(() => {
 		isTupleOf([
@@ -264,7 +264,7 @@ test('isTupleOf', ({ end }) => {
 			isOptional(isString),
 			isString
 		]);
-	}, TypeError('Optional element on invalid index'));
+	}, TypeError('A required element cannot follow an optional element'));
 
 	throws(() => {
 		isTupleOf([
@@ -272,7 +272,7 @@ test('isTupleOf', ({ end }) => {
 			isString,
 			isString
 		]);
-	}, TypeError('Optional element on invalid index'));
+	}, TypeError('A required element cannot follow an optional element'));
 
 	throws(() => {
 		isTupleOf([
@@ -280,7 +280,7 @@ test('isTupleOf', ({ end }) => {
 			isOptionalUndefined(isString),
 			isString
 		]);
-	}, TypeError('Optional element on invalid index'));
+	}, TypeError('A required element cannot follow an optional element'));
 
 	throws(() => {
 		isTupleOf([
@@ -288,7 +288,7 @@ test('isTupleOf', ({ end }) => {
 			isOptionalUndefined(isString),
 			isString
 		]);
-	}, TypeError('Optional element on invalid index'));
+	}, TypeError('A required element cannot follow an optional element'));
 
 	throws(() => {
 		isTupleOf([
@@ -296,7 +296,7 @@ test('isTupleOf', ({ end }) => {
 			isString,
 			isString
 		]);
-	}, TypeError('Optional element on invalid index'));
+	}, TypeError('A required element cannot follow an optional element'));
 
 	end();
 });

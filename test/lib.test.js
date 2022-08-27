@@ -70,6 +70,7 @@ const methods = [
 	'isSymbol',
 	'isTemplateLiteralOf',
 	'isTupleOf',
+	'isTupleRestOf',
 	'isUndefined',
 	'isUnionOf',
 	'literal',
@@ -111,6 +112,7 @@ const methods = [
 	'symbol',
 	'templateLiteral',
 	'tuple',
+	'tupleRest',
 	'undef',
 	'union'
 ];

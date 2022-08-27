@@ -1,6 +1,6 @@
 'use strict';
 
-const { test, equal, notOk, ok, throws } = require('tap');
+const { test, equal, notOk, ok, skip, throws } = require('tap');
 const {
 	isArrayOf,
 	isObjectOf,

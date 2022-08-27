@@ -13,9 +13,9 @@ const { isString } = require('r-assign/lib/string');
 const { isUnionOf } = require('r-assign/lib/union');
 
 const expectedSingle = 'expected an array of strings';
-const expectedUnion = 'expected an array of (boolean | string)';
+const expectedUnion = 'expected an array of boolean | string';
 const invalidDefaultValue = 'Invalid default value type';
-const invalidOptionalType = 'Optional type cannot be used in array declaration';
+const invalidOptionalType = 'Invalid use of optional type';
 const invalidTypeGuard = 'Invalid type guard provided';
 const invalidValue = 'Invalid value type';
 const invalidValueWithProperty = `${invalidValue} for property "key"`;
