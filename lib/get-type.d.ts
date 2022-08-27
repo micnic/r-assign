@@ -1,7 +1,7 @@
 import type { TransformFunction } from 'r-assign';
 import type {
+	BaseTypeGuard,
 	InferTypeGuard,
-	NotOptionalTypeGuard,
 	RefineFunction,
 	TypeGuard
 } from 'r-assign/lib';
@@ -11,7 +11,7 @@ import type {
  * @note Does not accept `isOptional*` type guard as it is invalid syntax
  */
 declare function getType<T extends TypeGuard>(
-	type: NotOptionalTypeGuard<T>,
+	type: BaseTypeGuard<T>,
 	initial: InferTypeGuard<T>,
 	refine?: RefineFunction<InferTypeGuard<T>>
 ): TransformFunction<InferTypeGuard<T>>;
