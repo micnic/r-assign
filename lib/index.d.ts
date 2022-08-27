@@ -17,10 +17,20 @@ type PartialUndefined<T> = {
 };
 
 type TypeGuard<T = any> = ((value?: any) => value is T) & {};
+type CompositeTypeGuard<T> = T extends never ? never : TypeGuard<T>;
+
+type AnyTag = { any: true };
+type AnyTypeGuard = TypeGuard & AnyTag;
+
 type OptionalTag = { optional: true };
 type OptionalTypeGuard<T = any> = TypeGuard<T | undefined> & OptionalTag;
 
-type NotOptionalTypeGuard<T extends TypeGuard> = T extends OptionalTypeGuard
+type RestTag = { rest: true };
+type RestTypeGuard<T = any> = TypeGuard<T[]> & RestTag;
+
+type BaseTypeGuard<T extends TypeGuard> = T extends OptionalTypeGuard
+	? never
+	: T extends RestTypeGuard
 	? never
 	: T;
 
@@ -64,7 +74,7 @@ type InferIntersection<T extends Intersection> = T extends [infer F, infer S]
 	: never;
 
 type Stringify<T> = T extends TypeGuard<Literal>
-	? `${InferTypeGuard<NotOptionalTypeGuard<T>>}`
+	? `${InferTypeGuard<BaseTypeGuard<T>>}`
 	: T extends Literal
 	? `${T}`
 	: never;
@@ -91,18 +101,66 @@ type InferTemplateLiteral<T extends TemplateLiteral> = T extends []
 
 type Tuple = TypeGuard[] | [];
 
+type InferTupleWithRest<T extends Tuple> = T extends []
+	? []
+	: T extends [infer G]
+	? G extends OptionalTypeGuard
+		? never
+		: G extends RestTypeGuard
+		? never
+		: G extends TypeGuard
+		? [InferTypeGuard<G>]
+		: never
+	: T extends [infer H, ...infer R]
+	? H extends OptionalTypeGuard
+		? never
+		: H extends RestTypeGuard
+		? never
+		: H extends TypeGuard
+		? R extends Tuple
+			? [InferTypeGuard<H>, ...InferTupleWithRest<R>]
+			: never
+		: never
+	: never;
+
+type InferTupleWithOptional<T extends Tuple> = T extends []
+	? []
+	: T extends [infer G]
+	? G extends OptionalTypeGuard
+		? [InferTypeGuard<G>?]
+		: G extends RestTypeGuard
+		? InferTypeGuard<G>
+		: never
+	: T extends [infer H, ...infer R]
+	? H extends OptionalTypeGuard
+		? R extends Tuple
+			? [InferTypeGuard<H>?, ...InferTupleWithOptional<R>]
+			: never
+		: H extends RestTypeGuard
+		? R extends Tuple
+			? [...InferTypeGuard<H>, ...InferTupleWithRest<R>]
+			: never
+		: never
+	: never;
+
 type InferTuple<T extends Tuple> = T extends []
 	? []
 	: T extends [infer G]
 	? G extends OptionalTypeGuard
 		? [InferTypeGuard<G>?]
+		: G extends RestTypeGuard
+		? InferTypeGuard<G>
 		: G extends TypeGuard
 		? [InferTypeGuard<G>]
 		: never
 	: T extends [infer H, ...infer R]
 	? H extends OptionalTypeGuard
 		? R extends Tuple
-			? [InferTypeGuard<H>?, ...InferTuple<R>]
+			? [InferTypeGuard<H>?, ...InferTupleWithOptional<R>]
+			: never
+		: H extends RestTypeGuard
+		? R extends Tuple
+			? [...InferTypeGuard<H>, ...InferTupleWithRest<R>]
 			: never
 		: H extends TypeGuard
 		? R extends Tuple
@@ -113,7 +171,7 @@ type InferTuple<T extends Tuple> = T extends []
 
 type InferFunction<
 	T extends Tuple,
-	R extends NotOptionalTypeGuard<TypeGuard>
+	R extends BaseTypeGuard<TypeGuard>
 > = ((...args: InferTuple<T>) => InferTypeGuard<R>) & {};
 
 type Shape = Record<string, TypeGuard>;
@@ -178,6 +236,12 @@ export * from 'r-assign/lib/undefined';
 export * from 'r-assign/lib/union';
 
 export type {
+	AnyTypeGuard,
+	AnyTypeGuard as ATG,
+	BaseTypeGuard,
+	BaseTypeGuard as BTG,
+	CompositeTypeGuard,
+	CompositeTypeGuard as CTG,
 	Constructor,
 	InferConstructor,
 	InferConstructor as InferC,
@@ -200,14 +264,14 @@ export type {
 	Intersection,
 	Literal,
 	Literals,
-	NotOptionalTypeGuard,
-	NotOptionalTypeGuard as NOTG,
 	OptionalTypeGuard,
 	OptionalTypeGuard as OTG,
 	PartialUndefined,
 	PartialUndefined as PU,
 	RefineFunction,
 	RefineFunction as RF,
+	RestTypeGuard,
+	RestTypeGuard as RTG,
 	Shape,
 	TemplateLiteral,
 	TemplateLiteral as TL,

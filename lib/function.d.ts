@@ -1,6 +1,6 @@
 import type {
+	BaseTypeGuard,
 	InferFunction,
-	NotOptionalTypeGuard,
 	Tuple,
 	TypeGuard
 } from 'r-assign/lib';
@@ -10,7 +10,7 @@ import type {
  */
 declare function isFunction<T extends Tuple, R extends TypeGuard>(
 	args: T,
-	result: NotOptionalTypeGuard<R>
+	result: BaseTypeGuard<R>
 ): TypeGuard<InferFunction<T, R>>;
 
 /**

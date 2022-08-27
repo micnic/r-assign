@@ -1,4 +1,4 @@
-import type { TypeGuard } from 'r-assign/lib';
+import type { AnyTypeGuard } from 'r-assign/lib';
 
 /**
  * Extract any values
@@ -9,7 +9,7 @@ declare function getAny(value?: unknown, key?: string, source?: unknown): any;
 /**
  * Check for any values
  */
-declare const isAny: TypeGuard;
+declare const isAny: AnyTypeGuard;
 
 /**
  * Extract and validate any values

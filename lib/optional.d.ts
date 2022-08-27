@@ -1,6 +1,6 @@
 import type {
+	BaseTypeGuard,
 	InferTypeGuard,
-	NotOptionalTypeGuard,
 	OptionalTypeGuard,
 	TypeGuard
 } from 'r-assign/lib';
@@ -10,7 +10,7 @@ import type {
  * @note Does not accept `isOptional*` type guard as it is invalid syntax
  */
 declare function isOptional<T extends TypeGuard>(
-	type: NotOptionalTypeGuard<T>
+	type: BaseTypeGuard<T>
 ): OptionalTypeGuard<InferTypeGuard<T>>;
 
 /**
@@ -18,7 +18,7 @@ declare function isOptional<T extends TypeGuard>(
  * @note Does not accept `isOptional*` type guard as it is invalid syntax
  */
 declare function isOptionalUndefined<T extends TypeGuard>(
-	type: NotOptionalTypeGuard<T>
+	type: BaseTypeGuard<T>
 ): OptionalTypeGuard<InferTypeGuard<T> | undefined>;
 
 export {

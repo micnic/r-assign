@@ -55,9 +55,10 @@ type LiteralsTypeGuardMeta = BaseTypeGuardMeta & {
 
 type ObjectTypeGuardMeta = BaseTypeGuardMeta & {
 	classification: 'object';
-	entries: ShapeEntries;
 	keys: string[];
 	mapping?: TypeGuard<Record<keyof any, any>> | undefined;
+	optional: ShapeEntries;
+	required: ShapeEntries;
 	same: boolean;
 	strict: boolean;
 };
@@ -81,6 +82,11 @@ type RecordTypeGuardMeta = BaseTypeGuardMeta & {
 	keys: TypeGuard<keyof any>;
 	same: boolean;
 	values: TypeGuard;
+};
+
+type RestTypeGuardMeta = BaseTypeGuardMeta & {
+	classification: 'rest';
+	type: TypeGuard;
 };
 
 type TemplateLiteralTypeGuardMeta = BaseTypeGuardMeta & {
@@ -112,6 +118,7 @@ type TypeGuardMeta =
 	| OptionalTypeGuardMeta
 	| PrimitiveTypeGuardMeta
 	| RecordTypeGuardMeta
+	| RestTypeGuardMeta
 	| TemplateLiteralTypeGuardMeta
 	| TupleTypeGuardMeta
 	| UnionTypeGuardMeta;
@@ -120,7 +127,7 @@ type TypeClassification = TypeGuardMeta['classification'];
 
 export type {
 	ArrayTypeGuardMeta,
-	ArrayTypeGuardMeta as ArTGM,
+	ArrayTypeGuardMeta as ATGM,
 	FunctionTypeGuardMeta,
 	FunctionTypeGuardMeta as FTGM,
 	LiteralTypeGuardMeta,
@@ -128,13 +135,17 @@ export type {
 	LiteralsTypeGuardMeta,
 	LiteralsTypeGuardMeta as LsTGM,
 	ObjectTypeGuardMeta,
-	ObjectTypeGuardMeta as ObTGM,
+	ObjectTypeGuardMeta as OTTGM,
+	OptionalTypeGuardMeta,
+	OptionalTypeGuardMeta as OLTGM,
 	PrimitiveTypeGuardMeta,
 	PrimitiveTypeGuardMeta as PTGM,
 	RecordTypeGuardMeta,
-	RecordTypeGuardMeta as RTGM,
+	RecordTypeGuardMeta as RDTGM,
 	ReducibleTemplateLiteral,
 	ReducibleTemplateLiteral as RTL,
+	RestTypeGuardMeta,
+	RestTypeGuardMeta as RTTGM,
 	ShapeEntries,
 	ShapeEntries as SE,
 	StringifiedTemplateLiteral,

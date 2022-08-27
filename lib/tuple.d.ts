@@ -1,5 +1,13 @@
 import type { TransformFunction } from 'r-assign';
-import type { InferTuple, Tuple, TypeGuard } from 'r-assign/lib';
+import type {
+	BaseTypeGuard,
+	CompositeTypeGuard,
+	InferTuple,
+	InferTypeGuard,
+	RestTypeGuard,
+	Tuple,
+	TypeGuard
+} from 'r-assign/lib';
 
 /**
  * Extract tuple values
@@ -15,7 +23,14 @@ declare function getTupleOf<T extends Tuple>(
  */
 declare function isTupleOf<T extends Tuple>(
 	tuple: T
-): TypeGuard<InferTuple<T>>;
+): CompositeTypeGuard<InferTuple<T>>;
+
+/**
+ * Check for tuple rest
+ */
+declare function isTupleRestOf<T extends TypeGuard>(
+	type: BaseTypeGuard<T>
+): RestTypeGuard<InferTypeGuard<T>>;
 
 /**
  * Extract and validate tuple values
@@ -29,6 +44,8 @@ export {
 	getTupleOf,
 	isTupleOf,
 	isTupleOf as tuple,
+	isTupleRestOf,
+	isTupleRestOf as tupleRest,
 	parseTupleOf
 };
 
