@@ -15,8 +15,8 @@ test('isOptional', ({ end }) => {
 
 	equal(isOptional, optional);
 
-	ok(isOptionalString());
 	ok(isOptionalString(''));
+	notOk(isOptionalString());
 	notOk(isOptionalString(null));
 
 	throws(() => {

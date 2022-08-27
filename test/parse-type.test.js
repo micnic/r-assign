@@ -49,7 +49,7 @@ test('parseType', ({ end }) => {
 	throws(() => {
 		// @ts-expect-error
 		parseType(isOptional(isString));
-	}, TypeError('Optional type guard cannot be used as base'));
+	}, TypeError('Invalid use of optional type'));
 
 	throws(() => {
 		parseType(isTemplateLiteralOf(['a-', isString]))('');
