@@ -1,14 +1,18 @@
 'use strict';
 
-const { test, equal, match, notOk, only, ok, throws } = require('tap');
+const { test, equal, match, notOk, ok, throws } = require('tap');
 const {
 	getTupleOf,
+	isBoolean,
+	isOptional,
+	isOptionalUndefined,
+	isString,
 	isTupleOf,
+	isTupleRestOf,
 	parseTupleOf,
-	tuple
-} = require('r-assign/lib/tuple');
-const { isOptional, isOptionalUndefined } = require('r-assign/lib/optional');
-const { isString } = require('r-assign/lib/string');
+	tuple,
+	tupleRest
+} = require('r-assign/lib');
 
 const invalidDefaultValue = 'Invalid default value type';
 const invalidValue = 'Invalid value type';
@@ -31,7 +35,7 @@ test('getTupleOf', ({ end }) => {
 	end();
 });
 
-only('isTupleOf', ({ end }) => {
+test('isTupleOf', ({ end }) => {
 
 	const isEmptyTuple = isTupleOf([]);
 
@@ -297,6 +301,98 @@ only('isTupleOf', ({ end }) => {
 			isString
 		]);
 	}, TypeError('A required element cannot follow an optional element'));
+
+	end();
+});
+
+test('isTupleRestOf', ({ end }) => {
+
+	equal(isTupleRestOf, tupleRest);
+
+	ok(isTupleOf([isTupleRestOf(isString)])([]));
+
+	ok(isTupleOf([isBoolean, isTupleRestOf(isString)])([true]));
+	ok(isTupleOf([isBoolean, isTupleRestOf(isString)])([true, 'abc']));
+	ok(isTupleOf([isBoolean, isTupleRestOf(isString)])([true, 'abc', 'def']));
+	notOk(isTupleOf([isBoolean, isTupleRestOf(isString)])([true, 0]));
+
+	ok(isTupleOf([isTupleRestOf(isString), isBoolean])([true]));
+	ok(isTupleOf([isTupleRestOf(isString), isBoolean])(['abc', true]));
+	ok(isTupleOf([isTupleRestOf(isString), isBoolean])(['abc', 'def', true]));
+	notOk(isTupleOf([isTupleRestOf(isString), isBoolean])([0, true]));
+
+	ok(isTupleOf([isOptional(isBoolean), isTupleRestOf(isString)])([]));
+	ok(isTupleOf([isOptional(isBoolean), isTupleRestOf(isString)])([true]));
+	ok(
+		isTupleOf([isOptional(isBoolean), isTupleRestOf(isString)])([
+			true,
+			'abc'
+		])
+	);
+	ok(
+		isTupleOf([isOptional(isBoolean), isTupleRestOf(isString)])([
+			true,
+			'abc',
+			'def'
+		])
+	);
+
+	ok(
+		isTupleOf([isOptionalUndefined(isBoolean), isTupleRestOf(isString)])([])
+	);
+	ok(
+		isTupleOf([isOptionalUndefined(isBoolean), isTupleRestOf(isString)])([
+			undefined
+		])
+	);
+	ok(
+		isTupleOf([isOptionalUndefined(isBoolean), isTupleRestOf(isString)])([
+			true
+		])
+	);
+	ok(
+		isTupleOf([isOptionalUndefined(isBoolean), isTupleRestOf(isString)])([
+			true,
+			'abc'
+		])
+	);
+	ok(
+		isTupleOf([isOptionalUndefined(isBoolean), isTupleRestOf(isString)])([
+			undefined,
+			'abc'
+		])
+	);
+	ok(
+		isTupleOf([isOptionalUndefined(isBoolean), isTupleRestOf(isString)])([
+			true,
+			'abc',
+			'def'
+		])
+	);
+	ok(
+		isTupleOf([isOptionalUndefined(isBoolean), isTupleRestOf(isString)])([
+			undefined,
+			'abc',
+			'def'
+		])
+	);
+
+	throws(() => {
+		// @ts-expect-error
+		isTupleRestOf(isTupleRestOf(isString));
+	}, TypeError('Invalid use of tuple rest'));
+
+	throws(() => {
+		isTupleOf([isTupleRestOf(isString), isOptional(isString)]);
+	}, TypeError('An optional element cannot follow a rest element'));
+
+	throws(() => {
+		isTupleOf([isTupleRestOf(isString), isOptionalUndefined(isString)]);
+	}, TypeError('An optional element cannot follow a rest element'));
+
+	throws(() => {
+		isTupleOf([isTupleRestOf(isString), isTupleRestOf(isString)]);
+	}, TypeError('A rest element cannot follow another rest element'));
 
 	end();
 });
