@@ -321,6 +321,35 @@ test('isTupleRestOf', ({ end }) => {
 	ok(isTupleOf([isTupleRestOf(isString), isBoolean])(['abc', 'def', true]));
 	notOk(isTupleOf([isTupleRestOf(isString), isBoolean])([0, true]));
 
+	ok(
+		isTupleOf([isTupleRestOf(isString), isBoolean, isBoolean])([
+			true,
+			false
+		])
+	);
+	ok(
+		isTupleOf([isTupleRestOf(isString), isBoolean, isBoolean])([
+			'abc',
+			true,
+			false
+		])
+	);
+	ok(
+		isTupleOf([isTupleRestOf(isString), isBoolean, isBoolean])([
+			'abc',
+			'def',
+			true,
+			false
+		])
+	);
+	notOk(
+		isTupleOf([isTupleRestOf(isString), isBoolean, isBoolean])([
+			0,
+			true,
+			false
+		])
+	);
+
 	ok(isTupleOf([isOptional(isBoolean), isTupleRestOf(isString)])([]));
 	ok(isTupleOf([isOptional(isBoolean), isTupleRestOf(isString)])([true]));
 	ok(

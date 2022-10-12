@@ -17,7 +17,7 @@ const {
 } = require('r-assign/lib');
 
 const expectedNull = 'expected a null value';
-const expectedNullable = 'expected an union of (string | null)';
+const expectedNullable = 'expected an union of string | null';
 const invalidValue = 'Invalid value type';
 const received = 'but received undefined';
 
@@ -71,8 +71,9 @@ test('isNullable', ({ end }) => {
 	}, TypeError('Invalid type guard provided'));
 
 	throws(() => {
+		// @ts-expect-error
 		isNullable(isOptional(isString));
-	}, TypeError('Optional type cannot be nullable'));
+	}, TypeError('Optional type cannot be used in union declaration'));
 
 	end();
 });
@@ -94,8 +95,9 @@ test('isNullish', ({ end }) => {
 	}, TypeError('Invalid type guard provided'));
 
 	throws(() => {
+		// @ts-expect-error
 		isNullish(isOptional(isString));
-	}, TypeError('Optional type cannot be nullish'));
+	}, TypeError('Optional type cannot be used in union declaration'));
 
 	end();
 });
