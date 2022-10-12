@@ -17,19 +17,17 @@
 			{ "ignoreDeclarationMerge": true }
 		],
 		"@typescript-eslint/no-unused-vars": "error",
+		"@typescript-eslint/no-use-before-define": [
+			"error",
+			{ "typedefs": false, "variables": false }
+		],
 		"array-callback-return": "error",
 		"arrow-parens": ["error", "always"],
 		"capitalized-comments": "error",
 		"class-methods-use-this": "error",
 		"camelcase": "error",
 		"comma-dangle": ["error", "never"],
-		"comma-spacing": [
-			"error",
-			{
-				"after": true,
-				"before": false
-			}
-		],
+		"comma-spacing": ["error", { "after": true, "before": false }],
 		"complexity": ["error", 16],
 		"consistent-return": "error",
 		"curly": ["error", "all"],
@@ -101,7 +99,6 @@
 		"no-unsafe-negation": "error",
 		"no-unused-expressions": "error",
 		"no-unused-vars": "off",
-		"no-use-before-define": ["error", { "variables": false }],
 		"no-useless-call": "error",
 		"no-useless-concat": "error",
 		"no-useless-rename": "error",
@@ -121,13 +118,7 @@
 		"require-atomic-updates": "off",
 		"require-await": "error",
 		"semi": ["error", "always"],
-		"semi-spacing": [
-			"error",
-			{
-				"after": false,
-				"before": false
-			}
-		],
+		"semi-spacing": ["error", { "after": false, "before": false }],
 		"sort-keys": "error",
 		"space-in-parens": "error",
 		"space-infix-ops": "error",
