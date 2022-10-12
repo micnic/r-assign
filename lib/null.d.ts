@@ -1,5 +1,5 @@
 import type { TransformFunction } from 'r-assign';
-import type { InferTypeGuard, TypeGuard } from 'r-assign/lib';
+import type { BaseTypeGuard, InferTypeGuard, TypeGuard } from 'r-assign/lib';
 
 /**
  * Extract null values
@@ -12,7 +12,7 @@ declare function getNull(value?: unknown, key?: string, source?: unknown): null;
  * @deprecated will be removed in version 2.0, use `getType()` instead
  */
 declare function getNullable<T extends TypeGuard>(
-	type: T
+	type: BaseTypeGuard<T>
 ): TransformFunction<InferTypeGuard<T> | null>;
 
 /**
@@ -25,7 +25,7 @@ declare const isNull: TypeGuard<null>;
  * @note Does not accept `isOptional*` type guard as it is invalid syntax
  */
 declare function isNullable<T extends TypeGuard>(
-	type: T
+	type: BaseTypeGuard<T>
 ): TypeGuard<InferTypeGuard<T> | null>;
 
 /**
@@ -33,7 +33,7 @@ declare function isNullable<T extends TypeGuard>(
  * @note Does not accept `isOptional*` type guard as it is invalid syntax
  */
 declare function isNullish<T extends TypeGuard>(
-	type: T
+	type: BaseTypeGuard<T>
 ): TypeGuard<InferTypeGuard<T> | null | undefined>;
 
 /**
@@ -51,7 +51,7 @@ declare function parseNull(
  * @deprecated will be removed in version 2.0, use `parseType()` instead
  */
 declare function parseNullable<T extends TypeGuard>(
-	type: T
+	type: BaseTypeGuard<T>
 ): TransformFunction<InferTypeGuard<T> | null>;
 
 export {

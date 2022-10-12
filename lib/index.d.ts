@@ -74,12 +74,12 @@ type InferIntersection<T extends Intersection> = T extends [infer F, infer S]
 	: never;
 
 type Stringify<T> = T extends TypeGuard<Literal>
-	? `${InferTypeGuard<BaseTypeGuard<T>>}`
+	? `${InferTypeGuard<T>}`
 	: T extends Literal
 	? `${T}`
 	: never;
 
-type TemplateLiteral<L extends Literal = any> = ((TypeGuard<L> | L)[] | []);
+type TemplateLiteral<L extends Literal = any> = (TypeGuard<L> | L)[] | [];
 
 type InferTemplateLiteral<T extends TemplateLiteral> = T extends []
 	? ''
@@ -169,10 +169,9 @@ type InferTuple<T extends Tuple> = T extends []
 		: never
 	: never;
 
-type InferFunction<
-	T extends Tuple,
-	R extends BaseTypeGuard<TypeGuard>
-> = ((...args: InferTuple<T>) => InferTypeGuard<R>) & {};
+type InferFunction<T extends Tuple, R extends TypeGuard> = ((
+	...args: InferTuple<T>
+) => InferTypeGuard<R>) & {};
 
 type Shape = Record<string, TypeGuard>;
 

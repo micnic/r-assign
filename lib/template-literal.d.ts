@@ -7,8 +7,8 @@ import type {
 
 /**
  * Check for template literal values
- * @note Does not accept `isOptional*` type guard as it is invalid syntax
  * @note Does not accept types that cannot be represented as strings
+ * @note Does not accept `isOptional*` type guard as it is invalid syntax
  */
 declare function isTemplateLiteralOf<
 	L extends Literal,

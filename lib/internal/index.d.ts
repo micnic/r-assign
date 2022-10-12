@@ -22,6 +22,7 @@ type AnyTypeGuardMeta = BaseTypeGuardMeta & {
 };
 
 type ArrayTypeGuardMeta = BaseTypeGuardMeta & {
+	child: TypeGuardMeta;
 	classification: 'array';
 	same: boolean;
 	type: TypeGuard;
@@ -29,8 +30,8 @@ type ArrayTypeGuardMeta = BaseTypeGuardMeta & {
 
 type FunctionTypeGuardMeta = BaseTypeGuardMeta & {
 	classification: 'function';
-	args: TypeGuard<any[] | []>;
-	result: TypeGuard | undefined;
+	input: TypeGuard<any[] | []>;
+	output: TypeGuard | undefined;
 };
 
 type InstanceTypeGuardMeta = BaseTypeGuardMeta & {
@@ -39,8 +40,9 @@ type InstanceTypeGuardMeta = BaseTypeGuardMeta & {
 };
 
 type IntersectionTypeGuardMeta = BaseTypeGuardMeta & {
+	children: TypeGuardMeta[];
 	classification: 'intersection';
-	types: Intersection
+	types: Intersection;
 };
 
 type LiteralTypeGuardMeta = BaseTypeGuardMeta & {
@@ -97,11 +99,17 @@ type TemplateLiteralTypeGuardMeta = BaseTypeGuardMeta & {
 
 type TupleTypeGuardMeta = BaseTypeGuardMeta & {
 	classification: 'tuple';
+	indexes: {
+		optional: number;
+		required: number;
+		rest: number;
+	};
 	same: boolean;
 	tuple: Tuple;
 };
 
 type UnionTypeGuardMeta = BaseTypeGuardMeta & {
+	children: TypeGuardMeta[];
 	classification: 'union';
 	union: Union;
 };

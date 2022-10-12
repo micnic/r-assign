@@ -12,7 +12,6 @@ declare function getUnionOf<U extends Union>(
 
 /**
  * Check for union type values
- * @note Does not accept `isAny` type guard as it is redundant
  * @note Does not accept `isOptional*` type guard as it is invalid syntax
  */
 declare function isUnionOf<U extends Union>(
