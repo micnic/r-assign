@@ -59,9 +59,10 @@ Reasons to use `r-assign`:
   - [Optional](#optional)
   - [Partial](#partial)
   - [Required](#required)
-- [Parsing data](#parsing-data)
-- [Getting data](#getting-data)
-- [Type assertions](#type-assertions)
+- [Assert type](#assert-type)
+- [Parse type](#parse-type)
+- [Get type](#get-type)
+- [Set same](#set-same)
 - [Converting data](#converting-data)
 - [Working with TypeScript](#working-with-typescript)
 - [Mapping properties](#mapping-properties)
@@ -286,20 +287,13 @@ boolean(true);
 ### Number
 
 ```js
-import { isNumber, isAnyNumber, number, anyNumber } from 'r-assign/lib/number';
+import { isNumber, number } from 'r-assign/lib/number';
 
 isNumber(42); // => true
 isNumber(NaN); // => false, will return true only for finite number values
 
 // Alias:
 number(42);
-
-// Check for any number
-isAnyNumber(42); // => true
-isAnyNumber(NaN); // => true, will return true for any number values
-
-// Alias:
-anyNumber(NaN);
 ```
 
 ### String
@@ -470,19 +464,13 @@ instance(Date);
 ### Date
 
 ```js
-import { anyDate, isAnyDate, isDate, date } from 'r-assign/lib/date';
+import { isDate, date } from 'r-assign/lib/date';
 
 isDate(new Date()); // => true
 isDate(new Date(NaN)); // => false, will return true only for valid date values
 
 // Alias:
 date(new Date());
-
-isAnyDate(new Date()); // => true
-isAnyDate(new Date(NaN)); // => true, will return true for any date values
-
-// Alias:
-anyDate(new Date(NaN));
 ```
 
 ---
@@ -559,18 +547,25 @@ strictObject({
 ### Tuple
 
 ```js
-import { isTupleOf, tuple } from 'r-assign/lib/tuple';
+import { isTupleOf, isTupleRestOf, tuple, tupleRest } from 'r-assign/lib/tuple';
 import { isString, string } from 'r-assign/lib/string';
+import { isNumber, number } from 'r-assign/lib/number';
 
 // Check for tuple values
 // Accepts an array of type guards as argument
-const isTupleOfStrings = isTupleOf([isString, isString]);
+const isTupleOfStrings = isTupleOf([isString, isString]); // [string, string]
 
 isTupleOfStrings(['abc', 'def']); // => true
 isTupleOfStrings(['abc']); // => false
 
 // Alias:
 tuple([string, string]);
+
+// [string, ...number[]]
+const isTupleWithRest = isTupleRestOf([isString, isTupleRestOf(isNumber)]);
+
+// Alias:
+tuple([string, tupleRest(number)]);
 ```
 
 ### Record
@@ -617,21 +612,23 @@ values.
 ```js
 import { isFunction, func } from 'r-assign/lib/function';
 import { isString, string } from 'r-assign/lib/string';
+import { isNumber, number } from 'r-assign/lib/number';
 
 // Takes two arguments, the function arguments tuple type guards and function
 // return type guard
-const isStringFunction = isFunction([], isString);
+// (arg0: number) => string
+const isSomeFunction = isFunction([isNumber], isString);
 
-isStringFunction(() => null); // => true, will check just if the provided value
-                              //    is a function
-isStringFunction(() => ''); // => true
+isSomeFunction(() => null); // => true, will check just if the provided value
+                            //    is a function
+isSomeFunction(() => ''); // => true
 
 // Note: Function type guards should be used as part of parsing or getting
 //       values to validate the function arguments and return type, in other
 //       cases they will just check for function type
 
 // Alias:
-func([], string);
+func([number], string);
 ```
 
 ---
@@ -644,13 +641,10 @@ import { isUnionOf, union } from 'r-assign/lib/union';
 import { isNumber, number } from 'r-assign/lib/number';
 import { isString, string } from 'r-assign/lib/string';
 
-const isStringOrNumber = isUnionOf([isString, isNumber]);
+const isStringOrNumber = isUnionOf([isString, isNumber]); // string | number
 
 isStringOrNumber('abc'); // => true
 isStringOrNumber(123); // => true
-
-// Note: `isAny` type guard cannot be used as part of union to prevent
-//       propagation of `any` type, use `isAny` directly on your own risk
 
 // Alias:
 union([string, number]);
@@ -672,15 +666,13 @@ const isObjectOfAge = isObjectOf({
     age: isNumber
 });
 
+// { name: string } & { age: number }
 const isObjectOfNameAge = isIntersectionOf([isObjectOfName, isObjectOfAge]);
 
 isObjectOfNameAge({
     name: 'John',
     age: 22
 }); // => true
-
-// Note: `isAny` type guard cannot be used as part of intersection to prevent
-//       propagation of `any` type, use `isAny` directly on your own risk
 
 // Alias:
 intersection([object({ name: string }), object({ age: number })]);
@@ -700,7 +692,7 @@ import { isObjectOf, object, } from 'r-assign/lib/object';
 import { isString, string } from 'r-assign/lib/string';
 import { isTupleOf, tuple } from 'r-assign/lib/tuple';
 
-const isOptionalTuple = isTupleOf([isOptional(isString)]);
+const isOptionalTuple = isTupleOf([isOptional(isString)]); // [string?]
 
 isOptionalTuple(['abc']); // => true
 isOptionalTuple([]); // => true
@@ -709,6 +701,7 @@ isOptionalTuple([undefined]); // => false, strict optional is used
 // Alias:
 tuple([optional(string)]);
 
+// [(string | undefined)?]
 const isOptionalUndefinedTuple = isTupleOf([isOptionalUndefined(isString)]);
 
 isOptionalUndefinedTuple(['abc']); // => true
@@ -721,7 +714,7 @@ tuple([optionalUndef(string)]);
 const isOptionalObject = isObjectOf({
     name: isString,
     age: isOptional(isNumber)
-});
+}); // { name: string; age?: number }
 
 isOptionalObject({
     name: 'John',
@@ -744,7 +737,7 @@ object({
 const isOptionalUndefinedObject = isObjectOf({
     name: isString,
     age: isOptionalUndefined(isNumber)
-});
+}); // { name: string; age?: number | undefined }
 
 isOptionalUndefinedObject({
     name: 'John',
@@ -779,6 +772,7 @@ import { isObjectOf, object, } from 'r-assign/lib/object';
 import { isString, string } from 'r-assign/lib/string';
 import { isTupleOf, tuple } from 'r-assign/lib/tuple';
 
+// Partial<[string]> -> [string?]
 const isPartialTuple = isPartial(isTupleOf([isString]));
 
 isPartialTuple(['abc']); // => true
@@ -788,6 +782,7 @@ isPartialTuple([undefined]); // => false, strict optional is used
 // Alias:
 partial(tuple([string]));
 
+// Partial<[string | undefined]> -> [(string | undefined)?]
 const isPartialUndefinedTuple = isPartialUndefined(isTupleOf([isString]));
 
 isPartialUndefinedTuple(['abc']); // => true
@@ -797,6 +792,7 @@ isPartialUndefinedTuple([undefined]); // => true
 // Alias:
 partialUndef(tuple([string]));
 
+// Partial<{ name: string; age: number }> -> { name?: string; age?: number }
 const isPartialObject = isPartial(isObjectOf({
     name: isString,
     age: isNumber
@@ -824,6 +820,10 @@ partial(object({
     age: number
 }));
 
+// Partial<{                   ->  {
+//  name: string | undefined;  ->    name?: string | undefined;
+//  age: number | undefined;   ->    age?: number | undefined;
+// }>                          ->  }
 const isPartialUndefinedObject = isPartialUndefined(isObjectOf({
     name: isString,
     age: isNumber
@@ -864,6 +864,7 @@ import { isObjectOf, object, } from 'r-assign/lib/object';
 import { isString, string } from 'r-assign/lib/string';
 import { isTupleOf, tuple } from 'r-assign/lib/tuple';
 
+// Required<[string?]> -> [string]
 const isRequiredTuple = isRequired(isTupleOf([isOptional(isString)]));
 
 isRequiredTuple(['abc']); // => true
@@ -872,6 +873,7 @@ isRequiredTuple([]); // => false, is required already
 // Alias:
 partial(tuple([optional(string)]));
 
+// Required<{ name: string; age?: number }> -> { name: string; age: number }
 const isRequiredObject = isRequired(isObjectOf({
     name: isString,
     age: isOptional(isNumber)
@@ -892,12 +894,30 @@ required(object({
 }));
 ```
 
-## Parsing data
-`r-assign` allows parsing provided values, it will validate them based on the
-defined schemas, will throw an error in case they do not match or just return
-the value in case they match. The array and object parsing returns a deep
-clone of the input values, for function values will return a function wrap that
-will validate the input and the output on function call.
+## Assert type
+`r-assign` also provides a way to assert the type of the input, it will throw an
+error if the input does not match the defined type. Thrown error message can be
+customized. This is useful for validating functions input or for debugging
+purposes.
+
+```js
+import { assertType } from 'r-assign/lib/assert-type';
+import { isString } from 'r-assign/lib/string';
+
+const expectString = (value) => {
+    assertType(isString, value, 'Expected string');
+
+    // value is string
+    // Do something with the value
+};
+```
+
+## Parse type
+`r-assign` allows parsing values and match them with the provided type, it will
+throw an error in case they do not match or just return the value in case they
+match. For object values it may return a deep clone of the input value for
+loose matching. Function values will be wrapped in a function that will validate
+the input and the output when it is called.
 
 ```js
 import rAssign from 'r-assign';
@@ -913,15 +933,29 @@ try {
 }
 ```
 
-`parseType()` function has to be used with the `rAssign` function for commodity
+`parseType()` function can be used with the `rAssign` function for commodity
 and can be configured with type guards for more complex parsing. For proper
 usage parsing utility functions should be wrapped inside a `try...catch`
-statement.
+statement to avoid unhandled errors. `parseType()` function can be used outside
+of `rAssign` to extract the required value that is not part of an object.
 
-## Getting data
-Getting data in `r-assign` is very similar with parsing data with the exception
-that getting utility functions accepts default values in case the input is not
-the defined type.
+```js
+import { parseType } from 'r-assign/lib/parse-type';
+import { isString } from 'r-assign/lib/string';
+
+const parseString = parseType(isString);
+
+try {
+    const result = parseString(/* Unknown data */);
+} catch (error) {
+    /* Process error */
+}
+```
+
+## Get type
+`getType()` function is very similar with `parseType()` except that it accepts a
+default value that is returned when the input does not match the provided type.
+The default value has to match the provided type.
 
 ```js
 import rAssign from 'r-assign';
@@ -933,22 +967,59 @@ const result = rAssign({
 }, { /* Unknown data */ });
 ```
 
-## Type assertions
-`r-assign` also provides a way to assert the type of the input, it will throw an
-error if the input does not match the defined type. Thrown error message can be
-customized. This is useful for validating functions input or for debugging
-purposes.
+`getType()` function can also be used outside of `rAssign`.
 
 ```js
-import { assertType } from 'r-assign/lib/assert-type';
+import { getType } from 'r-assign/lib/get-type';
 import { isString } from 'r-assign/lib/string';
 
-const expectString = (value) => {
-    assertType(isString, value, 'Expected string');
+const getString = getType(isString, 'abc');
 
-    // value is string
-    // Do something with value
-};
+const result = getString(/* Unknown data */);
+```
+
+## Set same
+To improve the process of extracting object values with `parseType()` and
+`getType()`, `r-assign` provides a way to set a flag to skip the creation of a
+new object when the input value matches the provided type using `setSame()`
+function. It can be applied to `array`, `object`, `tuple` and `record` type
+guards.
+
+```js
+import { parseType } from 'r-assign/lib/parse-type';
+import { getType } from 'r-assign/lib/get-type';
+import { isObjectOf, object } from 'r-assign/lib/object';
+import { isString, string } from 'r-assign/lib/string';
+import { setSame, same } from 'r-assign/lib/same';
+
+const isSomeObject = isObjectOf({
+    name: isString,
+    age: isString
+});
+
+setSame(isSomeObject);
+
+// Alias:
+same(isSomeObject);
+
+const parseSomeObject = parseType(isSomeObject);
+
+const getSomeObject = getType(isSomeObject, {
+    name: 'John',
+    age: '22'
+});
+
+// Parse some object
+parseSomeObject(/* Unknown data */);
+
+// Get some object
+getSomeObject(/* Unknown data */);
+
+// Disable same flag
+setSame(isSomeObject, false);
+
+// Alias:
+same(isSomeObject, false);
 ```
 
 ## Converting data
@@ -960,13 +1031,10 @@ following functions:
 - `asDate` - converts any string or number to date, will throw an error
   if the provided value is not a valid date, it behaves exactly as calling the
   `new Date()` constructor on the provided values.
-- `asAnyDate` - converts any string or number to date, will throw an
-  error if the provided value is not convertible to date, it behaves exactly as
-  calling the `new Date()` constructor on the provided values.
 
 ```js
 import rAssign from 'r-assign';
-import { asAnyDate, asDate } from 'r-assign/lib/date';
+import { asDate } from 'r-assign/lib/date';
 import { asString } from 'r-assign/lib/string';
 
 const input = {
@@ -977,7 +1045,7 @@ const input = {
 
 const result = rAssign({
     created: asDate,
-    edited: asAnyDate,
+    edited: asDate,
     status: asString
 }, input);
 
@@ -1119,12 +1187,19 @@ const getFiniteNumber = getType(isNumber, httpDefaultPort);
 
 const getPort = (value, key, source) => {
 
+    // Limit the usage of the transform function to the `port` property
+    if (key !== 'port') {
+        throw new Error('Invalid key, expected "port"');
+    }
+
     const port = getFiniteNumber(value);
 
+    // Check if the port is outside the reserved range
     if (port > lastReservedPort) {
         return port;
     }
 
+    // Check for the presence of the `https` property in the source object
     if (source.https === true) {
         return httpsDefaultPort;
     }
