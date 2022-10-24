@@ -55,6 +55,10 @@ type LiteralsTypeGuardMeta = BaseTypeGuardMeta & {
 	literals: Literal[];
 };
 
+type NeverTypeGuardMeta = BaseTypeGuardMeta & {
+	classification: 'never';
+};
+
 type ObjectTypeGuardMeta = BaseTypeGuardMeta & {
 	classification: 'object';
 	keys: string[];
@@ -122,6 +126,7 @@ type TypeGuardMeta =
 	| IntersectionTypeGuardMeta
 	| LiteralTypeGuardMeta
 	| LiteralsTypeGuardMeta
+	| NeverTypeGuardMeta
 	| ObjectTypeGuardMeta
 	| OptionalTypeGuardMeta
 	| PrimitiveTypeGuardMeta
@@ -142,6 +147,8 @@ export type {
 	LiteralTypeGuardMeta as LTGM,
 	LiteralsTypeGuardMeta,
 	LiteralsTypeGuardMeta as LsTGM,
+	NeverTypeGuardMeta,
+	NeverTypeGuardMeta as NTGM,
 	ObjectTypeGuardMeta,
 	ObjectTypeGuardMeta as OTTGM,
 	OptionalTypeGuardMeta,
