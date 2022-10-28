@@ -18,9 +18,9 @@ const invalidSchema = 'Invalid schema argument type, object expected';
 
 /**
  * Extract one source object or merge an array of source objects
- * @template {Record<string, any>} T
- * @param {T[]} sources
- * @returns {T}
+ * @template {Record<string, any>} S
+ * @param {S[]} sources
+ * @returns {S}
  */
 const getSource = (sources) => {
 

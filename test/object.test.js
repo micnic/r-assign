@@ -4,16 +4,22 @@ const { test, equal, match, notOk, ok, throws } = require('tap');
 const {
 	getObjectOf,
 	getStrictObjectOf,
+	isKeyOf,
 	isObjectOf,
+	isOmitFrom,
 	isOptional,
 	isOptionalUndefined,
+	isPickFrom,
 	isRecordOf,
 	isStrictObjectOf,
 	isString,
+	keyof,
 	object,
+	omit,
 	parseObjectOf,
 	parseStrictObjectOf,
 	parseType,
+	pick,
 	strictObject
 } = require('r-assign/lib');
 
@@ -23,9 +29,11 @@ const circularRefShape = '{\n "obj": <Circular Reference>;\n}';
 const objectShape = '{\n "abc": string;\n}';
 const optionalObjectShape = '{\n "abc"?: string;\n}';
 const expected = `expected an object of shape ${objectShape}`;
+const expectedKeys = 'expected strings or array of strings';
 const expectedStrict = `expected an object of strict shape ${objectShape}`;
 const expectedOptional = `expected an object of shape ${optionalObjectShape}`;
 const invalidDefaultValue = 'Invalid default value type';
+const invalidKeysType = `Invalid keys provided, ${expectedKeys}`;
 const invalidMapping = 'Invalid object mapping provided';
 const invalidShape = 'Invalid shape provided';
 const invalidValue = 'Invalid value type';
@@ -78,6 +86,21 @@ test('getStrictObjectOf', ({ end }) => {
 	end();
 });
 
+test('isKeyOf', ({ end }) => {
+	equal(isKeyOf, keyof);
+
+	ok(isKeyOf(isObjectOf({ abc: isString }))('abc'));
+	notOk(isKeyOf(isObjectOf({ abc: isString }))('def'));
+	notOk(isKeyOf(isObjectOf({}))('abc'));
+
+	throws(() => {
+		// @ts-expect-error
+		isKeyOf(isString);
+	}, TypeError('Invalid type provided, expected an object type'));
+
+	end();
+});
+
 test('isObjectOf', ({ end }) => {
 
 	equal(isObjectOf, object);
@@ -119,6 +142,188 @@ test('isObjectOf', ({ end }) => {
 	throws(() => {
 		parseType(isObjectOf({}, isObjectOf({ a: isString })))({});
 	});
+
+	end();
+});
+
+test('isOmitFrom', ({ end }) => {
+
+	equal(isOmitFrom, omit);
+
+	ok(
+		isOmitFrom(
+			isObjectOf({ abc: isString, def: isString, ghi: isString }),
+			'abc'
+		)({
+			def: 'def',
+			ghi: 'ghi'
+		})
+	);
+	notOk(
+		isOmitFrom(
+			isObjectOf({ abc: isString, def: isString, ghi: isString }),
+			'abc'
+		)({
+			abc: 'abc',
+			def: 'def'
+		})
+	);
+	ok(
+		isOmitFrom(
+			isStrictObjectOf({ abc: isString, def: isString, ghi: isString }),
+			'abc'
+		)({
+			def: 'def',
+			ghi: 'ghi'
+		})
+	);
+	notOk(
+		isOmitFrom(
+			isStrictObjectOf({ abc: isString, def: isString, ghi: isString }),
+			'abc'
+		)({
+			abc: 'abc',
+			def: 'def'
+		})
+	);
+
+	ok(
+		isOmitFrom(
+			isObjectOf({ abc: isString, def: isString, ghi: isString }),
+			['abc', 'def']
+		)({
+			ghi: 'ghi'
+		})
+	);
+	notOk(
+		isOmitFrom(
+			isObjectOf({ abc: isString, def: isString, ghi: isString }),
+			['abc', 'def']
+		)({
+			abc: 'abc'
+		})
+	);
+	ok(
+		isOmitFrom(
+			isStrictObjectOf({ abc: isString, def: isString, ghi: isString }),
+			['abc', 'def']
+		)({
+			ghi: 'ghi'
+		})
+	);
+	notOk(
+		isOmitFrom(
+			isStrictObjectOf({ abc: isString, def: isString, ghi: isString }),
+			['abc', 'def']
+		)({
+			abc: 'abc'
+		})
+	);
+
+	throws(() => {
+		// @ts-expect-error
+		isOmitFrom(isString);
+	}, TypeError('Invalid type provided, expected an object type'));
+
+	throws(() => {
+		// @ts-expect-error
+		isOmitFrom(isObjectOf({ abc: isString }));
+	}, TypeError(invalidKeysType));
+
+	throws(() => {
+		// @ts-expect-error
+		isOmitFrom(isObjectOf({ abc: isString }), [0]);
+	}, TypeError(invalidKeysType));
+
+	end();
+});
+
+test('isPickFrom', ({ end }) => {
+
+	equal(isPickFrom, pick);
+
+	ok(
+		isPickFrom(
+			isObjectOf({ abc: isString, def: isString, ghi: isString }),
+			'abc'
+		)({
+			abc: 'abc'
+		})
+	);
+	notOk(
+		isPickFrom(
+			isObjectOf({ abc: isString, def: isString, ghi: isString }),
+			'abc'
+		)({
+			def: 'def'
+		})
+	);
+	ok(
+		isPickFrom(
+			isStrictObjectOf({ abc: isString, def: isString, ghi: isString }),
+			'abc'
+		)({
+			abc: 'abc'
+		})
+	);
+	notOk(
+		isPickFrom(
+			isStrictObjectOf({ abc: isString, def: isString, ghi: isString }),
+			'abc'
+		)({
+			def: 'def'
+		})
+	);
+
+	ok(
+		isPickFrom(
+			isObjectOf({ abc: isString, def: isString, ghi: isString }),
+			['abc', 'def']
+		)({
+			abc: 'abc',
+			def: 'def'
+		})
+	);
+	notOk(
+		isPickFrom(
+			isObjectOf({ abc: isString, def: isString, ghi: isString }),
+			['abc', 'def']
+		)({
+			abc: 'abc'
+		})
+	);
+	ok(
+		isPickFrom(
+			isStrictObjectOf({ abc: isString, def: isString, ghi: isString }),
+			['abc', 'def']
+		)({
+			abc: 'abc',
+			def: 'def'
+		})
+	);
+	notOk(
+		isPickFrom(
+			isStrictObjectOf({ abc: isString, def: isString, ghi: isString }),
+			['abc', 'def']
+		)({
+			abc: 'abc'
+		})
+	);
+
+	throws(() => {
+		// @ts-expect-error
+		isPickFrom(isString);
+	}, TypeError('Invalid type provided, expected an object type'));
+
+	throws(() => {
+		// @ts-expect-error
+		isPickFrom(isObjectOf({ abc: isString }));
+	}, TypeError(invalidKeysType));
+
+	throws(() => {
+		// @ts-expect-error
+		isPickFrom(isObjectOf({ abc: isString }), [0]);
+	}, TypeError(invalidKeysType));
 
 	end();
 });

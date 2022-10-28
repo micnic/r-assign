@@ -56,11 +56,6 @@ test('getLiteralOf', ({ end }) => {
 
 	throws(() => {
 		// @ts-expect-error
-		getLiteralOf([null]);
-	}, TypeError('Not enough literals, at least two expected'));
-
-	throws(() => {
-		// @ts-expect-error
 		getLiteralOf([{}, {}]);
 	}, TypeError('Invalid literal provided'));
 
@@ -104,6 +99,7 @@ test('isLiteralOf', ({ end }) => {
 
 	equal(isLiteralOf, literals);
 
+	ok(isLiteralOf(['a'])('a'));
 	ok(isLiteralOf(['a', 'b'])('a'));
 	notOk(isLiteralOf(['a', 'b'])(0));
 
@@ -114,8 +110,8 @@ test('isLiteralOf', ({ end }) => {
 
 	throws(() => {
 		// @ts-expect-error
-		isLiteralOf(['a']);
-	}, TypeError('Not enough literals, at least two expected'));
+		isLiteralOf([]);
+	}, TypeError('Not enough literals, at least one expected'));
 
 	throws(() => {
 		isLiteralOf(['a', 'a']);
