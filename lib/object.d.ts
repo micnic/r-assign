@@ -20,12 +20,35 @@ declare function getStrictObjectOf<S extends Shape>(
 ): TransformFunction<InferShape<S>>;
 
 /**
+ * Check for keys of provided object type
+ */
+declare function isKeyOf<R extends Record<keyof any, any>>(
+	object: TypeGuard<R>
+): TypeGuard<keyof R>;
+
+/**
  * Check for object values
  */
 declare function isObjectOf<
 	S extends Shape,
 	M extends TypeGuard<Record<keyof any, any>> | undefined = undefined
 >(shape: S, mapping?: M): TypeGuard<InferShape<S, M>>;
+
+/**
+ * Check for a subset object value by omitting the provided keys
+ */
+declare function isOmitFrom<
+	R extends Record<keyof any, any>,
+	K extends keyof R
+>(object: TypeGuard<R>, keys: K | K[] | TypeGuard<K>): TypeGuard<Omit<R, K>>;
+
+/**
+ * Check for a subset object value by picking the provided keys
+ */
+declare function isPickFrom<
+	R extends Record<keyof any, any>,
+	K extends keyof R
+>(object: TypeGuard<R>, keys: K | K[] | TypeGuard<K>): TypeGuard<Pick<R, K>>;
 
 /**
  * Check for strict object values
@@ -53,8 +76,14 @@ declare function parseStrictObjectOf<S extends Shape>(
 export {
 	getObjectOf,
 	getStrictObjectOf,
+	isKeyOf,
+	isKeyOf as keyof,
 	isObjectOf,
 	isObjectOf as object,
+	isOmitFrom,
+	isOmitFrom as omit,
+	isPickFrom,
+	isPickFrom as pick,
 	isStrictObjectOf,
 	isStrictObjectOf as strictObject,
 	parseObjectOf,

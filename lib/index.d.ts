@@ -5,7 +5,7 @@ type InferConstructor<T extends Constructor> = T extends Constructor<infer I>
 	: never;
 
 type Literal = bigint | boolean | null | number | string | undefined;
-type Literals<L extends Literal> = [L, L, ...L[]];
+type Literals<L extends Literal> = [L, ...L[]];
 
 type InferLiterals<
 	L extends Literal,
