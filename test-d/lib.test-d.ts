@@ -8,8 +8,8 @@ import lib, {
 } from 'r-assign/lib';
 
 // Any
+expectType<typeof lib.any>(lib.isAny);
 expectType<AnyTypeGuard>(lib.any);
-expectType<AnyTypeGuard>(lib.isAny);
 
 // Any deprecated
 expectType<TransformFunction>(lib.getAny);
@@ -18,8 +18,8 @@ expectType<TransformFunction>(lib.parseAny);
 expectDeprecated(lib.parseAny());
 
 // Array
+expectType<typeof lib.array>(lib.isArrayOf);
 expectType<TypeGuard<string[]>>(lib.array(lib.string));
-expectType<TypeGuard<string[]>>(lib.isArrayOf(lib.string));
 
 // Array deprecated
 expectType<TransformFunction<string[]>>(lib.getArrayOf(lib.string));
@@ -30,8 +30,8 @@ expectType<TransformFunction<string[]>>(lib.parseArrayOf(lib.string));
 expectDeprecated(lib.parseArrayOf());
 
 // BigInt
+expectType<typeof lib.bigint>(lib.isBigInt);
 expectType<TypeGuard<bigint>>(lib.bigint);
-expectType<TypeGuard<bigint>>(lib.isBigInt);
 
 // BigInt deprecated
 expectType<TransformFunction<bigint>>(lib.getBigInt());
@@ -40,8 +40,8 @@ expectType<TransformFunction<bigint>>(lib.parseBigInt);
 expectDeprecated(lib.parseBigInt());
 
 // Boolean
+expectType<typeof lib.boolean>(lib.isBoolean);
 expectType<TypeGuard<boolean>>(lib.boolean);
-expectType<TypeGuard<boolean>>(lib.isBoolean);
 
 // Boolean deprecated
 expectType<TransformFunction<boolean>>(lib.getBoolean());
@@ -50,8 +50,8 @@ expectType<TransformFunction<boolean>>(lib.parseBoolean);
 expectDeprecated(lib.parseBoolean());
 
 // Date
+expectType<typeof lib.date>(lib.isDate);
 expectType<TypeGuard<Date>>(lib.date);
-expectType<TypeGuard<Date>>(lib.isDate);
 
 // Date deprecated
 expectType<TypeGuard<Date>>(lib.anyDate);
@@ -62,15 +62,25 @@ expectDeprecated(lib.convertToDate());
 expectType<TypeGuard<Date>>(lib.isAnyDate);
 
 // Function
+expectType<typeof lib.func>(lib.isFunction);
 expectType<TypeGuard<() => void>>(lib.func([]));
-expectType<TypeGuard<() => void>>(lib.isFunction([]));
-
-// Get type
-expectType<TransformFunction<string>>(lib.getType(lib.string, ''));
+expectType<TypeGuard<() => string>>(lib.func([], lib.string));
+expectType<TypeGuard<(args_0: string) => void>>(
+	lib.func([lib.string])
+);
+expectType<TypeGuard<(args_0: string) => string>>(
+	lib.func([lib.string], lib.string)
+);
+expectType<TypeGuard<(args_0: string, args_1: string) => void>>(
+	lib.func([lib.string, lib.string])
+);
+expectType<TypeGuard<(args_0: string, args_1: string) => string>>(
+	lib.func([lib.string, lib.string], lib.string)
+);
 
 // Instance
+expectType<typeof lib.instance>(lib.isInstanceOf);
 expectType<TypeGuard<Date>>(lib.instance(Date));
-expectType<TypeGuard<Date>>(lib.isInstanceOf(Date));
 
 // Instance deprecated
 expectType<TransformFunction<Date>>(lib.getInstanceOf(Date, new Date()));
@@ -81,7 +91,7 @@ expectType<TransformFunction<Date>>(lib.parseInstanceOf(Date));
 expectDeprecated(lib.parseInstanceOf());
 
 // Intersection
-// TBA: expectDeprecated(lib.getIntersectionOf);
+expectType<typeof lib.intersection>(lib.isIntersectionOf);
 expectType<TypeGuard<{ a: string; b: string; c: string; }>>(
 	lib.intersection([
 		lib.object({ a: lib.string }),
@@ -94,12 +104,8 @@ expectType<TypeGuard<string>>(lib.intersection([
 	lib.union([lib.string, lib.number]),
 	lib.union([lib.string, lib.boolean])
 ]));
-expectType<TypeGuard<{ a: string; b: string; }>>(
-	lib.isIntersectionOf([
-		lib.object({ a: lib.string }),
-		lib.object({ b: lib.string })
-	])
-);
+// @ts-expect-error
+expectDeprecated(lib.getIntersectionOf());
 expectType<TransformFunction<{ a: string; b: string; }>>(
 	lib.parseIntersectionOf([
 		lib.object({ a: lib.string }),
@@ -110,9 +116,10 @@ expectType<TransformFunction<{ a: string; b: string; }>>(
 expectDeprecated(lib.parseIntersectionOf());
 
 // Literal
-expectType<TypeGuard<0>>(lib.isLiteral(0));
-expectType<TypeGuard<0 | 1>>(lib.isLiteralOf([0, 1]));
+expectType<typeof lib.literal>(lib.isLiteral);
+expectType<typeof lib.literals>(lib.isLiteralOf);
 expectType<TypeGuard<0>>(lib.literal(0));
+expectType<TypeGuard<0>>(lib.literals([0]));
 expectType<TypeGuard<0 | 1>>(lib.literals([0, 1]));
 expectType<TypeGuard<0 | 0n>>(lib.literals([0, 0n]));
 expectType<TypeGuard<0 | 0n | ''>>(lib.literals([0, 0n, '']));
@@ -138,12 +145,16 @@ expectType<TransformFunction<0 | 1>>(lib.parseLiteralOf([0, 1]));
 // @ts-expect-error
 expectDeprecated(lib.parseLiteralOf());
 
+// Never
+expectType<typeof lib.never>(lib.isNever);
+expectType<TypeGuard<never>>(lib.never);
+
 // Null
-expectType<TypeGuard<null>>(lib.isNull);
-expectType<TypeGuard<string | null>>(lib.isNullable(lib.string));
-expectType<TypeGuard<string | null | undefined>>(lib.isNullish(lib.string));
-expectType<TypeGuard<string | null>>(lib.nullable(lib.string));
+expectType<typeof lib.nulled>(lib.isNull);
+expectType<typeof lib.nullable>(lib.isNullable);
+expectType<typeof lib.nullish>(lib.isNullish);
 expectType<TypeGuard<null>>(lib.nulled);
+expectType<TypeGuard<string | null>>(lib.nullable(lib.string));
 expectType<TypeGuard<string | null | undefined>>(lib.nullish(lib.string));
 
 // Null deprecated
@@ -159,7 +170,7 @@ expectType<TransformFunction<string | null>>(lib.parseNullable(lib.string));
 expectDeprecated(lib.parseNullable());
 
 // Number
-expectType<TypeGuard<number>>(lib.isNumber);
+expectType<typeof lib.number>(lib.isNumber);
 expectType<TypeGuard<number>>(lib.number);
 
 // Number deprecated
@@ -175,10 +186,18 @@ expectType<TransformFunction<number>>(lib.parseNumber);
 expectDeprecated(lib.parseNumber());
 
 // Object
-expectType<TypeGuard<{ a: string }>>(lib.isObjectOf({ a: lib.string }));
-expectType<TypeGuard<{ a: string }>>(lib.isStrictObjectOf({ a: lib.string }));
+expectType<typeof lib.object>(lib.isObjectOf);
+expectType<typeof lib.strictObject>(lib.isStrictObjectOf);
+expectType<typeof lib.pick>(lib.isPickFrom);
+expectType<typeof lib.omit>(lib.isOmitFrom);
 expectType<TypeGuard<{ a: string }>>(lib.object({ a: lib.string }));
 expectType<TypeGuard<{ a: string }>>(lib.strictObject({ a: lib.string }));
+expectType<TypeGuard<{ a: string }>>(
+	lib.pick(lib.object({ a: lib.string, b: lib.string }), 'a')
+);
+expectType<TypeGuard<{ b: string }>>(
+	lib.omit(lib.object({ a: lib.string, b: lib.string }), 'a')
+);
 
 // Object deprecated
 expectType<TransformFunction<{ a: string }>>(
@@ -203,48 +222,44 @@ expectType<TransformFunction<{ a: string }>>(
 expectDeprecated(lib.parseStrictObjectOf());
 
 // Optional
-expectType<OptionalTypeGuard<string>>(lib.isOptional(lib.string));
-expectType<OptionalTypeGuard<string | undefined>>(
-	lib.isOptionalUndefined(lib.string)
-);
+expectType<typeof lib.optional>(lib.isOptional);
+expectType<typeof lib.optionalUndef>(lib.isOptionalUndefined);
 expectType<OptionalTypeGuard<string>>(lib.optional(lib.string));
 expectType<OptionalTypeGuard<string | undefined>>(
 	lib.optionalUndef(lib.string)
 );
 
-// Parse type
-expectType<TransformFunction<string>>(lib.parseType(lib.string));
-
 // Partial
-expectType<TypeGuard<[string?]>>(lib.isPartial(lib.tuple([lib.string])));
-expectType<TypeGuard<[(string | undefined)?]>>(
-	lib.isPartialUndefined(lib.tuple([lib.string]))
-);
+expectType<typeof lib.partial>(lib.isPartial);
+expectType<typeof lib.partialUndef>(lib.isPartialUndefined);
 expectType<TypeGuard<[string?]>>(lib.partial(lib.tuple([lib.string])));
+expectType<TypeGuard<{ a?: string }>>(
+	lib.partial(lib.object({ a: lib.string }))
+);
 expectType<TypeGuard<[(string | undefined)?]>>(
 	lib.partialUndef(lib.tuple([lib.string]))
 );
+expectType<TypeGuard<{ a?: string | undefined }>>(
+	lib.partialUndef(lib.object({ a: lib.string }))
+);
 
 // Record
-expectType<TypeGuard<Record<string, string>>>(
-	lib.isRecordOf(lib.string, lib.string)
-);
+expectType<typeof lib.record>(lib.isRecordOf);
+expectType<TypeGuard<Record<string, string>>>(lib.record(lib.string));
 expectType<TypeGuard<Record<string, string>>>(
 	lib.record(lib.string, lib.string)
 );
 
 // Required
-expectType<TypeGuard<[string]>>(
-	lib.isRequired(lib.tuple([lib.optional(lib.string)]))
-);
+expectType<typeof lib.required>(lib.isRequired);
 expectType<TypeGuard<[string]>>(
 	lib.required(lib.tuple([lib.optional(lib.string)]))
 );
 
 // String
-expectType<TransformFunction<string>>(lib.asString);
-expectType<TypeGuard<string>>(lib.isString);
+expectType<typeof lib.string>(lib.isString);
 expectType<TypeGuard<string>>(lib.string);
+expectType<TransformFunction<string>>(lib.asString);
 
 // String deprecated
 expectType<TransformFunction<string>>(lib.convertToString);
@@ -255,7 +270,7 @@ expectType<TransformFunction<string>>(lib.parseString);
 expectDeprecated(lib.parseString());
 
 // Symbol
-expectType<TypeGuard<symbol>>(lib.isSymbol);
+expectType<typeof lib.symbol>(lib.isSymbol);
 expectType<TypeGuard<symbol>>(lib.symbol);
 
 // Symbol deprecated
@@ -265,17 +280,44 @@ expectType<TransformFunction<symbol>>(lib.parseSymbol);
 expectDeprecated(lib.parseSymbol());
 
 // Template literal
-expectType<TypeGuard<''>>(lib.isTemplateLiteralOf([]));
+expectType<typeof lib.templateLiteral>(lib.isTemplateLiteralOf);
 expectType<TypeGuard<''>>(lib.templateLiteral([]));
+expectType<TypeGuard<''>>(lib.templateLiteral(['']));
+expectType<TypeGuard<'0'>>(lib.templateLiteral([0]));
+expectType<TypeGuard<'false'>>(lib.templateLiteral([false]));
+expectType<TypeGuard<'false' | 'true'>>(lib.templateLiteral([lib.boolean]));
+expectType<TypeGuard<string>>(lib.templateLiteral([lib.string]));
+expectType<TypeGuard<`${number}`>>(lib.templateLiteral([lib.number]));
+expectType<TypeGuard<`${string}false` | `${string}true`>>(
+	lib.templateLiteral([lib.string, lib.boolean])
+);
+expectType<TypeGuard<`${string}-false` | `${string}-true`>>(
+	lib.templateLiteral([lib.string, '-', lib.boolean])
+);
 
 // Tuple
-expectType<TypeGuard<[]>>(lib.isTupleOf([]));
-expectType<RestTypeGuard<string>>(lib.isTupleRestOf(lib.isString));
+expectType<typeof lib.tuple>(lib.isTupleOf);
+expectType<typeof lib.tupleRest>(lib.isTupleRestOf);
 expectType<TypeGuard<[]>>(lib.tuple([]));
 expectType<TypeGuard<[[]]>>(lib.tuple([lib.tuple([])]));
 expectType<TypeGuard<[string]>>(lib.tuple([lib.string]));
 expectType<TypeGuard<[[string]]>>(lib.tuple([lib.tuple([lib.string])]));
 expectType<RestTypeGuard<string>>(lib.tupleRest(lib.string));
+expectType<TypeGuard<string[]>>(
+	lib.tuple([lib.tupleRest(lib.string)])
+);
+expectType<TypeGuard<[string, ...string[]]>>(
+	lib.tuple([lib.string, lib.tupleRest(lib.string)])
+);
+expectType<TypeGuard<[...string[], string]>>(
+	lib.tuple([lib.tupleRest(lib.string), lib.string])
+);
+expectType<TypeGuard<[string?, ...string[]]>>(
+	lib.tuple([lib.optional(lib.string), lib.tupleRest(lib.string)])
+);
+expectType<TypeGuard<[string, string?, ...string[]]>>(
+	lib.tuple([lib.string, lib.optional(lib.string), lib.tupleRest(lib.string)])
+);
 
 // Tuple deprecated
 expectType<TransformFunction<[]>>(lib.getTupleOf([], []));
@@ -286,11 +328,11 @@ expectType<TransformFunction<[]>>(lib.parseTupleOf([]));
 expectDeprecated(lib.parseTupleOf());
 
 // Undefined
-expectType<TypeGuard<undefined>>(lib.isUndefined);
+expectType<typeof lib.undef>(lib.isUndefined);
 expectType<TypeGuard<undefined>>(lib.undef);
 
 // Union
-expectType<TypeGuard<string | number>>(lib.isUnionOf([lib.string, lib.number]));
+expectType<typeof lib.union>(lib.isUnionOf);
 expectType<TypeGuard<string | number>>(lib.union([lib.string, lib.number]));
 
 // Union deprecated
@@ -326,19 +368,8 @@ expectType<TypeGuard<[(string | undefined)?]>>(
 	lib.tuple([lib.optionalUndef(lib.string)])
 );
 
-// Tuple + Rest
-expectType<TypeGuard<string[]>>(
-	lib.tuple([lib.tupleRest(lib.string)])
-);
-expectType<TypeGuard<[string, ...string[]]>>(
-	lib.tuple([lib.string, lib.tupleRest(lib.string)])
-);
-expectType<TypeGuard<[...string[], string]>>(
-	lib.tuple([lib.tupleRest(lib.string), lib.string])
-);
-expectType<TypeGuard<[string?, ...string[]]>>(
-	lib.tuple([lib.optional(lib.string), lib.tupleRest(lib.string)])
-);
-expectType<TypeGuard<[string, string?, ...string[]]>>(
-	lib.tuple([lib.string, lib.optional(lib.string), lib.tupleRest(lib.string)])
-);
+// Get type
+expectType<TransformFunction<string>>(lib.getType(lib.string, ''));
+
+// Parse type
+expectType<TransformFunction<string>>(lib.parseType(lib.string));

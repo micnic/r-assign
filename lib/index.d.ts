@@ -218,6 +218,7 @@ export * from 'r-assign/lib/get-type';
 export * from 'r-assign/lib/instance';
 export * from 'r-assign/lib/intersection';
 export * from 'r-assign/lib/literal';
+export * from 'r-assign/lib/never';
 export * from 'r-assign/lib/null';
 export * from 'r-assign/lib/number';
 export * from 'r-assign/lib/object';
