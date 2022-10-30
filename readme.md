@@ -47,6 +47,7 @@ Reasons to use `r-assign`:
   - [Template literal](#template-literal)
   - [Instance](#instance)
   - [Date](#date)
+  - [Never](#never)
 - [Complex data types](#complex-data-types)
   - [Array](#array)
   - [Object](#object)
@@ -184,38 +185,36 @@ prevent importing all the library it is recommended to import just the specific
 submodules that will be used. The list of the available submodules is the
 following:
 
-[Basic data types](#basic-data-types)
-- [`r-assign/lib/any`](#any) - for any values
-- [`r-assign/lib/boolean`](#boolean) - for boolean values
-- [`r-assign/lib/number`](#number) - for number values
-- [`r-assign/lib/string`](#string) - for string values
-- [`r-assign/lib/bigint`](#bigint) - for bigint values
-- [`r-assign/lib/symbol`](#symbol) - for symbol values
-- [`r-assign/lib/undefined`](#undefined) - for undefined value
-- [`r-assign/lib/null`](#null) - for null, nullable and nullish values
-- [`r-assign/lib/literal`](#literal) - for literal values
-- [`r-assign/lib/template-literal`](#template-literal) - for template literal
-  values
-- [`r-assign/lib/instance`](#instance) - for objects values of specific instance
-- [`r-assign/lib/date`](#date) - for date values
+[Basic Data Types](#basic-data-types)
+- [`r-assign/lib/any`](#any)
+- [`r-assign/lib/boolean`](#boolean)
+- [`r-assign/lib/number`](#number)
+- [`r-assign/lib/string`](#string)
+- [`r-assign/lib/bigint`](#bigint)
+- [`r-assign/lib/symbol`](#symbol)
+- [`r-assign/lib/undefined`](#undefined)
+- [`r-assign/lib/null`](#null)
+- [`r-assign/lib/literal`](#literal)
+- [`r-assign/lib/instance`](#instance)
+- [`r-assign/lib/date`](#date)
+- [`r-assign/lib/never`](#never)
 
 [Complex Data Types](#complex-data-types)
-- [`r-assign/lib/array`](#array) - for array values
-- [`r-assign/lib/object`](#object) - for object values
-- [`r-assign/lib/tuple`](#tuple) - for tuple values
-- [`r-assign/lib/record`](#record) - for record values
-- [`r-assign/lib/function`](#function) - for function values
+- [`r-assign/lib/array`](#array)
+- [`r-assign/lib/object`](#object)
+- [`r-assign/lib/tuple`](#tuple)
+- [`r-assign/lib/record`](#record)
+- [`r-assign/lib/template-literal`](#template-literal)
+- [`r-assign/lib/function`](#function)
 
 [Type Operations](#type-operations)
-- [`r-assign/lib/union`](#union) - for union of types
-- [`r-assign/lib/intersection`](#intersection) - for intersection of types
-- [`r-assign/lib/optional`](#optional) - for optional types
+- [`r-assign/lib/union`](#union)
+- [`r-assign/lib/intersection`](#intersection)
+- [`r-assign/lib/optional`](#optional)
 
 [Transform Functions](#transform-functions)
-- [`r-assign/lib/get-type`](#getting-data) - get a value of the provided type or
-  returns the default value
-- [`r-assign/lib/parse-type`](#parsing-data) - get a value of the provide type
-  or throws a type error
+- [`r-assign/lib/get-type`](#getting-data)
+- [`r-assign/lib/parse-type`](#parsing-data)
 
 ## Type guards
 `r-assign` is built around the concept of type guards which are just functions
@@ -257,7 +256,7 @@ stringArray([42]); // => false
 ```
 
 ---
-## Basic data types
+## Basic Data Types
 
 ### Any
 
@@ -423,29 +422,6 @@ isLiteralOfABC('d'); // => false
 literals(['a', 'b', 'c']);
 ```
 
-### Template literal
-
-```js
-import {
-    isTemplateLiteralOf,
-    templateLiteral
-} from 'r-assign/lib/template-literal';
-import { isNumber, number } from 'r-assign/lib/number';
-import { isString, string } from 'r-assign/lib/string';
-
-// Check for string values that match the provided template literal
-// Accepts an array of primitive values and type guards as argument
-const isStringDashNumber = isTemplateLiteralOf(
-    [isString, '-', isNumber] // `${string}-${number}`
-);
-
-isStringDashNumber('abc-123'); // => true
-isStringDashNumber('abc'); // => false
-
-// Alias:
-templateLiteral([string, '-', number]);
-```
-
 ### Instance
 
 ```js
@@ -471,6 +447,18 @@ isDate(new Date(NaN)); // => false, will return true only for valid date values
 
 // Alias:
 date(new Date());
+```
+
+### Never
+
+```js
+import { isNever, never } from 'r-assign/lib/never';
+
+isNever('abc'); // => false
+isNever(); // => false, will always return false
+
+// Alias:
+never();
 ```
 
 ---
@@ -499,8 +487,14 @@ array(string);
 import {
     isObjectOf,
     isStrictObjectOf,
+    isKeyOf,
+    isPickFrom,
+    isOmitFrom,
     object,
-    strictObject
+    strictObject,
+    keyof,
+    pick,
+    omit
 } from 'r-assign/lib/object';
 import { isNumber, number } from 'r-assign/lib/number';
 import { isString, string } from 'r-assign/lib/string';
@@ -542,6 +536,41 @@ strictObject({
     name: string,
     age: number
 });
+
+// Check for object keys from the provided object type
+const isKeyOfNameAge = isKeyOf(isObjectOfNameAge); // 'name' | 'age'
+
+isKeyOfNameAge('name'); // => true
+
+// Alias:
+keyof(object({
+    name: string,
+    age: number
+}));
+
+// Check for object of provided shape and pick only the provided properties
+const isPickFromNameAge = isPickFrom(isObjectOfNameAge, 'name');
+// { name: string; }
+
+isPickFromNameAge({ name: 'John' }); // => true
+
+// Alias:
+pick(object({
+    name: string,
+    age: number
+}), 'name');
+
+// Check for object of provided shape and omit the provided properties
+const isOmitFromNameAge = isOmitFrom(isObjectOfNameAge, 'name');
+// { age: number }
+
+isOmitFromNameAge({ age: 22 }); // => true
+
+// Alias:
+omit(object({
+    name: string,
+    age: number
+}), 'name');
 ```
 
 ### Tuple
@@ -600,6 +629,29 @@ isStringRecordAlso({
 
 // Alias:
 record(number);
+```
+
+### Template literal
+
+```js
+import {
+    isTemplateLiteralOf,
+    templateLiteral
+} from 'r-assign/lib/template-literal';
+import { isNumber, number } from 'r-assign/lib/number';
+import { isString, string } from 'r-assign/lib/string';
+
+// Check for string values that match the provided template literal
+// Accepts an array of primitive values and type guards as argument
+const isStringDashNumber = isTemplateLiteralOf(
+    [isString, '-', isNumber] // `${string}-${number}`
+);
+
+isStringDashNumber('abc-123'); // => true
+isStringDashNumber('abc'); // => false
+
+// Alias:
+templateLiteral([string, '-', number]);
 ```
 
 ### Function
