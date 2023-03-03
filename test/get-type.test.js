@@ -10,6 +10,7 @@ const {
 	isNumber,
 	isObjectOf,
 	isOptional,
+	isPromiseOf,
 	isString,
 	isTupleOf,
 	isUnionOf
@@ -17,6 +18,7 @@ const {
 
 const expected = 'expected a string value';
 const invalidDefaultValue = 'Invalid default value type';
+const invalidReturn = 'Invalid function return';
 const receivedArray = 'but received a value of type string[]';
 
 /**
@@ -80,29 +82,6 @@ test('getType', ({ end }) => {
 	match(getObjectOfString({}), {});
 	match(getObjectOfString(), {});
 
-	const getFunction = getType(isFunction([]), () => null);
-	const someFunction = getFunction(() => null);
-
-	throws(() => {
-		// @ts-expect-error
-		someFunction(null);
-	}, TypeError('Invalid function arguments'));
-
-	throws(() => {
-		someFunction();
-	}, TypeError('Invalid function return, expected void'));
-
-	// @ts-expect-error
-	const getOtherFunction = getType(isFunction([], isString), () => null);
-	const someOtherFunction = getOtherFunction(() => '');
-	const someOtherDefaultFunction = getOtherFunction();
-
-	equal(someOtherFunction(), '');
-
-	throws(() => {
-		someOtherDefaultFunction();
-	}, TypeError('Invalid function return'));
-
 	throws(() => {
 		// @ts-expect-error
 		getType();
@@ -122,6 +101,69 @@ test('getType', ({ end }) => {
 		// @ts-expect-error
 		getType(isString);
 	}, TypeError(`${invalidDefaultValue}, ${expected} but received undefined`));
+
+	end();
+});
+
+test('getType: () => void', ({ end }) => {
+
+	const getFunction = getType(isFunction([]), () => null);
+	const f = getFunction();
+
+	equal(getFunction(() => undefined)(), undefined);
+
+	throws(() => {
+		// @ts-expect-error
+		f(null);
+	}, TypeError('Invalid function arguments'));
+
+	throws(() => {
+		f();
+	}, TypeError('Invalid function return, expected void'));
+
+	end();
+});
+
+test('getType: () => string', ({ end }) => {
+
+	// @ts-expect-error
+	const getFunction = getType(isFunction([], isString), () => null);
+	const f = getFunction();
+
+	equal(getFunction(() => '')(), '');
+
+	throws(() => {
+		// @ts-expect-error
+		f(null);
+	}, TypeError('Invalid function arguments'));
+
+	throws(() => {
+		f();
+	}, TypeError(`${invalidReturn}, ${expected} but received null`));
+
+	end();
+});
+
+test('getType: Promise<void>', async ({ end, rejects, resolveMatch }) => {
+
+	// @ts-expect-error
+	const getPromise = getType(isPromiseOf(), Promise.resolve(null));
+
+	await resolveMatch(getPromise(Promise.resolve()), undefined);
+
+	await rejects(() => getPromise());
+
+	end();
+});
+
+test('getType: Promise<string>', async ({ end, rejects, resolveMatch }) => {
+
+	// @ts-expect-error
+	const getPromise = getType(isPromiseOf(isString), Promise.resolve(null));
+
+	await resolveMatch(getPromise(Promise.resolve('')), '');
+
+	await rejects(() => getPromise());
 
 	end();
 });
