@@ -4,9 +4,11 @@ const { test, equal, match, notSame, same, throws } = require('tap');
 const {
 	isAny,
 	isArrayOf,
+	isFunction,
 	isNumber,
 	isObjectOf,
 	isOptional,
+	isPromiseOf,
 	isString,
 	isTemplateLiteralOf,
 	isTupleOf,
@@ -19,6 +21,7 @@ const emptyArray = 'an empty array []';
 const expected = 'expected a string value';
 // eslint-disable-next-line no-template-curly-in-string
 const expectedTL = 'expected a template literal of `a-${string}`';
+const invalidReturn = 'Invalid function return';
 const invalidValue = 'Invalid value type';
 const nestedArray = 'a value of type [][]';
 const receivedUndefined = 'but received undefined';
@@ -345,6 +348,118 @@ test('parseType', ({ end }) => {
 	throws(() => {
 		// @ts-expect-error
 		parseType(isNumber, appendDot)(0);
+	});
+
+	end();
+});
+
+test('parseType: () => void', ({ end }) => {
+
+	const parseFunction = parseType(isFunction([]));
+	const f = parseFunction(() => null);
+
+	equal(parseFunction(() => undefined)(), undefined);
+
+	throws(() => {
+		// @ts-expect-error
+		f(null);
+	}, TypeError('Invalid function arguments'));
+
+	throws(() => {
+		f();
+	}, TypeError('Invalid function return, expected void'));
+
+	end();
+});
+
+test('parseType: () => string', ({ end }) => {
+
+	const parseFunction = parseType(isFunction([], isString));
+	const f = parseFunction(() => null);
+
+	equal(parseFunction(() => '')(), '');
+
+	throws(() => {
+		// @ts-expect-error
+		f(null);
+	}, TypeError('Invalid function arguments'));
+
+	throws(() => {
+		f();
+	}, TypeError(`${invalidReturn}, ${expected} but received null`));
+
+	end();
+});
+
+test('parseType: () => Promise<void>', async ({
+	end,
+	rejects,
+	resolveMatch
+}) => {
+	const parseFunction = parseType(isFunction([], isPromiseOf()));
+	const f = parseFunction(() => null);
+
+	await resolveMatch(parseFunction(() => Promise.resolve())(), undefined);
+
+	await rejects(parseFunction(() => Promise.resolve(''))());
+
+	throws(() => {
+		// @ts-expect-error
+		f(null);
+	});
+
+	throws(() => {
+		f();
+	});
+
+	end();
+});
+
+test('parseType: () => Promise<string>', async ({
+	end,
+	rejects,
+	resolveMatch
+}) => {
+	const parseFunction = parseType(isFunction([], isPromiseOf(isString)));
+	const f = parseFunction(() => null);
+
+	await resolveMatch(parseFunction(() => Promise.resolve(''))(), '');
+
+	await rejects(parseFunction(() => Promise.resolve())());
+
+	throws(() => {
+		// @ts-expect-error
+		f(null);
+	});
+
+	throws(() => {
+		f();
+	});
+
+	end();
+});
+
+test('parseType: Promise<void>', async ({ end, resolveMatch }) => {
+
+	const parsePromise = parseType(isPromiseOf());
+
+	await resolveMatch(parsePromise(Promise.resolve()), undefined);
+
+	throws(() => {
+		parsePromise();
+	});
+
+	end();
+});
+
+test('parseType: Promise<string>', async ({ end, resolveMatch }) => {
+
+	const parsePromise = parseType(isPromiseOf(isString));
+
+	await resolveMatch(parsePromise(Promise.resolve('')), '');
+
+	throws(() => {
+		parsePromise();
 	});
 
 	end();

@@ -163,6 +163,7 @@ test('isTemplateLiteralOf', ({ end }) => {
 	}, TypeError('Invalid type for template literal type'));
 
 	throws(() => {
+		// @ts-expect-error
 		isTemplateLiteralOf([isOptional(isString)]);
 	}, TypeError(`Optional type cannot be used in ${declaration}`));
 

@@ -45,6 +45,13 @@ test('Schema with object applied', ({ end }) => {
 	end();
 });
 
+test('Schema with null applied', ({ end }) => {
+	match(rAssign({
+		data: (value) => value
+	}, null), {});
+	end();
+});
+
 test('Schema with object applied, property skipped', ({ end }) => {
 	match(rAssign({
 		data: () => {/* Return nothing */}
