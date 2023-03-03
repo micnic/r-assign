@@ -1,6 +1,6 @@
 {
 	"name": "r-assign",
-	"version": "1.8.0",
+	"version": "1.9.0",
 	"description": "Object.assign() with super powers",
 	"keywords": [
 		"assert",
@@ -63,7 +63,7 @@
 		"@typescript-eslint/parser": "5.x",
 		"eslint": "8.x",
 		"tap": "16.x",
-		"tsd": "0.21.x",
+		"tsd": "0.25.x",
 		"typescript": "4.x"
 	},
 	"engines": {
