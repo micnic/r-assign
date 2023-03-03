@@ -1,4 +1,3 @@
-import { expectDeprecated, expectType } from 'tsd';
 import { TransformFunction } from 'r-assign';
 import lib, {
 	AnyTypeGuard,
@@ -6,6 +5,7 @@ import lib, {
 	RestTypeGuard,
 	TypeGuard
 } from 'r-assign/lib';
+import { expectDeprecated, expectType } from 'tsd';
 
 // Any
 expectType<typeof lib.any>(lib.isAny);
@@ -63,11 +63,10 @@ expectType<TypeGuard<Date>>(lib.isAnyDate);
 
 // Function
 expectType<typeof lib.func>(lib.isFunction);
+expectType<typeof lib.asyncFunc>(lib.isAsyncFunction);
 expectType<TypeGuard<() => void>>(lib.func([]));
 expectType<TypeGuard<() => string>>(lib.func([], lib.string));
-expectType<TypeGuard<(args_0: string) => void>>(
-	lib.func([lib.string])
-);
+expectType<TypeGuard<(args_0: string) => void>>(lib.func([lib.string]));
 expectType<TypeGuard<(args_0: string) => string>>(
 	lib.func([lib.string], lib.string)
 );
@@ -76,6 +75,20 @@ expectType<TypeGuard<(args_0: string, args_1: string) => void>>(
 );
 expectType<TypeGuard<(args_0: string, args_1: string) => string>>(
 	lib.func([lib.string, lib.string], lib.string)
+);
+expectType<TypeGuard<() => Promise<void>>>(lib.asyncFunc([]));
+expectType<TypeGuard<() => Promise<string>>>(lib.asyncFunc([], lib.string));
+expectType<TypeGuard<(args_0: string) => Promise<void>>>(
+	lib.asyncFunc([lib.string])
+);
+expectType<TypeGuard<(args_0: string) => Promise<string>>>(
+	lib.asyncFunc([lib.string], lib.string)
+);
+expectType<TypeGuard<(args_0: string, args_1: string) => Promise<void>>>(
+	lib.asyncFunc([lib.string, lib.string])
+);
+expectType<TypeGuard<(args_0: string, args_1: string) => Promise<string>>>(
+	lib.asyncFunc([lib.string, lib.string], lib.string)
 );
 
 // Instance
@@ -92,21 +105,23 @@ expectDeprecated(lib.parseInstanceOf());
 
 // Intersection
 expectType<typeof lib.intersection>(lib.isIntersectionOf);
-expectType<TypeGuard<{ a: string; b: string; c: string; }>>(
+expectType<TypeGuard<{ a: string; b: string; c: string }>>(
 	lib.intersection([
 		lib.object({ a: lib.string }),
 		lib.object({ b: lib.string }),
 		lib.object({ c: lib.string })
 	])
 );
-expectType<TypeGuard<string>>(lib.intersection([
-	lib.string,
-	lib.union([lib.string, lib.number]),
-	lib.union([lib.string, lib.boolean])
-]));
+expectType<TypeGuard<string>>(
+	lib.intersection([
+		lib.string,
+		lib.union([lib.string, lib.number]),
+		lib.union([lib.string, lib.boolean])
+	])
+);
 // @ts-expect-error
 expectDeprecated(lib.getIntersectionOf());
-expectType<TransformFunction<{ a: string; b: string; }>>(
+expectType<TransformFunction<{ a: string; b: string }>>(
 	lib.parseIntersectionOf([
 		lib.object({ a: lib.string }),
 		lib.object({ b: lib.string })
@@ -243,6 +258,11 @@ expectType<TypeGuard<{ a?: string | undefined }>>(
 	lib.partialUndef(lib.object({ a: lib.string }))
 );
 
+// Promise
+expectType<typeof lib.promise>(lib.isPromiseOf);
+expectType<TypeGuard<Promise<void>>>(lib.promise());
+expectType<TypeGuard<Promise<string>>>(lib.promise(lib.string));
+
 // Record
 expectType<typeof lib.record>(lib.isRecordOf);
 expectType<TypeGuard<Record<string, string>>>(lib.record(lib.string));
@@ -303,9 +323,8 @@ expectType<TypeGuard<[[]]>>(lib.tuple([lib.tuple([])]));
 expectType<TypeGuard<[string]>>(lib.tuple([lib.string]));
 expectType<TypeGuard<[[string]]>>(lib.tuple([lib.tuple([lib.string])]));
 expectType<RestTypeGuard<string>>(lib.tupleRest(lib.string));
-expectType<TypeGuard<string[]>>(
-	lib.tuple([lib.tupleRest(lib.string)])
-);
+
+expectType<TypeGuard<string[]>>(lib.tuple([lib.tupleRest(lib.string)]));
 expectType<TypeGuard<[string, ...string[]]>>(
 	lib.tuple([lib.string, lib.tupleRest(lib.string)])
 );
@@ -361,9 +380,7 @@ expectType<TypeGuard<{ [x: string]: string; a: string }>>(
 );
 
 // Tuple + Optional
-expectType<TypeGuard<[string?]>>(
-	lib.tuple([lib.optional(lib.string)])
-);
+expectType<TypeGuard<[string?]>>(lib.tuple([lib.optional(lib.string)]));
 expectType<TypeGuard<[(string | undefined)?]>>(
 	lib.tuple([lib.optionalUndef(lib.string)])
 );
