@@ -1,3 +1,5 @@
+import type { RemapObject } from 'r-assign/lib/internal';
+
 type Constructor<T = any> = new (...args: any) => T;
 
 type InferConstructor<T extends Constructor> = T extends Constructor<infer I>
@@ -23,10 +25,10 @@ type AnyTag = { any: true };
 type AnyTypeGuard = TypeGuard & AnyTag;
 
 type OptionalTag = { optional: true };
-type OptionalTypeGuard<T = any> = TypeGuard<T | undefined> & OptionalTag;
+type OptionalTypeGuard<T = any> = TypeGuard<T | unknown> & OptionalTag;
 
 type RestTag = { rest: true };
-type RestTypeGuard<T = any> = TypeGuard<T[]> & RestTag;
+type RestTypeGuard<T = any> = TypeGuard<(T | unknown)[]> & RestTag;
 
 type BaseTypeGuard<T extends TypeGuard> = T extends OptionalTypeGuard
 	? never
@@ -40,13 +42,13 @@ type InferTypeGuard<G extends TypeGuard> = G extends OptionalTypeGuard<infer T>
 	? T
 	: never;
 
-type Intersection = [
-	TypeGuard,
-	TypeGuard,
-	...TypeGuard[]
-];
+type InferRestTypeGuard<G extends RestTypeGuard> = G extends RestTypeGuard<
+	infer T
+>
+	? T[]
+	: never;
 
-type RemapObject<T> = T extends any[] | Function ? T : { [K in keyof T]: T[K] };
+type Intersection = [TypeGuard, TypeGuard, ...TypeGuard[]];
 
 type InferIntersection<T extends Intersection> = T extends [infer F, infer S]
 	? F extends TypeGuard
@@ -72,6 +74,8 @@ type InferIntersection<T extends Intersection> = T extends [infer F, infer S]
 			: never
 		: never
 	: never;
+
+type InferPromise<T extends TypeGuard> = Promise<InferTypeGuard<T>>;
 
 type Stringify<T> = T extends TypeGuard<Literal>
 	? `${InferTypeGuard<T>}`
@@ -129,7 +133,7 @@ type InferTupleWithOptional<T extends Tuple> = T extends []
 	? G extends OptionalTypeGuard
 		? [InferTypeGuard<G>?]
 		: G extends RestTypeGuard
-		? InferTypeGuard<G>
+		? InferRestTypeGuard<G>
 		: never
 	: T extends [infer H, ...infer R]
 	? H extends OptionalTypeGuard
@@ -138,7 +142,7 @@ type InferTupleWithOptional<T extends Tuple> = T extends []
 			: never
 		: H extends RestTypeGuard
 		? R extends Tuple
-			? [...InferTypeGuard<H>, ...InferTupleWithRest<R>]
+			? [...InferRestTypeGuard<H>, ...InferTupleWithRest<R>]
 			: never
 		: never
 	: never;
@@ -149,7 +153,7 @@ type InferTuple<T extends Tuple> = T extends []
 	? G extends OptionalTypeGuard
 		? [InferTypeGuard<G>?]
 		: G extends RestTypeGuard
-		? InferTypeGuard<G>
+		? InferRestTypeGuard<G>
 		: G extends TypeGuard
 		? [InferTypeGuard<G>]
 		: never
@@ -160,7 +164,7 @@ type InferTuple<T extends Tuple> = T extends []
 			: never
 		: H extends RestTypeGuard
 		? R extends Tuple
-			? [...InferTypeGuard<H>, ...InferTupleWithRest<R>]
+			? [...InferRestTypeGuard<H>, ...InferTupleWithRest<R>]
 			: never
 		: H extends TypeGuard
 		? R extends Tuple
@@ -173,15 +177,21 @@ type InferFunction<T extends Tuple, R extends TypeGuard> = ((
 	...args: InferTuple<T>
 ) => InferTypeGuard<R>) & {};
 
+type InferAsyncFunction<T extends Tuple, R extends TypeGuard> = ((
+	...args: InferTuple<T>
+) => Promise<InferTypeGuard<R>>) & {};
+
 type Shape = Record<string, TypeGuard>;
 
 type KeysOfType<T, U> = {
 	[K in keyof T]: T[K] extends U ? K : never;
 }[keyof T];
 
-type OptionalShape<S extends Shape, T extends keyof S> = {
-	[K in keyof (Omit<S, T> & Partial<Pick<S, T>>)]: K extends keyof S
-		? InferTypeGuard<S[K]>
+type OptionalShape<S extends Shape, K extends keyof S> = {
+	[P in keyof (Omit<S, K> & Partial<Pick<S, K>>)]: P extends keyof S
+		? S[P] extends RestTypeGuard
+			? never
+			: InferTypeGuard<S[P]>
 		: never;
 } & {};
 
@@ -193,15 +203,11 @@ type InferShape<
 		(M extends undefined
 			? {}
 			: M extends TypeGuard
-			? InferTypeGuard<M>
+			? InferTypeGuard<BaseTypeGuard<M>>
 			: never)
 >;
 
-type Union = [
-	TypeGuard,
-	TypeGuard,
-	...TypeGuard[]
-];
+type Union = [TypeGuard, TypeGuard, ...TypeGuard[]];
 
 type InferUnion<T extends Union> = T extends TypeGuard<infer U>[] ? U : never;
 
@@ -225,6 +231,7 @@ export * from 'r-assign/lib/object';
 export * from 'r-assign/lib/optional';
 export * from 'r-assign/lib/parse-type';
 export * from 'r-assign/lib/partial';
+export * from 'r-assign/lib/promise';
 export * from 'r-assign/lib/record';
 export * from 'r-assign/lib/required';
 export * from 'r-assign/lib/same';
@@ -243,6 +250,8 @@ export type {
 	CompositeTypeGuard,
 	CompositeTypeGuard as CTG,
 	Constructor,
+	InferAsyncFunction,
+	InferAsyncFunction as InferAF,
 	InferConstructor,
 	InferConstructor as InferC,
 	InferFunction,
@@ -251,6 +260,8 @@ export type {
 	InferIntersection as InferInt,
 	InferLiterals,
 	InferLiterals as InferL,
+	InferPromise,
+	InferPromise as InferP,
 	InferShape,
 	InferShape as InferS,
 	InferTemplateLiteral,

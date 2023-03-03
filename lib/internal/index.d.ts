@@ -8,6 +8,7 @@ import type {
 	Union
 } from 'r-assign/lib';
 
+type RemapObject<T> = T extends any[] | Function ? T : { [K in keyof T]: T[K] };
 type ShapeEntries = [string, TypeGuard][];
 type StringifiedTemplateLiteral<L extends Literal> = (TypeGuard<L> | string)[];
 type ReducibleTemplateLiteral<S extends string> = (TypeGuard<S> | S)[];
@@ -29,9 +30,9 @@ type ArrayTypeGuardMeta = BaseTypeGuardMeta & {
 };
 
 type FunctionTypeGuardMeta = BaseTypeGuardMeta & {
+	children: [TypeGuardMeta, TypeGuardMeta];
 	classification: 'function';
-	input: TypeGuard<any[] | []>;
-	output: TypeGuard | undefined;
+	types: [TypeGuard<any[] | []>, TypeGuard | undefined];
 };
 
 type InstanceTypeGuardMeta = BaseTypeGuardMeta & {
@@ -83,6 +84,12 @@ type PrimitiveTypeGuardMeta = BaseTypeGuardMeta & {
 	| { primitive: 'number'; finite: boolean }
 );
 
+type PromiseTypeGuardMeta = BaseTypeGuardMeta & {
+	child: TypeGuardMeta;
+	classification: 'promise';
+	type: TypeGuard | undefined;
+};
+
 type RecordTypeGuardMeta = BaseTypeGuardMeta & {
 	classification: 'record';
 	keys: TypeGuard<keyof any>;
@@ -118,6 +125,10 @@ type UnionTypeGuardMeta = BaseTypeGuardMeta & {
 	union: Union;
 };
 
+type VoidTypeGuardMeta = BaseTypeGuardMeta & {
+	classification: 'void';
+};
+
 type TypeGuardMeta =
 	| AnyTypeGuardMeta
 	| ArrayTypeGuardMeta
@@ -130,11 +141,13 @@ type TypeGuardMeta =
 	| ObjectTypeGuardMeta
 	| OptionalTypeGuardMeta
 	| PrimitiveTypeGuardMeta
+	| PromiseTypeGuardMeta
 	| RecordTypeGuardMeta
 	| RestTypeGuardMeta
 	| TemplateLiteralTypeGuardMeta
 	| TupleTypeGuardMeta
-	| UnionTypeGuardMeta;
+	| UnionTypeGuardMeta
+	| VoidTypeGuardMeta;
 
 type TypeClassification = TypeGuardMeta['classification'];
 
@@ -159,6 +172,8 @@ export type {
 	RecordTypeGuardMeta as RDTGM,
 	ReducibleTemplateLiteral,
 	ReducibleTemplateLiteral as RTL,
+	RemapObject,
+	RemapObject as RO,
 	RestTypeGuardMeta,
 	RestTypeGuardMeta as RTTGM,
 	ShapeEntries,
