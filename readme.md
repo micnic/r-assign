@@ -54,6 +54,7 @@ Reasons to use `r-assign`:
   - [Tuple](#tuple)
   - [Record](#record)
   - [Function](#function)
+  - [Promise](#promise)
 - [Type operations](#type-operations)
   - [Union](#union)
   - [Intersection](#intersection)
@@ -75,7 +76,7 @@ Reasons to use `r-assign`:
 `npm i r-assign`
 
 To take advantage of all TypeScript features in `r-assign` use latest TypeScript
-versions (4.4+) and configure the compiler options with `strict` and
+versions (4.5+) and configure the compiler options with `strict` and
 `exactOptionalPropertyTypes` enabled. `exactOptionalPropertyTypes` option is
 required for the usage of `isOptional()` type guard, if the option is not
 enabled the `isOptionalUndefined()` type guard should be used instead.
@@ -206,6 +207,7 @@ following:
 - [`r-assign/lib/record`](#record)
 - [`r-assign/lib/template-literal`](#template-literal)
 - [`r-assign/lib/function`](#function)
+- [`r-assign/lib/promise`](#promise)
 
 [Type Operations](#type-operations)
 - [`r-assign/lib/union`](#union)
@@ -662,7 +664,12 @@ function that will validate the input and the output of the original function
 values.
 
 ```js
-import { isFunction, func } from 'r-assign/lib/function';
+import {
+    isFunction,
+    isAsyncFunction,
+    func,
+    asyncFunc
+} from 'r-assign/lib/function';
 import { isString, string } from 'r-assign/lib/string';
 import { isNumber, number } from 'r-assign/lib/number';
 
@@ -681,6 +688,48 @@ isSomeFunction(() => ''); // => true
 
 // Alias:
 func([number], string);
+
+// Same as "isFunction()" but for async functions
+// (arg0: number) => Promise<string>
+const isSomeAsyncFunction = isAsyncFunction([isNumber], isString);
+
+isSomeAsyncFunction(() => null); // => true, will check just if the provided
+                                 //    value is a function
+isSomeAsyncFunction(() => ''); // => true
+
+// Note: Function type guards should be used as part of parsing or getting
+//       values to validate the function arguments and return type, in other
+//       cases they will just check for function type
+
+// Alias:
+asyncFunc([number], string);
+```
+
+### Promise
+Promise type guard is a special case of type guards, the same as function type
+guard, it will just check for the values to be promises, but when used in
+[parsing](#parsing-data) or [getting](#getting-data) data transform functions
+values are wrapped in a promise that will validate the resolve type of the
+original promise values.
+
+```js
+import { isPromiseOf, promise } from 'r-assign/lib/promise';
+import { isString, string } from 'r-assign/lib/string';
+
+// Takes one argument, the promise resolve type guard
+// Promise<string>
+const isSomePromise = isPromiseOf(isString);
+
+isSomePromise(Promise.resolve('abc')); // => true
+isSomePromise(Promise.resolve()); // => true, will check just if the provided
+                                  //    value is a promise
+
+// Note: Promise type guards should be used as part of parsing or getting
+//       values to validate the promise resolve type, in other cases they will
+//       just check for promise type
+
+// Alias:
+promise(string);
 ```
 
 ---
