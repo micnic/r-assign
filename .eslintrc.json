@@ -65,7 +65,7 @@
 		"no-magic-numbers": [
 			"error",
 			{
-				"ignore": [-1, 0, 1, "-1n", "0n", "1n"],
+				"ignore": [-2, -1, 0, 1, 2, "-2n", "-1n", "0n", "1n", "2n"],
 				"detectObjects": true,
 				"enforceConst": true,
 				"ignoreArrayIndexes": true
