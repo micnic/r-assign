@@ -25,7 +25,11 @@ const invalidSchema = 'Invalid schema argument type, object expected';
 const getSource = (sources) => {
 
 	// Check for one source object
-	if (hasOneElement(sources) && typeof sources[0] === 'object') {
+	if (
+		hasOneElement(sources) &&
+		typeof sources[0] === 'object' &&
+		sources[0] !== null
+	) {
 		return sources[0];
 	}
 
