@@ -36,8 +36,8 @@ type FunctionTypeGuardMeta = BaseTypeGuardMeta & {
 };
 
 type InstanceTypeGuardMeta = BaseTypeGuardMeta & {
+	builder: Constructor;
 	classification: 'instance';
-	constructor: Constructor;
 };
 
 type IntersectionTypeGuardMeta = BaseTypeGuardMeta & {

@@ -1,6 +1,6 @@
 import type { RemapObject } from 'r-assign/lib/internal';
 
-type Constructor<T = any> = new (...args: any) => T;
+type Constructor<T = any> = new (...args: any[]) => T;
 
 type InferConstructor<T extends Constructor> = T extends Constructor<infer I>
 	? I
