@@ -1,60 +1,19 @@
-'use strict';
-
-const { test, equal, match, notOk, ok, throws } = require('tap');
-const {
-	getUnionOf,
+import { test, equal, notOk, ok, throws } from 'tap';
+import {
 	isAny,
 	isArrayOf,
 	isBoolean,
 	isLiteral,
 	isLiteralOf,
 	isNumber,
-	isObjectOf,
 	isOptional,
 	isString,
 	isTemplateLiteralOf,
 	isUnionOf,
-	parseUnionOf,
 	union
-} = require('r-assign/lib');
+} from 'r-assign';
 
-const expected = 'expected an union of string | number';
-const invalidDefaultValue = 'Invalid default value type';
 const invalidOptionalType = 'Optional type cannot be used in union declaration';
-const invalidValue = 'Invalid value type';
-
-test('getUnionOf', ({ end }) => {
-
-	const getStringOrNumber = getUnionOf([isString, isNumber], '');
-
-	equal(getStringOrNumber(), '');
-	equal(getStringOrNumber(0), 0);
-	equal(getStringOrNumber(1), 1);
-	equal(getStringOrNumber(''), '');
-	equal(getStringOrNumber('data'), 'data');
-
-	match(
-		getUnionOf(
-			[isObjectOf({ prop: isString }), isObjectOf({ prop: isNumber })],
-			{ prop: 'data' }
-		)(),
-		{ prop: 'data' }
-	);
-	match(
-		getUnionOf(
-			[isObjectOf({ prop: isString }), isObjectOf({ prop: isNumber })],
-			{ prop: 'data' }
-		)({ prop: 'prop' }),
-		{ prop: 'prop' }
-	);
-
-	throws(() => {
-		// @ts-expect-error
-		getUnionOf([isString, isNumber], null);
-	}, TypeError(`${invalidDefaultValue}, ${expected} but received null`));
-
-	end();
-});
 
 test('isUnionOf', ({ end }) => {
 
@@ -109,19 +68,6 @@ test('isUnionOf', ({ end }) => {
 	throws(() => {
 		isUnionOf([isOptional(isString), isString]);
 	}, TypeError(invalidOptionalType));
-
-	end();
-});
-
-test('parseUnionOf', ({ end }) => {
-
-	const parseStringOrNumber = parseUnionOf([isString, isNumber]);
-
-	equal(parseStringOrNumber(''), '');
-
-	throws(() => {
-		parseStringOrNumber(null);
-	}, TypeError(`${invalidValue}, ${expected} but received null`));
 
 	end();
 });

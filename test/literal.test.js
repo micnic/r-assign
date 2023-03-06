@@ -1,71 +1,5 @@
-'use strict';
-
-const { test, equal, notOk, ok, throws } = require('tap');
-const {
-	getLiteral,
-	getLiteralOf,
-	isLiteral,
-	isLiteralOf,
-	literal,
-	literals,
-	parseLiteral,
-	parseLiteralOf
-} = require('r-assign/lib/literal');
-
-const expectedFalse = 'expected false literal';
-const expectedLiterals = 'expected a union of literals "a" | "b"';
-const invalidDefaultValue = 'Invalid default value type';
-const invalidValue = 'Invalid value type';
-const received = 'but received null';
-const receivedStringFalse = 'but received "false"';
-
-test('getLiteral', ({ end }) => {
-
-	const getNullLiteral = getLiteral(null);
-
-	equal(getNullLiteral(), null);
-	equal(getNullLiteral(null), null);
-	equal(getNullLiteral(0), null);
-
-	throws(() => {
-		// @ts-expect-error
-		getLiteral({});
-	}, TypeError('Invalid literal provided'));
-
-	end();
-});
-
-test('getLiteralOf', ({ end }) => {
-
-	const getLiteralAB = getLiteralOf(['a', 'b'], 'a');
-
-	equal(getLiteralAB(), 'a');
-	equal(getLiteralAB('b'), 'b');
-	equal(getLiteralAB(0), 'a');
-
-	const getLiteralBA = getLiteralOf(['a', 'b'], 'b');
-
-	equal(getLiteralBA(), 'b');
-	equal(getLiteralBA('a'), 'a');
-	equal(getLiteralBA(0), 'b');
-
-	throws(() => {
-		// @ts-expect-error
-		getLiteralOf();
-	}, TypeError('Invalid literals provided'));
-
-	throws(() => {
-		// @ts-expect-error
-		getLiteralOf([{}, {}]);
-	}, TypeError('Invalid literal provided'));
-
-	throws(() => {
-		// @ts-expect-error
-		getLiteralOf(['a', 'b'], null);
-	}, TypeError(`${invalidDefaultValue}, ${expectedLiterals} ${received}`));
-
-	end();
-});
+import { test, equal, notOk, ok, throws } from 'tap';
+import { isLiteral, isLiteralOf, literal, literals } from 'r-assign';
 
 test('isLiteral', ({ end }) => {
 
@@ -116,36 +50,6 @@ test('isLiteralOf', ({ end }) => {
 	throws(() => {
 		isLiteralOf(['a', 'a']);
 	}, TypeError('Duplicate literal provided'));
-
-	end();
-});
-
-test('parseLiteral', ({ end }) => {
-
-	const parseLiteralFalse = parseLiteral(false);
-
-	equal(parseLiteralFalse(false), false);
-
-	throws(() => {
-		parseLiteralFalse(null);
-	}, TypeError(`${invalidValue}, ${expectedFalse} ${received}`));
-
-	throws(() => {
-		parseLiteralFalse('false');
-	}, TypeError(`${invalidValue}, ${expectedFalse} ${receivedStringFalse}`));
-
-	end();
-});
-
-test('parseLiteralOf', ({ end }) => {
-
-	const parseLiteralAB = parseLiteralOf(['a', 'b']);
-
-	equal(parseLiteralAB('a'), 'a');
-
-	throws(() => {
-		parseLiteralAB(null);
-	}, TypeError(`${invalidValue}, ${expectedLiterals} ${received}`));
 
 	end();
 });

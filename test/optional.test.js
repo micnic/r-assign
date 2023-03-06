@@ -1,13 +1,11 @@
-'use strict';
-
-const { test, equal, notOk, ok, throws } = require('tap');
-const {
+import { test, equal, notOk, ok, throws } from 'tap';
+import {
 	isOptional,
 	isOptionalUndefined,
 	isString,
 	optional,
 	optionalUndef
-} = require('r-assign/lib');
+} from 'r-assign';
 
 test('isOptional', ({ end }) => {
 

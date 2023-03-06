@@ -1,7 +1,5 @@
-'use strict';
-
-const { test, equal, throws } = require('tap');
-const {
+import { test, equal, throws } from 'tap';
+import {
 	isArrayOf,
 	isObjectOf,
 	isRecordOf,
@@ -10,7 +8,7 @@ const {
 	parseType,
 	same,
 	setSame
-} = require('r-assign/lib');
+} from 'r-assign';
 
 test('setSame', ({ end }) => {
 

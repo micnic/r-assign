@@ -1,39 +1,14 @@
-'use strict';
-
-const { test, equal, match, notOk, ok, throws } = require('tap');
-const {
-	getTupleOf,
+import { test, equal, notOk, ok, throws } from 'tap';
+import {
 	isBoolean,
 	isOptional,
 	isOptionalUndefined,
 	isString,
 	isTupleOf,
 	isTupleRestOf,
-	parseTupleOf,
 	tuple,
 	tupleRest
-} = require('r-assign/lib');
-
-const invalidDefaultValue = 'Invalid default value type';
-const invalidValue = 'Invalid value type';
-const expected = 'expected a tuple of [ string ]';
-const received = 'but received a tuple of [ number ]';
-const receivedEmpty = 'but received an empty tuple []';
-
-test('getTupleOf', ({ end }) => {
-
-	const getTupleOfString = getTupleOf([isString], ['abc']);
-
-	match(getTupleOfString(['abc']), ['abc']);
-	match(getTupleOfString([]), ['abc']);
-
-	throws(() => {
-		// @ts-expect-error
-		getTupleOf([isString]);
-	}, TypeError(`${invalidDefaultValue}, ${expected} but received undefined`));
-
-	end();
-});
+} from 'r-assign';
 
 test('isTupleOf', ({ end }) => {
 
@@ -422,23 +397,6 @@ test('isTupleRestOf', ({ end }) => {
 	throws(() => {
 		isTupleOf([isTupleRestOf(isString), isTupleRestOf(isString)]);
 	}, TypeError('A rest element cannot follow another rest element'));
-
-	end();
-});
-
-test('parseTupleOf', ({ end }) => {
-
-	const parseTupleOfString = parseTupleOf([isString]);
-
-	match(parseTupleOfString(['abc']), ['abc']);
-
-	throws(() => {
-		parseTupleOfString([]);
-	}, TypeError(`${invalidValue}, ${expected} ${receivedEmpty}`));
-
-	throws(() => {
-		parseTupleOfString([0]);
-	}, TypeError(`${invalidValue}, ${expected} ${received}`));
 
 	end();
 });

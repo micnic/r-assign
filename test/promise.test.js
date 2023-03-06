@@ -1,11 +1,5 @@
-'use strict';
-
-const { test, equal, ok } = require('tap');
-const {
-	isPromiseOf,
-	isString,
-	promise
-} = require('r-assign/lib');
+import { test, equal, ok } from 'tap';
+import { isPromiseOf, isString, promise } from 'r-assign';
 
 test('isPromiseOf', ({ end }) => {
 

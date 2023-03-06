@@ -3,13 +3,13 @@ import type {
 	InferTypeGuard,
 	OptionalTypeGuard,
 	TypeGuard
-} from 'r-assign/lib';
+} from 'r-assign';
 
 /**
  * Check for strict optional values
  * @note Does not accept `isOptional*` type guard as it is invalid syntax
  */
-declare function isOptional<T extends TypeGuard>(
+export declare function isOptional<T extends TypeGuard>(
 	type: BaseTypeGuard<T>
 ): OptionalTypeGuard<InferTypeGuard<T>>;
 
@@ -17,13 +17,8 @@ declare function isOptional<T extends TypeGuard>(
  * Check for optional or undefined values
  * @note Does not accept `isOptional*` type guard as it is invalid syntax
  */
-declare function isOptionalUndefined<T extends TypeGuard>(
+export declare function isOptionalUndefined<T extends TypeGuard>(
 	type: BaseTypeGuard<T>
 ): OptionalTypeGuard<InferTypeGuard<T> | undefined>;
 
-export {
-	isOptional,
-	isOptional as optional,
-	isOptionalUndefined,
-	isOptionalUndefined as optionalUndef
-};
+export { isOptional as optional, isOptionalUndefined as optionalUndef };

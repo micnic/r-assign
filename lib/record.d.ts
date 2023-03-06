@@ -1,9 +1,9 @@
-import type { InferTypeGuard, TypeGuard } from 'r-assign/lib';
+import type { InferTypeGuard, TypeGuard } from 'r-assign';
 
 /**
  * Check for record values
  */
-declare function isRecordOf<
+export declare function isRecordOf<
 	K extends TypeGuard<keyof any>,
 	V extends TypeGuard
 >(keys: K, values: V): TypeGuard<Record<InferTypeGuard<K>, InferTypeGuard<V>>>;
@@ -11,11 +11,8 @@ declare function isRecordOf<
 /**
  * Check for record values
  */
-declare function isRecordOf<V extends TypeGuard>(
+export declare function isRecordOf<V extends TypeGuard>(
 	values: V
 ): TypeGuard<Record<string, InferTypeGuard<V>>>;
 
-export {
-	isRecordOf,
-	isRecordOf as record
-};
+export { isRecordOf as record };

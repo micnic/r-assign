@@ -1,8 +1,5 @@
-'use strict';
-
-const { test, equal, notOk, ok } = require('tap');
-
-const { isUndefined, undef } = require('r-assign/lib/undefined');
+import { test, equal, notOk, ok } from 'tap';
+import { isUndefined, undef } from 'r-assign';
 
 test('isUndefined', ({ end }) => {
 

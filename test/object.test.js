@@ -1,9 +1,5 @@
-'use strict';
-
-const { test, equal, match, notOk, ok, throws } = require('tap');
-const {
-	getObjectOf,
-	getStrictObjectOf,
+import { test, equal, notOk, ok, throws } from 'tap';
+import {
 	isKeyOf,
 	isObjectOf,
 	isOmitFrom,
@@ -16,75 +12,15 @@ const {
 	keyof,
 	object,
 	omit,
-	parseObjectOf,
-	parseStrictObjectOf,
 	parseType,
 	pick,
 	strictObject
-} = require('r-assign/lib');
+} from 'r-assign';
 
-const { assign, create } = Object;
-
-const circularRefShape = '{\n "obj": <Circular Reference>;\n}';
-const objectShape = '{\n "abc": string;\n}';
-const optionalObjectShape = '{\n "abc"?: string;\n}';
-const expected = `expected an object of shape ${objectShape}`;
 const expectedKeys = 'expected strings or array of strings';
-const expectedStrict = `expected an object of strict shape ${objectShape}`;
-const expectedOptional = `expected an object of shape ${optionalObjectShape}`;
-const invalidDefaultValue = 'Invalid default value type';
 const invalidKeysType = `Invalid keys provided, ${expectedKeys}`;
 const invalidMapping = 'Invalid object mapping provided';
 const invalidShape = 'Invalid shape provided';
-const invalidValue = 'Invalid value type';
-const received = 'but received null';
-const receivedEmptyObject = 'but received a value of type {}';
-const receivedObject = 'but received a value of type {\n "abc": number;\n}';
-const receivedCircularRef = `but received a value of type ${circularRefShape}`;
-
-test('getObjectOf', ({ end }) => {
-
-	const getObjectABC = getObjectOf({ abc: isString }, { abc: '' });
-
-	match(getObjectABC(), { abc: '' });
-	match(getObjectABC({ abc: '' }), { abc: '' });
-	match(getObjectABC({ abc: 'abc' }), { abc: 'abc' });
-	match(getObjectABC({
-		abc: 'abc',
-		def: 'def'
-	}), {
-		abc: 'abc'
-	});
-
-	throws(() => {
-		// @ts-expect-error
-		getObjectOf({ abc: isString }, null);
-	}, TypeError(`${invalidDefaultValue}, ${expected} ${received}`));
-
-	throws(() => {
-		// @ts-expect-error
-		getObjectOf({ abc: isOptional(isString) }, null);
-	}, TypeError(`${invalidDefaultValue}, ${expectedOptional} ${received}`));
-
-	end();
-});
-
-test('getStrictObjectOf', ({ end }) => {
-
-	const getObjectABC = getStrictObjectOf({ abc: isString }, { abc: '' });
-
-	match(getObjectABC(), { abc: '' });
-	match(getObjectABC({ abc: '' }), { abc: '' });
-	match(getObjectABC({ abc: 'abc' }), { abc: 'abc' });
-	match(getObjectABC({ abc: 'abc', def: 'def' }), { abc: '' });
-
-	throws(() => {
-		// @ts-expect-error
-		getStrictObjectOf({ abc: isString }, null);
-	}, TypeError(`${invalidDefaultValue}, ${expectedStrict} ${received}`));
-
-	end();
-});
 
 test('isKeyOf', ({ end }) => {
 	equal(isKeyOf, keyof);
@@ -348,59 +284,6 @@ test('isStrictObjectOf', ({ end }) => {
 		// @ts-expect-error
 		isStrictObjectOf();
 	}, TypeError(invalidShape));
-
-	end();
-});
-
-test('parseObjectOf', ({ end }) => {
-
-	const parseObjectABC = parseObjectOf({ abc: isString });
-
-	match(parseObjectABC({ abc: '' }), { abc: '' });
-	match(parseObjectABC({ abc: '', def: null }), { abc: '' });
-
-	const obj = {};
-
-	obj.obj = obj;
-
-	throws(() => {
-		parseObjectABC(null);
-	}, TypeError(`${invalidValue}, ${expected} ${received}`));
-
-	throws(() => {
-		parseObjectABC({});
-	}, TypeError(`${invalidValue}, ${expected} ${receivedEmptyObject}`));
-
-	throws(() => {
-		parseObjectABC({
-			abc: 0
-		});
-	}, TypeError(`${invalidValue}, ${expected} ${receivedObject}`));
-
-	throws(() => {
-		parseObjectABC(obj);
-	}, TypeError(`${invalidValue}, ${expected} ${receivedCircularRef}`));
-
-	const parseObjectABCWithPrototype = parseObjectOf(assign(create({
-		def: null
-	}), {
-		abc: isString
-	}));
-
-	match(parseObjectABCWithPrototype({ abc: '' }), { abc: '' });
-
-	end();
-});
-
-test('parseStrictObjectOf', ({ end }) => {
-
-	const parseObjectABC = parseStrictObjectOf({ abc: isString });
-
-	match(parseObjectABC({ abc: '' }), { abc: '' });
-
-	throws(() => {
-		parseObjectABC(null);
-	}, TypeError(`${invalidValue}, ${expectedStrict} ${received}`));
 
 	end();
 });

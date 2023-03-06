@@ -1,7 +1,5 @@
-'use strict';
-
-const { test, equal, match, notSame, same, throws } = require('tap');
-const {
+import { test, equal, match, notSame, same, throws } from 'tap';
+import {
 	isAny,
 	isArrayOf,
 	isFunction,
@@ -15,7 +13,7 @@ const {
 	isTupleRestOf,
 	isUnionOf,
 	parseType
-} = require('r-assign/lib');
+} from 'r-assign';
 
 const emptyArray = 'an empty array []';
 const expected = 'expected a string value';

@@ -1,7 +1,5 @@
-'use strict';
-
-const { test, equal, notOk } = require('tap');
-const { isNever, never } = require('r-assign/lib/never');
+import { test, equal, notOk } from 'tap';
+import { isNever, never } from 'r-assign';
 
 test('isNever', ({ end }) => {
 	equal(isNever, never);

@@ -6,7 +6,7 @@ import type {
 	Tuple,
 	TypeGuard,
 	Union
-} from 'r-assign/lib';
+} from 'r-assign';
 
 type RemapObject<T> = T extends any[] | Function ? T : { [K in keyof T]: T[K] };
 type ShapeEntries = [string, TypeGuard][];

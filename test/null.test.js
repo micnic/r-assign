@@ -1,9 +1,5 @@
-'use strict';
-
-const { test, equal, notOk, ok, throws } = require('tap');
-const {
-	getNull,
-	getNullable,
+import { test, equal, notOk, ok, throws } from 'tap';
+import {
 	isNull,
 	isNullable,
 	isNullish,
@@ -11,39 +7,8 @@ const {
 	isString,
 	nullable,
 	nulled,
-	nullish,
-	parseNull,
-	parseNullable
-} = require('r-assign/lib');
-
-const expectedNull = 'expected a null value';
-const expectedNullable = 'expected an union of string | null';
-const invalidValue = 'Invalid value type';
-const received = 'but received undefined';
-
-test('getNull', ({ end }) => {
-
-	equal(getNull(), null);
-
-	end();
-});
-
-test('getNullable', ({ end }) => {
-
-	const getNullableString = getNullable(isString);
-
-	equal(getNullableString(), null);
-	equal(getNullableString(''), '');
-	equal(getNullableString('data'), 'data');
-	equal(getNullableString(null), null);
-
-	throws(() => {
-		// @ts-expect-error
-		getNullable();
-	}, TypeError('Invalid type guard provided'));
-
-	end();
-});
+	nullish
+} from 'r-assign';
 
 test('isNull', ({ end }) => {
 
@@ -98,31 +63,6 @@ test('isNullish', ({ end }) => {
 		// @ts-expect-error
 		isNullish(isOptional(isString));
 	}, TypeError('Optional type cannot be used in union declaration'));
-
-	end();
-});
-
-test('parseNull', ({ end }) => {
-
-	equal(parseNull(null), null);
-
-	throws(() => {
-		parseNull();
-	}, TypeError(`${invalidValue}, ${expectedNull} ${received}`));
-
-	end();
-});
-
-test('parseNullable', ({ end }) => {
-
-	const parseNullableString = parseNullable(isString);
-
-	equal(parseNullableString(null), null);
-	equal(parseNullableString(''), '');
-
-	throws(() => {
-		parseNullableString();
-	}, TypeError(`${invalidValue}, ${expectedNullable} ${received}`));
 
 	end();
 });

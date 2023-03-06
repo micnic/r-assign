@@ -1,7 +1,5 @@
-'use strict';
-
-const { test, throws } = require('tap');
-const { assertType, isOptional, isString } = require('r-assign/lib');
+import { test, throws } from 'tap';
+import { assertType, isOptional, isString } from 'r-assign';
 
 const invalidValue = 'Invalid value type';
 const expected = 'expected a string value';

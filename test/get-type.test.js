@@ -1,7 +1,5 @@
-'use strict';
-
-const { test, equal, match, throws } = require('tap');
-const {
+import { test, equal, match, throws } from 'tap';
+import {
 	getType,
 	isArrayOf,
 	isBoolean,
@@ -14,7 +12,7 @@ const {
 	isString,
 	isTupleOf,
 	isUnionOf
-} = require('r-assign/lib');
+} from 'r-assign';
 
 const expected = 'expected a string value';
 const invalidDefaultValue = 'Invalid default value type';

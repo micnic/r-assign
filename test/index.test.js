@@ -1,7 +1,5 @@
-'use strict';
-
-const { test, match, throws } = require('tap');
-const rAssign = require('r-assign');
+import { test, match, throws } from 'tap';
+import rAssign from 'r-assign';
 
 test('No arguments', ({ end }) => {
 	throws(() => {

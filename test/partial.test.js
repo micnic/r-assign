@@ -1,7 +1,5 @@
-'use strict';
-
-const { test, equal, notOk, ok, throws } = require('tap');
-const {
+import { test, equal, notOk, ok, throws } from 'tap';
+import {
 	isArrayOf,
 	isObjectOf,
 	isOptional,
@@ -14,7 +12,7 @@ const {
 	isTupleOf,
 	partial,
 	partialUndef
-} = require('r-assign/lib');
+} from 'r-assign';
 
 test('isPartial', ({ end }) => {
 

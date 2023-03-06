@@ -4,15 +4,13 @@ import type {
 	InferTypeGuard,
 	RefineFunction,
 	TypeGuard
-} from 'r-assign/lib';
+} from 'r-assign';
 
 /**
  * Extract and validate values based on provided type guard
  * @note Does not accept `isOptional*` type guard as it is invalid syntax
  */
-declare function parseType<T extends TypeGuard>(
+export declare function parseType<T extends TypeGuard>(
 	type: BaseTypeGuard<T>,
 	refine?: RefineFunction<InferTypeGuard<T>>
 ): TransformFunction<InferTypeGuard<T>>;
-
-export { parseType };

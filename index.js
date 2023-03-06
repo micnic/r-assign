@@ -1,6 +1,4 @@
-'use strict';
-
-const { hasOneElement } = require('r-assign/lib/internal/array-checks');
+import { hasOneElement } from './lib/internal/array-checks.js';
 
 /**
  * @template [T = any]
@@ -83,4 +81,33 @@ const rAssign = (schema, ...sources) => {
 	return result;
 };
 
-module.exports = rAssign;
+export default rAssign;
+
+export * from 'r-assign/any';
+export * from 'r-assign/array';
+export * from 'r-assign/assert-type';
+export * from 'r-assign/bigint';
+export * from 'r-assign/boolean';
+export * from 'r-assign/date';
+export * from 'r-assign/function';
+export * from 'r-assign/get-type';
+export * from 'r-assign/instance';
+export * from 'r-assign/intersection';
+export * from 'r-assign/literal';
+export * from 'r-assign/never';
+export * from 'r-assign/null';
+export * from 'r-assign/number';
+export * from 'r-assign/object';
+export * from 'r-assign/optional';
+export * from 'r-assign/parse-type';
+export * from 'r-assign/partial';
+export * from 'r-assign/promise';
+export * from 'r-assign/record';
+export * from 'r-assign/required';
+export * from 'r-assign/same';
+export * from 'r-assign/string';
+export * from 'r-assign/symbol';
+export * from 'r-assign/template-literal';
+export * from 'r-assign/tuple';
+export * from 'r-assign/undefined';
+export * from 'r-assign/union';

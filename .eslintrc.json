@@ -1,6 +1,5 @@
 {
 	"env": {
-		"commonjs": true,
 		"es6": true
 	},
 	"extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended"],
@@ -124,16 +123,12 @@
 		"space-infix-ops": "error",
 		"space-unary-ops": "error",
 		"spaced-comment": "error",
-		"strict": "error",
 		"switch-colon-spacing": "error",
 		"yoda": "error"
 	},
 	"overrides": [
 		{
 			"files": "*.js",
-			"parserOptions": {
-				"sourceType": "script"
-			},
 			"rules": {
 				"@typescript-eslint/no-var-requires": "off"
 			}

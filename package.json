@@ -38,13 +38,45 @@
 		"email": "micnic90@gmail.com",
 		"url": "https://github.com/micnic"
 	},
-	"main": "index",
 	"repository": "github:micnic/r-assign",
 	"files": [
 		"index.d.ts",
 		"index.js",
 		"lib"
 	],
+	"exports": {
+		".": "./index.js",
+		"./any": "./lib/any.js",
+		"./array": "./lib/array.js",
+		"./assert-type": "./lib/assert-type.js",
+		"./bigint": "./lib/bigint.js",
+		"./boolean": "./lib/boolean.js",
+		"./date": "./lib/date.js",
+		"./function": "./lib/function.js",
+		"./get-type": "./lib/get-type.js",
+		"./instance": "./lib/instance.js",
+		"./intersection": "./lib/intersection.js",
+		"./literal": "./lib/literal.js",
+		"./never": "./lib/never.js",
+		"./null": "./lib/null.js",
+		"./number": "./lib/number.js",
+		"./object": "./lib/object.js",
+		"./optional": "./lib/optional.js",
+		"./parse-type": "./lib/parse-type.js",
+		"./partial": "./lib/partial.js",
+		"./promise": "./lib/promise.js",
+		"./record": "./lib/record.js",
+		"./required": "./lib/required.js",
+		"./same": "./lib/same.js",
+		"./string": "./lib/string.js",
+		"./symbol": "./lib/symbol.js",
+		"./template-literal": "./lib/template-literal.js",
+		"./tuple": "./lib/tuple.js",
+		"./undefined": "./lib/undefined.js",
+		"./union": "./lib/union.js"
+	},
+	"main": "index.js",
+	"type": "module",
 	"types": "index.d.ts",
 	"scripts": {
 		"check": "npm run eslint-check && npm run ts-check && npm run tsd-check",
@@ -63,10 +95,10 @@
 		"@typescript-eslint/parser": "5.x",
 		"eslint": "8.x",
 		"tap": "16.x",
-		"tsd": "0.25.x",
+		"tsd": "0.26.x",
 		"typescript": "4.x"
 	},
 	"engines": {
-		"node": ">=12"
+		"node": ">=14"
 	}
 }

@@ -81,16 +81,10 @@ versions (4.5+) and configure the compiler options with `strict` and
 required for the usage of `isOptional()` type guard, if the option is not
 enabled the `isOptionalUndefined()` type guard should be used instead.
 
-### ESM import
+### Import
 
 ```js
 import rAssign from 'r-assign';
-```
-
-### CJS require
-
-```js
-const rAssign = require('r-assign');
 ```
 
 ## Usage
@@ -159,8 +153,8 @@ following:
 
 ```js
 import rAssign from 'r-assign';
-import { getType } from 'r-assign/lib/get-type';
-import { isString } from 'r-assign/lib/string';
+import { getType } from 'r-assign/get-type';
+import { isString } from 'r-assign/string';
 
 const someUnknownObject = { /* ... any structure here ... */ };
 
@@ -172,58 +166,58 @@ const objectABC = rAssign({
 
 ## Import utility functions
 ```js
-// Import all the needed functions from "r-assign/lib" submodule
-import { getType, isNumber, isString } from 'r-assign/lib';
+// Import all the needed functions from "r-assign" module
+import { getType, isNumber, isString } from 'r-assign';
 
 // Or import functions from specific submodule
-import { getType } from 'r-assign/lib/get-type';
-import { isNumber } from 'r-assign/lib/number';
-import { isString } from 'r-assign/lib/string';
+import { getType } from 'r-assign/get-type';
+import { isNumber } from 'r-assign/number';
+import { isString } from 'r-assign/string';
 ```
 
-All utility functions are available for importing from `r-assign/lib`. To
-prevent importing all the library it is recommended to import just the specific
+All utility functions are available for importing from `r-assign`. To prevent
+importing all the library it is recommended to import just the specific
 submodules that will be used. The list of the available submodules is the
 following:
 
 [Basic Data Types](#basic-data-types)
-- [`r-assign/lib/any`](#any)
-- [`r-assign/lib/boolean`](#boolean)
-- [`r-assign/lib/number`](#number)
-- [`r-assign/lib/string`](#string)
-- [`r-assign/lib/bigint`](#bigint)
-- [`r-assign/lib/symbol`](#symbol)
-- [`r-assign/lib/undefined`](#undefined)
-- [`r-assign/lib/null`](#null)
-- [`r-assign/lib/literal`](#literal)
-- [`r-assign/lib/instance`](#instance)
-- [`r-assign/lib/date`](#date)
-- [`r-assign/lib/never`](#never)
+- [`r-assign/any`](#any)
+- [`r-assign/boolean`](#boolean)
+- [`r-assign/number`](#number)
+- [`r-assign/string`](#string)
+- [`r-assign/bigint`](#bigint)
+- [`r-assign/symbol`](#symbol)
+- [`r-assign/undefined`](#undefined)
+- [`r-assign/null`](#null)
+- [`r-assign/literal`](#literal)
+- [`r-assign/instance`](#instance)
+- [`r-assign/date`](#date)
+- [`r-assign/never`](#never)
 
 [Complex Data Types](#complex-data-types)
-- [`r-assign/lib/array`](#array)
-- [`r-assign/lib/object`](#object)
-- [`r-assign/lib/tuple`](#tuple)
-- [`r-assign/lib/record`](#record)
-- [`r-assign/lib/template-literal`](#template-literal)
-- [`r-assign/lib/function`](#function)
-- [`r-assign/lib/promise`](#promise)
+- [`r-assign/array`](#array)
+- [`r-assign/object`](#object)
+- [`r-assign/tuple`](#tuple)
+- [`r-assign/record`](#record)
+- [`r-assign/template-literal`](#template-literal)
+- [`r-assign/function`](#function)
+- [`r-assign/promise`](#promise)
 
 [Type Operations](#type-operations)
-- [`r-assign/lib/union`](#union)
-- [`r-assign/lib/intersection`](#intersection)
-- [`r-assign/lib/optional`](#optional)
+- [`r-assign/union`](#union)
+- [`r-assign/intersection`](#intersection)
+- [`r-assign/optional`](#optional)
 
 [Transform Functions](#transform-functions)
-- [`r-assign/lib/get-type`](#getting-data)
-- [`r-assign/lib/parse-type`](#parsing-data)
+- [`r-assign/get-type`](#getting-data)
+- [`r-assign/parse-type`](#parsing-data)
 
 ## Type guards
 `r-assign` is built around the concept of type guards which are just functions
 that perform a runtime check and guarantees the type of a specific value.
 
 ```js
-import { isString } from 'r-assign/lib/string';
+import { isString } from 'r-assign/string';
 
 isString('abc'); // => true
 
@@ -234,8 +228,8 @@ Some type guards require configuration to be able to do more complex type
 checking.
 
 ```js
-import { isArrayOf } from 'r-assign/lib/array';
-import { isString } from 'r-assign/lib/string';
+import { isArrayOf } from 'r-assign/array';
+import { isString } from 'r-assign/string';
 
 const isArrayOfStrings = isArrayOf(isString);
 
@@ -247,8 +241,8 @@ isArrayOfStrings([42]); // => false
 All the type guards have shorter aliases.
 
 ```js
-import { array } from 'r-assign/lib/array';
-import { string } from 'r-assign/lib/string';
+import { array } from 'r-assign/array';
+import { string } from 'r-assign/string';
 
 const stringArray = array(string);
 
@@ -263,7 +257,7 @@ stringArray([42]); // => false
 ### Any
 
 ```js
-import { isAny, any } from 'r-assign/lib/any';
+import { isAny, any } from 'r-assign/any';
 
 isAny('abc'); // => true
 isAny(); // => true, will always return true
@@ -275,7 +269,7 @@ any();
 ### Boolean
 
 ```js
-import { isBoolean, boolean } from 'r-assign/lib/boolean';
+import { isBoolean, boolean } from 'r-assign/boolean';
 
 isBoolean(false); // => true
 isBoolean(true); // => true
@@ -288,7 +282,7 @@ boolean(true);
 ### Number
 
 ```js
-import { isNumber, number } from 'r-assign/lib/number';
+import { isNumber, number } from 'r-assign/number';
 
 isNumber(42); // => true
 isNumber(NaN); // => false, will return true only for finite number values
@@ -300,7 +294,7 @@ number(42);
 ### String
 
 ```js
-import { isString, string } from 'r-assign/lib/string';
+import { isString, string } from 'r-assign/string';
 
 isString('abc'); // => true
 isString(''); // => true
@@ -313,7 +307,7 @@ string('abc');
 ### BigInt
 
 ```js
-import { isBigInt, bigint } from 'r-assign/lib/bigint';
+import { isBigInt, bigint } from 'r-assign/bigint';
 
 isBigInt(42n); // => true
 isBigInt(42); // => false, simple number is not a bigint
@@ -325,7 +319,7 @@ bigint(42n);
 ### Symbol
 
 ```js
-import { isSymbol, symbol } from 'r-assign/lib/symbol';
+import { isSymbol, symbol } from 'r-assign/symbol';
 
 isSymbol(Symbol('abc')); // => true
 isSymbol(Symbol()); // => true
@@ -338,7 +332,7 @@ symbol(Symbol());
 ### Undefined
 
 ```js
-import { isUndefined, undef } from 'r-assign/lib/undefined';
+import { isUndefined, undef } from 'r-assign/undefined';
 
 isUndefined(undefined); // => true
 isUndefined(); // => true
@@ -358,8 +352,8 @@ import {
     nulled,
     nullable,
     nullish
-} from 'r-assign/lib/null';
-import { isString, string } from 'r-assign/lib/string';
+} from 'r-assign/null';
+import { isString, string } from 'r-assign/string';
 
 isNull(null); // => true
 isNull(); // => false, will return true only for null values
@@ -399,7 +393,7 @@ import {
     isLiteralOf,
     literal,
     literals
-} from 'r-assign/lib/literal';
+} from 'r-assign/literal';
 
 // Check for provided literal value
 // Accepts a primitive value as argument
@@ -427,7 +421,7 @@ literals(['a', 'b', 'c']);
 ### Instance
 
 ```js
-import { isInstanceOf, instance } from 'r-assign/lib/instance';
+import { isInstanceOf, instance } from 'r-assign/instance';
 
 // Check for instance of provided class
 // Accepts a constructor function as argument
@@ -442,7 +436,7 @@ instance(Date);
 ### Date
 
 ```js
-import { isDate, date } from 'r-assign/lib/date';
+import { isDate, date } from 'r-assign/date';
 
 isDate(new Date()); // => true
 isDate(new Date(NaN)); // => false, will return true only for valid date values
@@ -454,7 +448,7 @@ date(new Date());
 ### Never
 
 ```js
-import { isNever, never } from 'r-assign/lib/never';
+import { isNever, never } from 'r-assign/never';
 
 isNever('abc'); // => false
 isNever(); // => false, will always return false
@@ -469,8 +463,8 @@ never();
 ### Array
 
 ```js
-import { isArrayOf, array } from 'r-assign/lib/array';
-import { isString, string } from 'r-assign/lib/string';
+import { isArrayOf, array } from 'r-assign/array';
+import { isString, string } from 'r-assign/string';
 
 // Check for array values (T[])
 // Accepts a type guard as argument
@@ -497,9 +491,9 @@ import {
     keyof,
     pick,
     omit
-} from 'r-assign/lib/object';
-import { isNumber, number } from 'r-assign/lib/number';
-import { isString, string } from 'r-assign/lib/string';
+} from 'r-assign/object';
+import { isNumber, number } from 'r-assign/number';
+import { isString, string } from 'r-assign/string';
 
 // Check for object of provided shape
 // Accepts an object of type guards as argument
@@ -578,9 +572,9 @@ omit(object({
 ### Tuple
 
 ```js
-import { isTupleOf, isTupleRestOf, tuple, tupleRest } from 'r-assign/lib/tuple';
-import { isString, string } from 'r-assign/lib/string';
-import { isNumber, number } from 'r-assign/lib/number';
+import { isTupleOf, isTupleRestOf, tuple, tupleRest } from 'r-assign/tuple';
+import { isString, string } from 'r-assign/string';
+import { isNumber, number } from 'r-assign/number';
 
 // Check for tuple values
 // Accepts an array of type guards as argument
@@ -602,9 +596,9 @@ tuple([string, tupleRest(number)]);
 ### Record
 
 ```js
-import { isRecordOf, record } from 'r-assign/lib/record';
-import { isNumber, number } from 'r-assign/lib/number';
-import { isString, string } from 'r-assign/lib/string';
+import { isRecordOf, record } from 'r-assign/record';
+import { isNumber, number } from 'r-assign/number';
+import { isString, string } from 'r-assign/string';
 
 const isStringRecord = isRecordOf(isString, isNumber); // Record<string, number>
 
@@ -639,9 +633,9 @@ record(number);
 import {
     isTemplateLiteralOf,
     templateLiteral
-} from 'r-assign/lib/template-literal';
-import { isNumber, number } from 'r-assign/lib/number';
-import { isString, string } from 'r-assign/lib/string';
+} from 'r-assign/template-literal';
+import { isNumber, number } from 'r-assign/number';
+import { isString, string } from 'r-assign/string';
 
 // Check for string values that match the provided template literal
 // Accepts an array of primitive values and type guards as argument
@@ -669,9 +663,9 @@ import {
     isAsyncFunction,
     func,
     asyncFunc
-} from 'r-assign/lib/function';
-import { isString, string } from 'r-assign/lib/string';
-import { isNumber, number } from 'r-assign/lib/number';
+} from 'r-assign/function';
+import { isString, string } from 'r-assign/string';
+import { isNumber, number } from 'r-assign/number';
 
 // Takes two arguments, the function arguments tuple type guards and function
 // return type guard
@@ -713,8 +707,8 @@ values are wrapped in a promise that will validate the resolve type of the
 original promise values.
 
 ```js
-import { isPromiseOf, promise } from 'r-assign/lib/promise';
-import { isString, string } from 'r-assign/lib/string';
+import { isPromiseOf, promise } from 'r-assign/promise';
+import { isString, string } from 'r-assign/string';
 
 // Takes one argument, the promise resolve type guard
 // Promise<string>
@@ -738,9 +732,9 @@ promise(string);
 ### Union
 
 ```js
-import { isUnionOf, union } from 'r-assign/lib/union';
-import { isNumber, number } from 'r-assign/lib/number';
-import { isString, string } from 'r-assign/lib/string';
+import { isUnionOf, union } from 'r-assign/union';
+import { isNumber, number } from 'r-assign/number';
+import { isString, string } from 'r-assign/string';
 
 const isStringOrNumber = isUnionOf([isString, isNumber]); // string | number
 
@@ -754,10 +748,10 @@ union([string, number]);
 ### Intersection
 
 ```js
-import { isIntersectionOf, intersection } from 'r-assign/lib/intersection';
-import { isNumber, number } from 'r-assign/lib/number';
-import { isObjectOf, object } from 'r-assign/lib/object';
-import { isString, string } from 'r-assign/lib/string';
+import { isIntersectionOf, intersection } from 'r-assign/intersection';
+import { isNumber, number } from 'r-assign/number';
+import { isObjectOf, object } from 'r-assign/object';
+import { isString, string } from 'r-assign/string';
 
 const isObjectOfName = isObjectOf({
     name: isString
@@ -787,11 +781,11 @@ import {
     isOptionalUndefined,
     optional,
     optionalUndef
-} from 'r-assign/lib/optional';
-import { isNumber, number } from 'r-assign/lib/number';
-import { isObjectOf, object, } from 'r-assign/lib/object';
-import { isString, string } from 'r-assign/lib/string';
-import { isTupleOf, tuple } from 'r-assign/lib/tuple';
+} from 'r-assign/optional';
+import { isNumber, number } from 'r-assign/number';
+import { isObjectOf, object, } from 'r-assign/object';
+import { isString, string } from 'r-assign/string';
+import { isTupleOf, tuple } from 'r-assign/tuple';
 
 const isOptionalTuple = isTupleOf([isOptional(isString)]); // [string?]
 
@@ -867,11 +861,11 @@ import {
     isPartialUndefined,
     partial,
     partialUndef
-} from 'r-assign/lib/partial';
-import { isNumber, number } from 'r-assign/lib/number';
-import { isObjectOf, object, } from 'r-assign/lib/object';
-import { isString, string } from 'r-assign/lib/string';
-import { isTupleOf, tuple } from 'r-assign/lib/tuple';
+} from 'r-assign/partial';
+import { isNumber, number } from 'r-assign/number';
+import { isObjectOf, object, } from 'r-assign/object';
+import { isString, string } from 'r-assign/string';
+import { isTupleOf, tuple } from 'r-assign/tuple';
 
 // Partial<[string]> -> [string?]
 const isPartialTuple = isPartial(isTupleOf([isString]));
@@ -955,15 +949,15 @@ partialUndef(object({
 import {
     isRequired,
     required
-} from 'r-assign/lib/required';
+} from 'r-assign/required';
 import {
     isOptional,
     optional
-} from 'r-assign/lib/optional';
-import { isNumber, number } from 'r-assign/lib/number';
-import { isObjectOf, object, } from 'r-assign/lib/object';
-import { isString, string } from 'r-assign/lib/string';
-import { isTupleOf, tuple } from 'r-assign/lib/tuple';
+} from 'r-assign/optional';
+import { isNumber, number } from 'r-assign/number';
+import { isObjectOf, object, } from 'r-assign/object';
+import { isString, string } from 'r-assign/string';
+import { isTupleOf, tuple } from 'r-assign/tuple';
 
 // Required<[string?]> -> [string]
 const isRequiredTuple = isRequired(isTupleOf([isOptional(isString)]));
@@ -1002,8 +996,8 @@ customized. This is useful for validating functions input or for debugging
 purposes.
 
 ```js
-import { assertType } from 'r-assign/lib/assert-type';
-import { isString } from 'r-assign/lib/string';
+import { assertType } from 'r-assign/assert-type';
+import { isString } from 'r-assign/string';
 
 const expectString = (value) => {
     assertType(isString, value, 'Expected string');
@@ -1022,8 +1016,8 @@ the input and the output when it is called.
 
 ```js
 import rAssign from 'r-assign';
-import { parseType } from 'r-assign/lib/parse-type';
-import { isString } from 'r-assign/lib/string';
+import { parseType } from 'r-assign/parse-type';
+import { isString } from 'r-assign/string';
 
 try {
     const result = rAssign({
@@ -1041,8 +1035,8 @@ statement to avoid unhandled errors. `parseType()` function can be used outside
 of `rAssign` to extract the required value that is not part of an object.
 
 ```js
-import { parseType } from 'r-assign/lib/parse-type';
-import { isString } from 'r-assign/lib/string';
+import { parseType } from 'r-assign/parse-type';
+import { isString } from 'r-assign/string';
 
 const parseString = parseType(isString);
 
@@ -1060,8 +1054,8 @@ The default value has to match the provided type.
 
 ```js
 import rAssign from 'r-assign';
-import { getType } from 'r-assign/lib/get-type';
-import { isString } from 'r-assign/lib/string';
+import { getType } from 'r-assign/get-type';
+import { isString } from 'r-assign/string';
 
 const result = rAssign({
     data: getType(isString, 'abc') // Default value will be "abc"
@@ -1071,8 +1065,8 @@ const result = rAssign({
 `getType()` function can also be used outside of `rAssign`.
 
 ```js
-import { getType } from 'r-assign/lib/get-type';
-import { isString } from 'r-assign/lib/string';
+import { getType } from 'r-assign/get-type';
+import { isString } from 'r-assign/string';
 
 const getString = getType(isString, 'abc');
 
@@ -1087,11 +1081,11 @@ function. It can be applied to `array`, `object`, `tuple` and `record` type
 guards.
 
 ```js
-import { parseType } from 'r-assign/lib/parse-type';
-import { getType } from 'r-assign/lib/get-type';
-import { isObjectOf, object } from 'r-assign/lib/object';
-import { isString, string } from 'r-assign/lib/string';
-import { setSame, same } from 'r-assign/lib/same';
+import { parseType } from 'r-assign/parse-type';
+import { getType } from 'r-assign/get-type';
+import { isObjectOf, object } from 'r-assign/object';
+import { isString, string } from 'r-assign/string';
+import { setSame, same } from 'r-assign/same';
 
 const isSomeObject = isObjectOf({
     name: isString,
@@ -1135,8 +1129,8 @@ following functions:
 
 ```js
 import rAssign from 'r-assign';
-import { asDate } from 'r-assign/lib/date';
-import { asString } from 'r-assign/lib/string';
+import { asDate } from 'r-assign/date';
+import { asString } from 'r-assign/string';
 
 const input = {
     created: '2020-01-01',
@@ -1162,7 +1156,7 @@ const result = rAssign({
 The output of the `rAssign` function is automatically inferred, it is also
 possible to infer a type out of the provided schema using the `InferType` type
 that is exported from the package. In the case of a type guard the type
-`InferTypeGuard` should be used, it is exported from `r-assign/lib`.
+`InferTypeGuard` should be used, it is exported from `r-assign`.
 
 ```ts
 import rAssign, { InferType } from 'r-assign';
@@ -1177,7 +1171,7 @@ import {
     getType,
     parseType,
     InferTypeGuard
-} from 'r-assign/lib';
+} from 'r-assign';
 
 const personSchema = {
     name: parseType(isString),
@@ -1223,7 +1217,7 @@ be combined to implement this functional.
 
 ```js
 import rAssign from 'r-assign';
-import { isNumber, getType } from 'r-assign/lib';
+import { isNumber, getType } from 'r-assign';
 
 const getFiniteNumber = getType(isNumber, 0);
 
@@ -1249,7 +1243,7 @@ As a simple example let's exclude the number `42` from the accepted values:
 
 ```js
 import rAssign from 'r-assign';
-import { isNumber, getType } from 'r-assign/lib';
+import { isNumber, getType } from 'r-assign';
 
 const getFiniteNumber = getType(isNumber, 0);
 
@@ -1279,7 +1273,7 @@ there is set another property in the source object like `https` set to `true`.
 
 ```js
 import rAssign from 'r-assign';
-import { isNumber, getType } from 'r-assign/lib';
+import { isNumber, getType } from 'r-assign';
 
 const httpDefaultPort = 80;
 const httpsDefaultPort = 443;
