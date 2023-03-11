@@ -3,7 +3,7 @@ import { expectType } from 'tsd';
 
 // Any
 expectType<typeof lib.any>(lib.isAny);
-expectType<lib.AnyTypeGuard>(lib.any);
+expectType<lib.TypeGuard>(lib.any);
 
 // Array
 expectType<typeof lib.array>(lib.isArrayOf);
@@ -108,11 +108,13 @@ expectType<lib.TypeGuard<number>>(lib.number);
 
 // Object
 expectType<typeof lib.object>(lib.isObjectOf);
-expectType<typeof lib.strictObject>(lib.isStrictObjectOf);
 expectType<typeof lib.pick>(lib.isPickFrom);
 expectType<typeof lib.omit>(lib.isOmitFrom);
+expectType<typeof lib.strict>(lib.setStrict);
 expectType<lib.TypeGuard<{ a: string }>>(lib.object({ a: lib.string }));
-expectType<lib.TypeGuard<{ a: string }>>(lib.strictObject({ a: lib.string }));
+expectType<lib.TypeGuard<{ a: string }>>(
+	lib.strict(lib.object({ a: lib.string }))
+);
 expectType<lib.TypeGuard<{ a: string }>>(
 	lib.pick(lib.object({ a: lib.string, b: lib.string }), 'a')
 );
