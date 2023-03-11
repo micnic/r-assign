@@ -296,7 +296,7 @@ test('setStrict', ({ end }) => {
 		a: undefined
 	}));
 	ok(setStrict(isObjectOf({ a: isOptionalUndefined(isString) }))({}));
-	// NotOk(setStrict(isObjectOf({ a: isString }))({ a: 'abc', b: 'def' }));
+	notOk(setStrict(isObjectOf({ a: isString }))({ a: 'abc', b: 'def' }));
 	notOk(setStrict(isObjectOf({ a: isOptional(isString) }))({ a: undefined }));
 	notOk(
 		setStrict(isObjectOf({ a: isOptionalUndefined(isString) }))({ a: null })
@@ -306,6 +306,11 @@ test('setStrict', ({ end }) => {
 		// @ts-expect-error
 		setStrict();
 	});
+
+	throws(() => {
+		// @ts-expect-error
+		setStrict(isString);
+	}, TypeError('Invalid type for "setStrict()", only object type is allowed'));
 
 	end();
 });
