@@ -72,18 +72,16 @@ const invalidSchemaProperty = (key) => {
 
 /**
  * Assign object properties and transform result based on the provided schema
- * @template {TransformSchema | TypeGuard} S
+ * @template {TypeGuard | TransformSchema} S
  * @param {S extends TypeGuard ? BaseTypeGuard<S> : S} schema
- * @param {unknown[]} sources
+ * @param {S extends TypeGuard ? [unknown] : unknown[]} sources
  * @returns {S extends TypeGuard ? InferTypeGuard<S> : InferType<S>}
  */
 const rAssign = (schema, ...sources) => {
 
-	const source = getSource(sources);
-
 	// Parse source based on the provided type guard schema
 	if (typeof schema === 'function') {
-		return parseType(schema)(source);
+		return parseType(schema)(sources[0]);
 	}
 
 	// Check for valid schema provided
@@ -93,6 +91,8 @@ const rAssign = (schema, ...sources) => {
 
 	/** @type {any} */
 	const result = {};
+
+	const source = getSource(sources);
 
 	// Populate result properties
 	entries(schema).forEach(([key, transform]) => {

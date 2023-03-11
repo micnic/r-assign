@@ -1,19 +1,43 @@
 import { test, match, throws } from 'tap';
-import rAssign from 'r-assign';
+import rAssign, { isString } from 'r-assign';
+
+const expectedFunction = 'expected to be a function';
+const invalidProperty = 'Invalid property type';
+const invalidValue = 'Invalid value type';
 
 test('No arguments', ({ end }) => {
 	throws(() => {
 		// @ts-expect-error
 		rAssign();
-	});
+	}, TypeError('Invalid schema argument type, object expected'));
 	end();
 });
 
-test('Invalid schema', ({ end }) => {
+test('Invalid type guard schema', ({ end }) => {
 	throws(() => {
 		// @ts-expect-error
-		rAssign({ data: null }, {});
-	});
+		rAssign(() => true, null);
+	}, TypeError('Invalid type guard provided'));
+	end();
+});
+
+test('Invalid object schema', ({ end }) => {
+	throws(() => {
+		// @ts-expect-error
+		rAssign({ data: null }, null);
+	}, TypeError(`${invalidProperty}, "data" property ${expectedFunction}`));
+	end();
+});
+
+test('Type guard schema with with invalid input', ({ end }) => {
+	throws(() => {
+		rAssign(isString, null);
+	}, TypeError(`${invalidValue}, expected a string value but received null`));
+	end();
+});
+
+test('Type guard schema with with valid input', ({ end }) => {
+	match(rAssign(isString, 'data'), 'data');
 	end();
 });
 
