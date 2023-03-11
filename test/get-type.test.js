@@ -120,6 +120,22 @@ test('getType: string with getter', ({ end }) => {
 	end();
 });
 
+test('getType: {} & {}', ({ end }) => {
+
+	const getIntersection = getType(isIntersectionOf([
+		isObjectOf({ a: isString }),
+		isObjectOf({ b: isString })
+	]), { a: '', b: '' });
+
+	match(getIntersection({ a: 'a', b: 'b' }), { a: 'a', b: 'b' });
+	match(getIntersection({ a: 'a' }), { a: '', b: '' });
+	match(getIntersection({ b: 'b' }), { a: '', b: '' });
+	match(getIntersection({}), { a: '', b: '' });
+	match(getIntersection(), { a: '', b: '' });
+
+	end();
+});
+
 test('getType: () => void', ({ end }) => {
 
 	const getFunction = getType(isFunction([]), () => () => null);

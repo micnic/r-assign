@@ -3,6 +3,7 @@ import {
 	isAny,
 	isArrayOf,
 	isFunction,
+	isIntersectionOf,
 	isNumber,
 	isObjectOf,
 	isOptional,
@@ -346,6 +347,23 @@ test('parseType', ({ end }) => {
 	throws(() => {
 		// @ts-expect-error
 		parseType(isNumber, appendDot)(0);
+	});
+
+	end();
+});
+
+test('parseType: {} & {}', ({ end }) => {
+
+	const parseIntersection = parseType(isIntersectionOf([isObjectOf({
+		a: isString
+	}), isObjectOf({
+		b: isString
+	})]));
+
+	match(parseIntersection({ a: 'a', b: 'b' }), { a: 'a', b: 'b' });
+
+	throws(() => {
+		parseIntersection({ a: 'a' });
 	});
 
 	end();
