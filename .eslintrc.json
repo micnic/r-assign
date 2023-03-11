@@ -22,7 +22,7 @@
 		],
 		"array-callback-return": "error",
 		"arrow-parens": ["error", "always"],
-		"capitalized-comments": "error",
+		"capitalized-comments": ["error", "always", { "ignorePattern": "c8" }],
 		"class-methods-use-this": "error",
 		"camelcase": "error",
 		"comma-dangle": ["error", "never"],
