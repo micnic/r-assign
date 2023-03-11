@@ -65,7 +65,7 @@ test('getType', ({ end }) => {
 	match(
 		getType(
 			isIntersectionOf([isFunction([isString]), isFunction([isNumber])]),
-			() => { /* Noop */ }
+			() => () => { /* Noop */ }
 		)(),
 		() => { /* Noop */ }
 	);
@@ -103,9 +103,26 @@ test('getType', ({ end }) => {
 	end();
 });
 
+test('getType: string with getter', ({ end }) => {
+
+	const getString = getType(isString, () => '');
+
+	equal(getString('abc'), 'abc');
+	equal(getString(), '');
+
+	// @ts-expect-error
+	const getStringWrong = getType(isString, () => null);
+
+	throws(() => {
+		getStringWrong();
+	}, TypeError(`${invalidDefaultValue}, ${expected} but received null`));
+
+	end();
+});
+
 test('getType: () => void', ({ end }) => {
 
-	const getFunction = getType(isFunction([]), () => null);
+	const getFunction = getType(isFunction([]), () => () => null);
 	const f = getFunction();
 
 	equal(getFunction(() => undefined)(), undefined);
@@ -125,7 +142,7 @@ test('getType: () => void', ({ end }) => {
 test('getType: () => string', ({ end }) => {
 
 	// @ts-expect-error
-	const getFunction = getType(isFunction([], isString), () => null);
+	const getFunction = getType(isFunction([], isString), () => () => null);
 	const f = getFunction();
 
 	equal(getFunction(() => '')(), '');
@@ -145,7 +162,7 @@ test('getType: () => string', ({ end }) => {
 test('getType: Promise<void>', async ({ end, rejects, resolveMatch }) => {
 
 	// @ts-expect-error
-	const getPromise = getType(isPromiseOf(), Promise.resolve(null));
+	const getPromise = getType(isPromiseOf(), () => Promise.resolve(null));
 
 	await resolveMatch(getPromise(Promise.resolve()), undefined);
 
@@ -157,7 +174,9 @@ test('getType: Promise<void>', async ({ end, rejects, resolveMatch }) => {
 test('getType: Promise<string>', async ({ end, rejects, resolveMatch }) => {
 
 	// @ts-expect-error
-	const getPromise = getType(isPromiseOf(isString), Promise.resolve(null));
+	const getPromise = getType(isPromiseOf(isString), () =>
+		Promise.resolve(null)
+	);
 
 	await resolveMatch(getPromise(Promise.resolve('')), '');
 

@@ -12,6 +12,6 @@ import type {
  */
 export declare function getType<T extends TypeGuard>(
 	type: BaseTypeGuard<T>,
-	initial: InferTypeGuard<T>,
+	initial: (() => InferTypeGuard<T>) | InferTypeGuard<T>,
 	refine?: RefineFunction<InferTypeGuard<T>>
 ): TransformFunction<InferTypeGuard<T>>;
