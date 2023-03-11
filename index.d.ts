@@ -1,5 +1,3 @@
-import type { RemapObject } from './lib/internal/index.js';
-
 type UndefinedKeys<T> = {
 	[K in keyof T]: undefined extends T[K] ? K : never;
 }[keyof T];
@@ -31,6 +29,14 @@ declare function rAssign<S extends TransformSchema>(
 	...sources: unknown[]
 ): InferType<S>;
 
+/**
+ * Assign object properties and parse result based on the provided schema
+ */
+declare function rAssign<T extends TypeGuard>(
+	schema: T,
+	...sources: unknown[]
+): InferTypeGuard<T>;
+
 export default rAssign;
 
 type Constructor<T = any> = new (...args: any[]) => T;
@@ -54,14 +60,13 @@ type PartialUndefined<T> = {
 type TypeGuard<T = any> = ((value?: any) => value is T) & {};
 type CompositeTypeGuard<T> = T extends never ? never : TypeGuard<T>;
 
-type AnyTag = { any: true };
-type AnyTypeGuard = TypeGuard & AnyTag;
+interface OptionalTypeGuard<T = any> extends TypeGuard<T | unknown> {
+	optional: true;
+}
 
-type OptionalTag = { optional: true };
-type OptionalTypeGuard<T = any> = TypeGuard<T | unknown> & OptionalTag;
-
-type RestTag = { rest: true };
-type RestTypeGuard<T = any> = TypeGuard<(T | unknown)[]> & RestTag;
+interface RestTypeGuard<T = any> extends TypeGuard<(T | unknown)[]> {
+	rest: true;
+}
 
 type BaseTypeGuard<T extends TypeGuard> = T extends OptionalTypeGuard
 	? never
@@ -82,6 +87,8 @@ type InferRestTypeGuard<G extends RestTypeGuard> = G extends RestTypeGuard<
 	: never;
 
 type Intersection = [TypeGuard, TypeGuard, ...TypeGuard[]];
+
+type RemapObject<T> = T extends any[] | Function ? T : { [K in keyof T]: T[K] };
 
 type InferIntersection<T extends Intersection> = T extends [infer F, infer S]
 	? F extends TypeGuard
@@ -276,8 +283,6 @@ export * from './lib/undefined.js';
 export * from './lib/union.js';
 
 export type {
-	AnyTypeGuard,
-	AnyTypeGuard as ATG,
 	BaseTypeGuard,
 	BaseTypeGuard as BTG,
 	CompositeTypeGuard,

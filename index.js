@@ -1,4 +1,8 @@
-import { hasOneElement } from './lib/internal/array-checks.js';
+import {
+	hasAtLeastOneElement,
+	hasOneElement
+} from './lib/internal/array-checks.js';
+import { parseType } from 'r-assign/parse-type';
 
 /**
  * @template [T = any]
@@ -10,17 +14,40 @@ import { hasOneElement } from './lib/internal/array-checks.js';
  * @typedef {import('r-assign').InferType<S>} InferType
  */
 
+/**
+ * @template [T = any]
+ * @typedef {import('r-assign').TG<T>} TypeGuard
+ */
+
+/**
+ * @template {TypeGuard} T
+ * @typedef {import('r-assign').BTG<T>} BaseTypeGuard
+ */
+
+/**
+ * @template {TypeGuard} T
+ * @typedef {import('r-assign').InferTG<T>} InferTypeGuard
+ */
+
 const { assign, entries } = Object;
 
 const invalidSchema = 'Invalid schema argument type, object expected';
 
 /**
  * Extract one source object or merge an array of source objects
- * @template {Record<string, any>} S
- * @param {S[]} sources
- * @returns {S}
+ * @param {unknown[]} sources
+ * @returns {Record<string, any>}
  */
 const getSource = (sources) => {
+
+	// Check for multiple source objects
+	if (
+		!hasAtLeastOneElement(sources) ||
+		typeof sources[0] !== 'object' ||
+		sources[0] === null
+	) {
+		return {};
+	}
 
 	// Check for one source object
 	if (
@@ -45,19 +72,24 @@ const invalidSchemaProperty = (key) => {
 
 /**
  * Assign object properties and transform result based on the provided schema
- * @template {TransformSchema<any>} S
- * @param {S} schema
- * @param {Record<string, any>[]} sources
- * @returns {InferType<S>}
+ * @template {TransformSchema | TypeGuard} S
+ * @param {S extends TypeGuard ? BaseTypeGuard<S> : S} schema
+ * @param {unknown[]} sources
+ * @returns {S extends TypeGuard ? InferTypeGuard<S> : InferType<S>}
  */
 const rAssign = (schema, ...sources) => {
+
+	const source = getSource(sources);
+
+	// Parse source based on the provided type guard schema
+	if (typeof schema === 'function') {
+		return parseType(schema)(source);
+	}
 
 	// Check for valid schema provided
 	if (typeof schema !== 'object' || schema === null) {
 		throw TypeError(invalidSchema);
 	}
-
-	const source = getSource(sources);
 
 	/** @type {any} */
 	const result = {};

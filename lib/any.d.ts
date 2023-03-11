@@ -1,8 +1,8 @@
-import type { AnyTypeGuard } from 'r-assign';
+import type { TypeGuard } from 'r-assign';
 
 /**
  * Check for any values
  */
-declare const isAny: AnyTypeGuard;
+export declare const isAny: TypeGuard;
 
-export { isAny, isAny as any };
+export { isAny as any };

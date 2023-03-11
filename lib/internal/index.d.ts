@@ -8,59 +8,53 @@ import type {
 	Union
 } from 'r-assign';
 
-type RemapObject<T> = T extends any[] | Function ? T : { [K in keyof T]: T[K] };
 type ShapeEntries = [string, TypeGuard][];
 type StringifiedTemplateLiteral<L extends Literal> = (TypeGuard<L> | string)[];
 type ReducibleTemplateLiteral<S extends string> = (TypeGuard<S> | S)[];
 
-type BaseTypeGuardMeta = {
-	annotation: string;
-	description: string;
-};
-
-type AnyTypeGuardMeta = BaseTypeGuardMeta & {
+type AnyTypeGuardMeta = {
 	classification: 'any';
 };
 
-type ArrayTypeGuardMeta = BaseTypeGuardMeta & {
+type ArrayTypeGuardMeta = {
 	child: TypeGuardMeta;
 	classification: 'array';
 	same: boolean;
 	type: TypeGuard;
 };
 
-type FunctionTypeGuardMeta = BaseTypeGuardMeta & {
+type FunctionTypeGuardMeta = {
 	children: [TypeGuardMeta, TypeGuardMeta];
 	classification: 'function';
 	types: [TypeGuard<any[] | []>, TypeGuard | undefined];
 };
 
-type InstanceTypeGuardMeta = BaseTypeGuardMeta & {
+type InstanceTypeGuardMeta = {
 	builder: Constructor;
 	classification: 'instance';
 };
 
-type IntersectionTypeGuardMeta = BaseTypeGuardMeta & {
+type IntersectionTypeGuardMeta = {
 	children: TypeGuardMeta[];
 	classification: 'intersection';
 	types: Intersection;
 };
 
-type LiteralTypeGuardMeta = BaseTypeGuardMeta & {
+type LiteralTypeGuardMeta = {
 	classification: 'literal';
 	literal: Literal;
 };
 
-type LiteralsTypeGuardMeta = BaseTypeGuardMeta & {
+type LiteralsTypeGuardMeta = {
 	classification: 'literals';
 	literals: Literal[];
 };
 
-type NeverTypeGuardMeta = BaseTypeGuardMeta & {
+type NeverTypeGuardMeta = {
 	classification: 'never';
 };
 
-type ObjectTypeGuardMeta = BaseTypeGuardMeta & {
+type ObjectTypeGuardMeta = {
 	classification: 'object';
 	keys: string[];
 	mapping?: TypeGuard<Record<keyof any, any>> | undefined;
@@ -70,45 +64,47 @@ type ObjectTypeGuardMeta = BaseTypeGuardMeta & {
 	strict: boolean;
 };
 
-type OptionalTypeGuardMeta = BaseTypeGuardMeta & {
+type OptionalTypeGuardMeta = {
+	child: TypeGuardMeta;
 	classification: 'optional';
 	main: OptionalTypeGuard;
 	type: TypeGuard;
 	undef: boolean;
 };
 
-type PrimitiveTypeGuardMeta = BaseTypeGuardMeta & {
+type PrimitiveTypeGuardMeta = {
 	classification: 'primitive';
 } & (
 	| { primitive: 'bigint' | 'boolean' | 'string' | 'symbol' }
 	| { primitive: 'number'; finite: boolean }
 );
 
-type PromiseTypeGuardMeta = BaseTypeGuardMeta & {
+type PromiseTypeGuardMeta = {
 	child: TypeGuardMeta;
 	classification: 'promise';
 	type: TypeGuard | undefined;
 };
 
-type RecordTypeGuardMeta = BaseTypeGuardMeta & {
+type RecordTypeGuardMeta = {
 	classification: 'record';
 	keys: TypeGuard<keyof any>;
 	same: boolean;
 	values: TypeGuard;
 };
 
-type RestTypeGuardMeta = BaseTypeGuardMeta & {
+type RestTypeGuardMeta = {
+	child: TypeGuardMeta;
 	classification: 'rest';
 	type: TypeGuard;
 };
 
-type TemplateLiteralTypeGuardMeta = BaseTypeGuardMeta & {
+type TemplateLiteralTypeGuardMeta = {
 	classification: 'template-literal';
 	regexp: RegExp;
 	template: StringifiedTemplateLiteral<any>;
 };
 
-type TupleTypeGuardMeta = BaseTypeGuardMeta & {
+type TupleTypeGuardMeta = {
 	classification: 'tuple';
 	indexes: {
 		optional: number;
@@ -119,13 +115,13 @@ type TupleTypeGuardMeta = BaseTypeGuardMeta & {
 	tuple: Tuple;
 };
 
-type UnionTypeGuardMeta = BaseTypeGuardMeta & {
+type UnionTypeGuardMeta = {
 	children: TypeGuardMeta[];
 	classification: 'union';
 	union: Union;
 };
 
-type VoidTypeGuardMeta = BaseTypeGuardMeta & {
+type VoidTypeGuardMeta = {
 	classification: 'void';
 };
 
@@ -172,8 +168,6 @@ export type {
 	RecordTypeGuardMeta as RDTGM,
 	ReducibleTemplateLiteral,
 	ReducibleTemplateLiteral as RTL,
-	RemapObject,
-	RemapObject as RO,
 	RestTypeGuardMeta,
 	RestTypeGuardMeta as RTTGM,
 	ShapeEntries,
