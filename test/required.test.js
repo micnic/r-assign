@@ -5,10 +5,10 @@ import {
 	isOptionalUndefined,
 	isRecordOf,
 	isRequired,
-	isStrictObjectOf,
 	isString,
 	isTupleOf,
-	required
+	required,
+	setStrict
 } from 'r-assign';
 
 test('isRequired', ({ end }) => {
@@ -60,31 +60,39 @@ test('isRequired', ({ end }) => {
 	);
 	notOk(isRequired(isObjectOf({ a: isString }))({}));
 
-	ok(isRequired(isStrictObjectOf({ a: isOptional(isString) }))({ a: 'abc' }));
-	notOk(
-		isRequired(isStrictObjectOf({ a: isOptional(isString) }))({
-			a: undefined
-		})
-	);
-	notOk(isRequired(isStrictObjectOf({ a: isOptional(isString) }))({}));
-
 	ok(
-		isRequired(isStrictObjectOf({ a: isOptionalUndefined(isString) }))({
+		isRequired(setStrict(isObjectOf({ a: isOptional(isString) })))({
 			a: 'abc'
 		})
 	);
 	notOk(
-		isRequired(isStrictObjectOf({ a: isOptionalUndefined(isString) }))({
+		isRequired(setStrict(isObjectOf({ a: isOptional(isString) })))({
 			a: undefined
 		})
 	);
-	notOk(isRequired(isStrictObjectOf({ a: isString }))({}));
+	notOk(isRequired(setStrict(isObjectOf({ a: isOptional(isString) })))({}));
 
-	ok(isRequired(isStrictObjectOf({ a: isString }))({ a: 'abc' }));
-	notOk(
-		isRequired(isStrictObjectOf({ a: isString }))({ a: undefined })
+	ok(
+		isRequired(setStrict(isObjectOf({ a: isOptionalUndefined(isString) })))(
+			{
+				a: 'abc'
+			}
+		)
 	);
-	notOk(isRequired(isStrictObjectOf({ a: isString }))({}));
+	notOk(
+		isRequired(setStrict(isObjectOf({ a: isOptionalUndefined(isString) })))(
+			{
+				a: undefined
+			}
+		)
+	);
+	notOk(isRequired(setStrict(isObjectOf({ a: isString })))({}));
+
+	ok(isRequired(setStrict(isObjectOf({ a: isString })))({ a: 'abc' }));
+	notOk(
+		isRequired(setStrict(isObjectOf({ a: isString })))({ a: undefined })
+	);
+	notOk(isRequired(setStrict(isObjectOf({ a: isString })))({}));
 
 	ok(isRequired(isTupleOf([isOptional(isString)]))(['abc']));
 	notOk(isRequired(isTupleOf([isOptional(isString)]))([undefined]));

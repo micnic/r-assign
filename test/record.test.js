@@ -68,6 +68,7 @@ test('isRecordOf', ({ end }) => {
 			isString
 		)({ a: 'a', b: 'b', c: 'c' })
 	);
+	ok(isRecordOf(isAny, isString)({}));
 
 	notOk(isRecordOf(isString)({ abc: 1 }));
 	notOk(isRecordOf(isString)({ [Symbol()]: 1 }));
@@ -89,12 +90,9 @@ test('isRecordOf', ({ end }) => {
 	});
 
 	throws(() => {
+		// @ts-expect-error
 		isRecordOf(isOptional(isString));
-	}, TypeError('Optional type cannot be used in record declaration'));
-
-	throws(() => {
-		isRecordOf(isAny, isString);
-	}, TypeError('Invalid type guard for record keys'));
+	}, TypeError('Invalid use of optional type'));
 
 	throws(() => {
 		// @ts-expect-error

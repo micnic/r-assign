@@ -25,7 +25,7 @@ test('isOptional', ({ end }) => {
 	throws(() => {
 		// @ts-expect-error
 		isOptional(isOptional(isString));
-	}, TypeError('Optional type cannot be wrapped in optional type'));
+	}, TypeError('Invalid use of optional type'));
 
 	end();
 });
@@ -48,7 +48,7 @@ test('isOptionalUndefined', ({ end }) => {
 	throws(() => {
 		// @ts-expect-error
 		isOptionalUndefined(isOptionalUndefined(isString));
-	}, TypeError('Optional type cannot be wrapped in optional type'));
+	}, TypeError('Invalid use of optional type'));
 
 	end();
 });

@@ -18,8 +18,6 @@ import {
 	templateLiteral
 } from 'r-assign';
 
-const declaration = 'template literal declaration';
-
 test('isTemplateLiteralOf', ({ end }) => {
 
 	equal(isTemplateLiteralOf, templateLiteral);
@@ -163,7 +161,7 @@ test('isTemplateLiteralOf', ({ end }) => {
 	throws(() => {
 		// @ts-expect-error
 		isTemplateLiteralOf([isOptional(isString)]);
-	}, TypeError(`Optional type cannot be used in ${declaration}`));
+	}, TypeError('Invalid use of optional type'));
 
 	end();
 });
