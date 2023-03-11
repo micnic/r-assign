@@ -41,6 +41,9 @@ test('isTupleOf', ({ end }) => {
 
 	ok(isTupleOfSSS(['abc', 'def', 'ghi']));
 	notOk(isTupleOfSSS([]));
+	notOk(isTupleOfSSS(['abc']));
+	notOk(isTupleOfSSS(['abc', 'def']));
+	notOk(isTupleOfSSS(['abc', 'def', 'ghi', 'jkl']));
 
 	const isTupleOfSSO = isTupleOf([isString, isString, isOptional(isString)]);
 

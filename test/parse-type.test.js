@@ -1,9 +1,11 @@
 import { test, equal, match, notSame, same, throws } from 'tap';
-import {
+import rAssign, {
 	isAny,
 	isArrayOf,
 	isFunction,
+	isInstanceOf,
 	isIntersectionOf,
+	isLiteral,
 	isNumber,
 	isObjectOf,
 	isOptional,
@@ -347,6 +349,65 @@ test('parseType', ({ end }) => {
 	throws(() => {
 		// @ts-expect-error
 		parseType(isNumber, appendDot)(0);
+	});
+
+	end();
+});
+
+test('rAssign + parseType', ({ end }) => {
+	throws(() => {
+		rAssign({
+			a: parseType(isString)
+		}, {
+			a: new Date()
+		});
+	});
+
+	end();
+});
+
+test('parseType: instanceof', ({ end }) => {
+
+	const parseDate = parseType(isInstanceOf(Date));
+
+	match(parseDate(new Date()), new Date());
+
+	throws(() => {
+		parseDate();
+	});
+
+	end();
+});
+
+test('parseType: literal', ({ end }) => {
+
+	const parseLiteralA = parseType(isLiteral('a'));
+
+	match(parseLiteralA('a'), 'a');
+
+	throws(() => {
+		parseLiteralA('b');
+	});
+
+	end();
+});
+
+test('parseType: tuple', ({ end }) => {
+
+	const parseTuple = parseType(isTupleOf([isString, isNumber]));
+
+	match(parseTuple(['a', 1]), ['a', 1]);
+
+	throws(() => {
+		parseTuple([]);
+	});
+
+	throws(() => {
+		parseTuple(['a']);
+	});
+
+	throws(() => {
+		parseTuple(['a', 'b']);
 	});
 
 	end();
