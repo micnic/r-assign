@@ -1,4 +1,9 @@
-import type { TypeGuard } from 'r-assign';
+import type { TypeGuard, TransformFunction } from 'r-assign';
+
+/**
+ * Transform any value to number
+ */
+export declare const asNumber: TransformFunction<number>;
 
 /**
  * Check for finite number values

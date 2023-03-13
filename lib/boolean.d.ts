@@ -1,4 +1,9 @@
-import type { TypeGuard } from 'r-assign';
+import type { TypeGuard, TransformFunction } from 'r-assign';
+
+/**
+ * Transform any value to boolean
+ */
+export declare const asBoolean: TransformFunction<boolean>;
 
 /**
  * Check for boolean values

@@ -6,6 +6,9 @@ const libKeys = Object.keys(lib);
 const methods = [
 	'any',
 	'array',
+	'asBigInt',
+	'asBoolean',
+	'asNumber',
 	'asDate',
 	'asString',
 	'assertType',

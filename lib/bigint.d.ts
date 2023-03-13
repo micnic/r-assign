@@ -1,4 +1,9 @@
-import type { TypeGuard } from 'r-assign';
+import type { TypeGuard, TransformFunction } from 'r-assign';
+
+/**
+ * Transform any value to BigInt
+ */
+export declare const asBigInt: TransformFunction<bigint>;
 
 /**
  * Check for BigInt values
