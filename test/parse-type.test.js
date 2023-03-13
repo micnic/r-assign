@@ -2,20 +2,26 @@ import { test, equal, match, notSame, same, throws } from 'tap';
 import rAssign, {
 	isAny,
 	isArrayOf,
+	isBigInt,
 	isFunction,
 	isInstanceOf,
 	isIntersectionOf,
 	isLiteral,
+	isLiteralOf,
+	isNever,
 	isNumber,
 	isObjectOf,
 	isOptional,
+	isOptionalUndefined,
 	isPromiseOf,
+	isRecordOf,
 	isString,
 	isTemplateLiteralOf,
 	isTupleOf,
 	isTupleRestOf,
 	isUnionOf,
-	parseType
+	parseType,
+	setStrict
 } from 'r-assign';
 
 const emptyArray = 'an empty array []';
@@ -359,8 +365,54 @@ test('rAssign + parseType', ({ end }) => {
 		rAssign({
 			a: parseType(isString)
 		}, {
-			a: new Date()
+			a: null
 		});
+	});
+
+	end();
+});
+
+test('parseType: bigint', ({ end }) => {
+
+	const parseBigInt = parseType(isBigInt);
+
+	match(parseBigInt(0n), 0n);
+
+	throws(() => {
+		parseBigInt();
+	});
+
+	throws(() => {
+		parseBigInt(null);
+	});
+
+	end();
+});
+
+test('parseType: string', ({ end }) => {
+
+	const parseString = parseType(isString);
+
+	match(parseString('a'), 'a');
+
+	throws(() => {
+		parseString();
+	});
+
+	throws(() => {
+		parseString(() => null);
+	});
+
+	throws(() => {
+		parseString({});
+	});
+
+	throws(() => {
+		parseString(Object.create(null));
+	});
+
+	throws(() => {
+		parseString(new Date());
 	});
 
 	end();
@@ -389,10 +441,64 @@ test('parseType: literal', ({ end }) => {
 		parseLiteralA('b');
 	});
 
+	const parseLiteralOne = parseType(isLiteral(1));
+
+	match(parseLiteralOne(1), 1);
+
+	throws(() => {
+		parseLiteralOne(2);
+	});
+
+	const parseLiteralOneN = parseType(isLiteral(1n));
+
+	match(parseLiteralOneN(1n), 1n);
+
+	throws(() => {
+		parseLiteralOneN(2n);
+	});
+
 	end();
 });
 
-test('parseType: tuple', ({ end }) => {
+test('parseType: literals', ({ end }) => {
+
+	const parseLiteralA = parseType(isLiteralOf(['a', 'b']));
+
+	match(parseLiteralA('a'), 'a');
+
+	throws(() => {
+		parseLiteralA('c');
+	});
+
+	end();
+});
+
+test('parseType: T[]', ({ end }) => {
+
+	const parseArray = parseType(isArrayOf(isString));
+
+	match(parseArray(['a']), ['a']);
+
+	throws(() => {
+		parseArray();
+	});
+
+	throws(() => {
+		parseArray(['a', 1]);
+	});
+
+	throws(() => {
+		parseType(isArrayOf(isInstanceOf(Date)))([null]);
+	});
+
+	throws(() => {
+		parseType(isArrayOf(isArrayOf(isString)))([[null]]);
+	});
+
+	end();
+});
+
+test('parseType: [T, T]', ({ end }) => {
 
 	const parseTuple = parseType(isTupleOf([isString, isNumber]));
 
@@ -408,6 +514,193 @@ test('parseType: tuple', ({ end }) => {
 
 	throws(() => {
 		parseTuple(['a', 'b']);
+	});
+
+	throws(() => {
+		// eslint-disable-next-line no-new-wrappers
+		parseTuple([new String('a'), 1]);
+	});
+
+	end();
+});
+
+test('parseType: [T, T?]', ({ end }) => {
+
+	const parseTuple = parseType(isTupleOf([isString, isOptional(isNumber)]));
+
+	match(parseTuple(['a', 1]), ['a', 1]);
+
+	match(parseTuple(['a']), ['a']);
+
+	throws(() => {
+		parseTuple([]);
+	});
+
+	throws(() => {
+		parseTuple(['a', 'b']);
+	});
+
+	end();
+});
+
+test('parseType: [T, (T | undefined)?]', ({ end }) => {
+
+	const parseTuple = parseType(
+		isTupleOf([isString, isOptionalUndefined(isNumber)])
+	);
+
+	match(parseTuple(['a', 1]), ['a', 1]);
+	match(parseTuple(['a']), ['a']);
+	match(parseTuple(['a', undefined]), ['a', undefined]);
+
+	throws(() => {
+		parseTuple([]);
+	});
+
+	throws(() => {
+		parseTuple(['a', 'b']);
+	});
+
+	end();
+});
+
+test('parseType: [T, ...T[]]', ({ end }) => {
+
+	const parseTuple = parseType(
+		isTupleOf([isString, isTupleRestOf(isNumber)])
+	);
+
+	match(parseTuple(['a', 1]), ['a', 1]);
+
+	throws(() => {
+		parseTuple([]);
+	});
+
+	throws(() => {
+		parseTuple(['a', 'b']);
+	});
+
+	end();
+});
+
+test('parseType: { a: T; b: T }', ({ end }) => {
+
+	throws(() => {
+		parseType(isObjectOf({}))(null);
+	});
+
+	const parseObject = parseType(isObjectOf({
+		a: isString,
+		b: isNumber
+	}));
+
+	match(parseObject({ a: 'a', b: 1 }), { a: 'a', b: 1 });
+
+	throws(() => {
+		parseObject({ a: 'a' });
+	});
+
+	throws(() => {
+		parseObject({ a: 'a', b: 'b' });
+	});
+
+	throws(() => {
+		const o = {};
+
+		o.a = o;
+
+		parseObject(o);
+	});
+
+	end();
+});
+
+test('parseType: { a: T; b?: T }', ({ end }) => {
+
+	const parseObject = parseType(isObjectOf({
+		a: isString,
+		b: isOptional(isNumber)
+	}));
+
+	match(parseObject({ a: 'a', b: 1 }), { a: 'a', b: 1 });
+
+	match(parseObject({ a: 'a' }), { a: 'a' });
+
+	throws(() => {
+		parseObject({ a: 'a', b: 'b' });
+	});
+
+	end();
+});
+
+test('parseType: { [key: K]: V; a: T }', ({ end }) => {
+
+	const parseObject = parseType(isObjectOf({
+		a: isString
+	}, isRecordOf(isString, isString)));
+
+	match(parseObject({ a: 'a' }), { a: 'a' });
+	match(parseObject({ a: 'a', b: 'b' }), { a: 'a', b: 'b' });
+
+	throws(() => {
+		parseObject({ a: 'a', b: 1 });
+	});
+
+	end();
+});
+
+test('parseType: { [key: K]: V; a: T; b: T }', ({ end }) => {
+
+	const parseObject = parseType(isObjectOf({
+		a: isString
+	}, isObjectOf({ b: isString }, isRecordOf(isString, isString))));
+
+	match(parseObject({ a: 'a', b: 'b' }), { a: 'a', b: 'b' });
+	match(parseObject({ a: 'a', b: 'b', c: 'c' }), { a: 'a', b: 'b', c: 'c' });
+
+	throws(() => {
+		parseObject({ a: 'a', b: 'b', c: 1 });
+	});
+
+	end();
+});
+
+test('parseType: strict object', ({ end }) => {
+
+	const parseObject = parseType(
+		setStrict(
+			isObjectOf({
+				a: isString,
+				b: isNumber
+			})
+		)
+	);
+
+	match(parseObject({ a: 'a', b: 1 }), { a: 'a', b: 1 });
+
+	throws(() => {
+		parseObject({ a: 'a' });
+	});
+
+	throws(() => {
+		parseObject({ a: 'a', b: 'b' });
+	});
+
+	end();
+});
+
+test('parseType: Record<K, V>', ({ end }) => {
+
+	const parseRecord = parseType(isRecordOf(isString, isNumber));
+
+	match(parseRecord({ a: 1 }), { a: 1 });
+
+	throws(() => {
+		parseRecord({ a: 'a' });
+	});
+
+	throws(() => {
+		parseRecord({ a: 1, b: 'b' });
 	});
 
 	end();
@@ -438,6 +731,10 @@ test('parseType: () => void', ({ end }) => {
 	equal(parseFunction(() => undefined)(), undefined);
 
 	throws(() => {
+		parseFunction(null);
+	});
+
+	throws(() => {
 		// @ts-expect-error
 		f(null);
 	}, TypeError('Invalid function arguments'));
@@ -445,6 +742,92 @@ test('parseType: () => void', ({ end }) => {
 	throws(() => {
 		f();
 	}, TypeError('Invalid function return, expected void'));
+
+	end();
+});
+
+test('parseType: (...args: T[]) => void', ({ end }) => {
+
+	const parseFunction = parseType(isFunction([isTupleRestOf(isString)]));
+
+	const f = parseFunction(() => null);
+
+	equal(parseFunction(() => undefined)(), undefined);
+
+	throws(() => {
+		parseFunction(null);
+	});
+
+	throws(() => {
+		// @ts-expect-error
+		f(null);
+	}, TypeError('Invalid function arguments'));
+
+	end();
+});
+
+test('parseType: (arg_1: T, ...args: T[]) => void', ({ end }) => {
+
+	const parseFunction = parseType(
+		isFunction([isString, isTupleRestOf(isString)])
+	);
+
+	const f = parseFunction(() => null);
+
+	equal(parseFunction(() => undefined)(''), undefined);
+
+	throws(() => {
+		parseFunction(null);
+	});
+
+	throws(() => {
+		// @ts-expect-error
+		f(null);
+	}, TypeError('Invalid function arguments'));
+
+	end();
+});
+
+test('parseType: (...args: [T, ...T[]]) => void', ({ end }) => {
+
+	const parseFunction = parseType(
+		isFunction([isTupleRestOf(isString), isString])
+	);
+
+	const f = parseFunction(() => null);
+
+	equal(parseFunction(() => undefined)(''), undefined);
+
+	throws(() => {
+		parseFunction(null);
+	});
+
+	throws(() => {
+		// @ts-expect-error
+		f(null);
+	}, TypeError('Invalid function arguments'));
+
+	end();
+});
+
+test('parseType: (...args: [T, T?]) => void', ({ end }) => {
+
+	const parseFunction = parseType(
+		isFunction([isString, isOptional(isString)])
+	);
+
+	const f = parseFunction(() => null);
+
+	equal(parseFunction(() => undefined)(''), undefined);
+
+	throws(() => {
+		parseFunction(null);
+	});
+
+	throws(() => {
+		// @ts-expect-error
+		f(null);
+	}, TypeError('Invalid function arguments'));
 
 	end();
 });
@@ -479,6 +862,10 @@ test('parseType: () => Promise<void>', async ({
 	await resolveMatch(parseFunction(() => Promise.resolve())(), undefined);
 
 	await rejects(parseFunction(() => Promise.resolve(''))());
+
+	throws(() => {
+		parseFunction(null);
+	});
 
 	throws(() => {
 		// @ts-expect-error
@@ -537,6 +924,35 @@ test('parseType: Promise<string>', async ({ end, resolveMatch }) => {
 
 	throws(() => {
 		parsePromise();
+	});
+
+	end();
+});
+
+test('parseType: string | number', ({ end }) => {
+
+	const parseUnion = parseType(isUnionOf([isString, isNumber]));
+
+	match(parseUnion('a'), 'a');
+	match(parseUnion(1), 1);
+
+	throws(() => {
+		parseUnion();
+	});
+
+	throws(() => {
+		parseUnion(false);
+	});
+
+	end();
+});
+
+test('parseType: never', ({ end }) => {
+
+	const parseNever = parseType(isNever);
+
+	throws(() => {
+		parseNever();
 	});
 
 	end();
