@@ -66,9 +66,8 @@ const getSource = (sources) => {
  * @param {string} key
  * @returns {string}
  */
-const invalidSchemaProperty = (key) => {
-	return `Invalid property type, "${key}" property expected to be a function`;
-};
+const invalidSchemaProperty = (key) =>
+	`Invalid property type, "${key}" property expected to be a function`;
 
 /**
  * Assign object properties and transform result based on the provided schema

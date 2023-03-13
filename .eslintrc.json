@@ -21,6 +21,7 @@
 			{ "typedefs": false, "variables": false }
 		],
 		"array-callback-return": "error",
+		"arrow-body-style": ["error", "as-needed"],
 		"arrow-parens": ["error", "always"],
 		"capitalized-comments": ["error", "always", { "ignorePattern": "c8" }],
 		"class-methods-use-this": "error",
