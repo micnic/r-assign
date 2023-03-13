@@ -21,6 +21,7 @@ const expectedKeys = 'expected strings or array of strings';
 const invalidKeysType = `Invalid keys provided, ${expectedKeys}`;
 const invalidMapping = 'Invalid object mapping provided';
 const invalidShape = 'Invalid shape provided';
+const onlyObjectAllowed = 'only object type is allowed';
 
 test('isKeyOf', ({ end }) => {
 	equal(isKeyOf, keyof);
@@ -310,7 +311,7 @@ test('setStrict', ({ end }) => {
 	throws(() => {
 		// @ts-expect-error
 		setStrict(isString);
-	}, TypeError('Invalid type for "setStrict()", only object type is allowed'));
+	}, TypeError(`Invalid type for "setStrict()", ${onlyObjectAllowed}`));
 
 	end();
 });
