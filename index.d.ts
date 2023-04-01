@@ -25,8 +25,8 @@ export type InferType<S extends TransformSchema> = OptionalObject<{
  * Assign object properties and parse result based on the provided schema
  */
 declare function rAssign<T extends TypeGuard>(
-	schema: T,
-	source: unknown
+	schema: BaseTypeGuard<T>,
+	...sources: unknown[]
 ): InferTypeGuard<T>;
 
 /**

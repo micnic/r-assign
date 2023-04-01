@@ -1,8 +1,8 @@
 import {
-	hasAtLeastOneElement,
-	hasOneElement
-} from './lib/internal/array-checks.js';
-import { parseType } from 'r-assign/parse-type';
+	assertBaseTypeGuard,
+	getTypeGuardMeta
+} from './lib/internal/type-guard-meta.js';
+import { pickValue } from './lib/internal/pick-value.js';
 
 /**
  * @template [T = any]
@@ -32,34 +32,29 @@ import { parseType } from 'r-assign/parse-type';
 const { assign, entries } = Object;
 
 const invalidSchema = 'Invalid schema argument type, object expected';
+const invalidObjectSource = 'Invalid source argument type, object expected';
 
 /**
  * Extract one source object or merge an array of source objects
  * @param {unknown[]} sources
- * @returns {Record<string, any>}
+ * @returns {unknown}
  */
 const getSource = (sources) => {
 
-	// Check for multiple source objects
-	if (
-		!hasAtLeastOneElement(sources) ||
-		typeof sources[0] !== 'object' ||
-		sources[0] === null
-	) {
-		return {};
-	}
-
-	// Check for one source object
-	if (
-		hasOneElement(sources) &&
-		typeof sources[0] === 'object' &&
-		sources[0] !== null
-	) {
+	// Select first source for less than two sources or non-object source
+	if (sources.length < 2 || typeof sources[0] !== 'object') {
 		return sources[0];
 	}
 
 	return assign({}, ...sources);
 };
+
+/**
+ * Check for non-null object
+ * @param {unknown} value
+ * @returns {value is Record<string, unknown>}
+ */
+const isObject = (value) => (typeof value === 'object' && value !== null);
 
 /**
  * Returns message for invalid schema property error
@@ -78,23 +73,34 @@ const invalidSchemaProperty = (key) =>
  */
 const rAssign = (schema, ...sources) => {
 
+	const source = getSource(sources);
+
 	// Parse source based on the provided type guard schema
 	if (typeof schema === 'function') {
-		return parseType(schema)(sources[0]);
+
+		const meta = getTypeGuardMeta(schema);
+
+		// Assert for base type guard
+		assertBaseTypeGuard(meta.classification);
+
+		return pickValue(source, meta);
 	}
 
 	// Check for valid schema provided
-	if (typeof schema !== 'object' || schema === null) {
+	if (!isObject(schema)) {
 		throw TypeError(invalidSchema);
+	}
+
+	// Check for valid source provided
+	if (!isObject(source)) {
+		throw TypeError(invalidObjectSource);
 	}
 
 	/** @type {any} */
 	const result = {};
 
-	const source = getSource(sources);
-
 	// Populate result properties
-	entries(schema).forEach(([key, transform]) => {
+	entries(schema).forEach(([ key, transform ]) => {
 
 		// Check for valid schema properties
 		if (typeof transform !== 'function') {
