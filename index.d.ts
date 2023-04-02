@@ -58,10 +58,13 @@ type PartialUndefined<T> = {
 };
 
 type TypeGuard<T = any> = ((value?: any) => value is T) & {};
-type CompositeTypeGuard<T> = T extends never ? never : TypeGuard<T>;
 
 interface OptionalTypeGuard<T = any> extends TypeGuard<T | unknown> {
 	optional: true;
+}
+
+interface OptionalDefaultTypeGuard<T = any> extends OptionalTypeGuard<T> {
+	default: true;
 }
 
 interface RestTypeGuard<T = any> extends TypeGuard<(T | unknown)[]> {
@@ -235,16 +238,9 @@ type OptionalShape<S extends Shape, K extends keyof S> = {
 		: never;
 } & {};
 
-type InferShape<
-	S extends Shape,
-	M extends TypeGuard<Record<keyof any, any>> | undefined = undefined
-> = RemapObject<
-	OptionalShape<S, KeysOfType<S, OptionalTypeGuard>> &
-		(M extends undefined
-			? {}
-			: M extends TypeGuard
-			? InferTypeGuard<BaseTypeGuard<M>>
-			: never)
+type InferShape<S extends Shape> = OptionalShape<
+	S,
+	KeysOfType<S, OptionalTypeGuard>
 >;
 
 type Union = [TypeGuard, TypeGuard, ...TypeGuard[]];
@@ -285,8 +281,6 @@ export * from './lib/union.js';
 export type {
 	BaseTypeGuard,
 	BaseTypeGuard as BTG,
-	CompositeTypeGuard,
-	CompositeTypeGuard as CTG,
 	Constructor,
 	InferAsyncFunction,
 	InferAsyncFunction as InferAF,
@@ -315,6 +309,8 @@ export type {
 	Literals,
 	OptionalTypeGuard,
 	OptionalTypeGuard as OTG,
+	OptionalDefaultTypeGuard,
+	OptionalDefaultTypeGuard as ODTG,
 	PartialUndefined,
 	PartialUndefined as PU,
 	RefineFunction,
