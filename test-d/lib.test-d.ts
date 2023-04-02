@@ -1,244 +1,298 @@
-import * as lib from 'r-assign';
+import {
+	any,
+	array,
+	asBigInt,
+	asBoolean,
+	asDate,
+	asNumber,
+	asString,
+	asyncFunc,
+	bigint,
+	boolean,
+	date,
+	func,
+	getType,
+	instance,
+	intersection,
+	isAny,
+	isArrayOf,
+	isAsyncFunction,
+	isBigInt,
+	isBoolean,
+	isDate,
+	isFunction,
+	isInstanceOf,
+	isIntersectionOf,
+	isLiteral,
+	isLiteralOf,
+	isNever,
+	isNull,
+	isNullable,
+	isNullish,
+	isNumber,
+	isObjectOf,
+	isOmitFrom,
+	isOptional,
+	isOptionalUndefined,
+	isPartial,
+	isPartialUndefined,
+	isPickFrom,
+	isPromiseOf,
+	isRecordOf,
+	isRequired,
+	isString,
+	isSymbol,
+	isTemplateLiteralOf,
+	isTupleOf,
+	isTupleRestOf,
+	isUndefined,
+	isUnionOf,
+	literal,
+	literals,
+	never,
+	nullable,
+	nulled,
+	nullish,
+	number,
+	object,
+	omit,
+	optional,
+	optionalUndef,
+	parseType,
+	partial,
+	partialUndef,
+	pick,
+	promise,
+	record,
+	required,
+	setStrict,
+	strict,
+	string,
+	symbol,
+	templateLiteral,
+	tuple,
+	tupleRest,
+	undef,
+	union,
+	OptionalTypeGuard,
+	RestTypeGuard,
+	TransformFunction,
+	TypeGuard
+} from 'r-assign';
 import { expectType } from 'tsd';
 
 // Any
-expectType<typeof lib.any>(lib.isAny);
-expectType<lib.TypeGuard>(lib.any);
+expectType<typeof any>(isAny);
+expectType<TypeGuard>(any);
 
 // Array
-expectType<typeof lib.array>(lib.isArrayOf);
-expectType<lib.TypeGuard<string[]>>(lib.array(lib.string));
+expectType<typeof array>(isArrayOf);
+expectType<TypeGuard<string[]>>(array(string));
 
 // BigInt
-expectType<typeof lib.bigint>(lib.isBigInt);
-expectType<lib.TypeGuard<bigint>>(lib.bigint);
+expectType<typeof bigint>(isBigInt);
+expectType<TypeGuard<bigint>>(bigint);
+expectType<TransformFunction<bigint>>(asBigInt);
 
 // Boolean
-expectType<typeof lib.boolean>(lib.isBoolean);
-expectType<lib.TypeGuard<boolean>>(lib.boolean);
+expectType<typeof boolean>(isBoolean);
+expectType<TypeGuard<boolean>>(boolean);
+expectType<TransformFunction<boolean>>(asBoolean);
 
 // Date
-expectType<typeof lib.date>(lib.isDate);
-expectType<lib.TypeGuard<Date>>(lib.date);
+expectType<typeof date>(isDate);
+expectType<TypeGuard<Date>>(date);
+expectType<TransformFunction<Date>>(asDate);
 
 // Function
-expectType<typeof lib.func>(lib.isFunction);
-expectType<typeof lib.asyncFunc>(lib.isAsyncFunction);
-expectType<lib.TypeGuard<() => void>>(lib.func([]));
-expectType<lib.TypeGuard<() => string>>(lib.func([], lib.string));
-expectType<lib.TypeGuard<(args_0: string) => void>>(lib.func([lib.string]));
-expectType<lib.TypeGuard<(args_0: string) => string>>(
-	lib.func([lib.string], lib.string)
+expectType<typeof func>(isFunction);
+expectType<typeof asyncFunc>(isAsyncFunction);
+expectType<TypeGuard<() => void>>(func([]));
+expectType<TypeGuard<() => string>>(func([], string));
+expectType<TypeGuard<(args_0: string) => void>>(func([string]));
+expectType<TypeGuard<(args_0: string) => string>>(func([string], string));
+expectType<TypeGuard<(args_0: string, args_1: string) => void>>(
+	func([string, string])
 );
-expectType<lib.TypeGuard<(args_0: string, args_1: string) => void>>(
-	lib.func([lib.string, lib.string])
+expectType<TypeGuard<(args_0: string, args_1: string) => string>>(
+	func([string, string], string)
 );
-expectType<lib.TypeGuard<(args_0: string, args_1: string) => string>>(
-	lib.func([lib.string, lib.string], lib.string)
+expectType<TypeGuard<() => Promise<void>>>(asyncFunc([]));
+expectType<TypeGuard<() => Promise<string>>>(asyncFunc([], string));
+expectType<TypeGuard<(args_0: string) => Promise<void>>>(asyncFunc([string]));
+expectType<TypeGuard<(args_0: string) => Promise<string>>>(
+	asyncFunc([string], string)
 );
-expectType<lib.TypeGuard<() => Promise<void>>>(lib.asyncFunc([]));
-expectType<lib.TypeGuard<() => Promise<string>>>(lib.asyncFunc([], lib.string));
-expectType<lib.TypeGuard<(args_0: string) => Promise<void>>>(
-	lib.asyncFunc([lib.string])
+expectType<TypeGuard<(args_0: string, args_1: string) => Promise<void>>>(
+	asyncFunc([string, string])
 );
-expectType<lib.TypeGuard<(args_0: string) => Promise<string>>>(
-	lib.asyncFunc([lib.string], lib.string)
-);
-expectType<lib.TypeGuard<(args_0: string, args_1: string) => Promise<void>>>(
-	lib.asyncFunc([lib.string, lib.string])
-);
-expectType<lib.TypeGuard<(args_0: string, args_1: string) => Promise<string>>>(
-	lib.asyncFunc([lib.string, lib.string], lib.string)
+expectType<TypeGuard<(args_0: string, args_1: string) => Promise<string>>>(
+	asyncFunc([string, string], string)
 );
 
 // Instance
-expectType<typeof lib.instance>(lib.isInstanceOf);
-expectType<lib.TypeGuard<Date>>(lib.instance(Date));
+expectType<typeof instance>(isInstanceOf);
+expectType<TypeGuard<Date>>(instance(Date));
 
 // Intersection
-expectType<typeof lib.intersection>(lib.isIntersectionOf);
-expectType<lib.TypeGuard<{ a: string; b: string; c: string }>>(
-	lib.intersection([
-		lib.object({ a: lib.string }),
-		lib.object({ b: lib.string }),
-		lib.object({ c: lib.string })
+expectType<typeof intersection>(isIntersectionOf);
+expectType<TypeGuard<{ a: string; b: string; c: string }>>(
+	intersection([
+		object({ a: string }),
+		object({ b: string }),
+		object({ c: string })
 	])
 );
-expectType<lib.TypeGuard<string>>(
-	lib.intersection([
-		lib.string,
-		lib.union([lib.string, lib.number]),
-		lib.union([lib.string, lib.boolean])
-	])
+expectType<TypeGuard<string>>(
+	intersection([string, union([string, number]), union([string, boolean])])
 );
 
 // Literal
-expectType<typeof lib.literal>(lib.isLiteral);
-expectType<typeof lib.literals>(lib.isLiteralOf);
-expectType<lib.TypeGuard<0>>(lib.literal(0));
-expectType<lib.TypeGuard<0>>(lib.literals([0]));
-expectType<lib.TypeGuard<0 | 1>>(lib.literals([0, 1]));
-expectType<lib.TypeGuard<0 | 0n>>(lib.literals([0, 0n]));
-expectType<lib.TypeGuard<0 | 0n | ''>>(lib.literals([0, 0n, '']));
-expectType<lib.TypeGuard<0 | 0n | '' | false>>(
-	lib.literals([0, 0n, '', false])
+expectType<typeof literal>(isLiteral);
+expectType<typeof literals>(isLiteralOf);
+expectType<TypeGuard<undefined>>(literal());
+expectType<TypeGuard<0>>(literal(0));
+expectType<TypeGuard<0>>(literals([0]));
+expectType<TypeGuard<0 | 1>>(literals([0, 1]));
+expectType<TypeGuard<0 | 0n>>(literals([0, 0n]));
+expectType<TypeGuard<0 | 0n | ''>>(literals([0, 0n, '']));
+expectType<TypeGuard<0 | 0n | '' | false>>(literals([0, 0n, '', false]));
+expectType<TypeGuard<0 | 0n | '' | false | null>>(
+	literals([0, 0n, '', false, null])
 );
-expectType<lib.TypeGuard<0 | 0n | '' | false | null>>(
-	lib.literals([0, 0n, '', false, null])
-);
-expectType<lib.TypeGuard<0 | 0n | '' | false | null | undefined>>(
-	lib.literals([0, 0n, '', false, null, undefined])
+expectType<TypeGuard<0 | 0n | '' | false | null | undefined>>(
+	literals([0, 0n, '', false, null, undefined])
 );
 
 // Never
-expectType<typeof lib.never>(lib.isNever);
-expectType<lib.TypeGuard<never>>(lib.never);
+expectType<typeof never>(isNever);
+expectType<TypeGuard<never>>(never);
 
 // Null
-expectType<typeof lib.nulled>(lib.isNull);
-expectType<typeof lib.nullable>(lib.isNullable);
-expectType<typeof lib.nullish>(lib.isNullish);
-expectType<lib.TypeGuard<null>>(lib.nulled);
-expectType<lib.TypeGuard<string | null>>(lib.nullable(lib.string));
-expectType<lib.TypeGuard<string | null | undefined>>(lib.nullish(lib.string));
+expectType<typeof nulled>(isNull);
+expectType<typeof nullable>(isNullable);
+expectType<typeof nullish>(isNullish);
+expectType<TypeGuard<null>>(nulled);
+expectType<TypeGuard<string | null>>(nullable(string));
+expectType<TypeGuard<string | null | undefined>>(nullish(string));
 
 // Number
-expectType<typeof lib.number>(lib.isNumber);
-expectType<lib.TypeGuard<number>>(lib.number);
+expectType<typeof number>(isNumber);
+expectType<TypeGuard<number>>(number);
+expectType<TransformFunction<number>>(asNumber);
 
 // Object
-expectType<typeof lib.object>(lib.isObjectOf);
-expectType<typeof lib.pick>(lib.isPickFrom);
-expectType<typeof lib.omit>(lib.isOmitFrom);
-expectType<typeof lib.strict>(lib.setStrict);
-expectType<lib.TypeGuard<{ a: string }>>(lib.object({ a: lib.string }));
-expectType<lib.TypeGuard<{ a: string }>>(
-	lib.strict(lib.object({ a: lib.string }))
+expectType<typeof object>(isObjectOf);
+expectType<typeof pick>(isPickFrom);
+expectType<typeof omit>(isOmitFrom);
+expectType<typeof strict>(setStrict);
+expectType<TypeGuard<{ a: string }>>(object({ a: string }));
+expectType<TypeGuard<{ a: string }>>(strict(object({ a: string })));
+expectType<TypeGuard<{ a: string }>>(
+	pick(object({ a: string, b: string }), 'a')
 );
-expectType<lib.TypeGuard<{ a: string }>>(
-	lib.pick(lib.object({ a: lib.string, b: lib.string }), 'a')
-);
-expectType<lib.TypeGuard<{ b: string }>>(
-	lib.omit(lib.object({ a: lib.string, b: lib.string }), 'a')
+expectType<TypeGuard<{ b: string }>>(
+	omit(object({ a: string, b: string }), 'a')
 );
 
 // Optional
-expectType<typeof lib.optional>(lib.isOptional);
-expectType<typeof lib.optionalUndef>(lib.isOptionalUndefined);
-expectType<lib.OptionalTypeGuard<string>>(lib.optional(lib.string));
-expectType<lib.OptionalTypeGuard<string | undefined>>(
-	lib.optionalUndef(lib.string)
-);
+expectType<typeof optional>(isOptional);
+expectType<typeof optionalUndef>(isOptionalUndefined);
+expectType<OptionalTypeGuard<string>>(optional(string));
+expectType<OptionalTypeGuard<string | undefined>>(optionalUndef(string));
 
 // Partial
-expectType<typeof lib.partial>(lib.isPartial);
-expectType<typeof lib.partialUndef>(lib.isPartialUndefined);
-expectType<lib.TypeGuard<[string?]>>(lib.partial(lib.tuple([lib.string])));
-expectType<lib.TypeGuard<{ a?: string }>>(
-	lib.partial(lib.object({ a: lib.string }))
-);
-expectType<lib.TypeGuard<[(string | undefined)?]>>(
-	lib.partialUndef(lib.tuple([lib.string]))
-);
-expectType<lib.TypeGuard<{ a?: string | undefined }>>(
-	lib.partialUndef(lib.object({ a: lib.string }))
+expectType<typeof partial>(isPartial);
+expectType<typeof partialUndef>(isPartialUndefined);
+expectType<TypeGuard<[string?]>>(partial(tuple([string])));
+expectType<TypeGuard<{ a?: string }>>(partial(object({ a: string })));
+expectType<TypeGuard<[(string | undefined)?]>>(partialUndef(tuple([string])));
+expectType<TypeGuard<{ a?: string | undefined }>>(
+	partialUndef(object({ a: string }))
 );
 
 // Promise
-expectType<typeof lib.promise>(lib.isPromiseOf);
-expectType<lib.TypeGuard<Promise<void>>>(lib.promise());
-expectType<lib.TypeGuard<Promise<string>>>(lib.promise(lib.string));
+expectType<typeof promise>(isPromiseOf);
+expectType<TypeGuard<Promise<void>>>(promise());
+expectType<TypeGuard<Promise<string>>>(promise(string));
 
 // Record
-expectType<typeof lib.record>(lib.isRecordOf);
-expectType<lib.TypeGuard<Record<string, string>>>(lib.record(lib.string));
-expectType<lib.TypeGuard<Record<string, string>>>(
-	lib.record(lib.string, lib.string)
-);
+expectType<typeof record>(isRecordOf);
+expectType<TypeGuard<Record<string, string>>>(record(string));
+expectType<TypeGuard<Record<string, string>>>(record(string, string));
 
 // Required
-expectType<typeof lib.required>(lib.isRequired);
-expectType<lib.TypeGuard<[string]>>(
-	lib.required(lib.tuple([lib.optional(lib.string)]))
-);
+expectType<typeof required>(isRequired);
+expectType<TypeGuard<[string]>>(required(tuple([optional(string)])));
 
 // String
-expectType<typeof lib.string>(lib.isString);
-expectType<lib.TypeGuard<string>>(lib.string);
-expectType<lib.TransformFunction<string>>(lib.asString);
+expectType<typeof string>(isString);
+expectType<TypeGuard<string>>(string);
+expectType<TransformFunction<string>>(asString);
 
 // Symbol
-expectType<typeof lib.symbol>(lib.isSymbol);
-expectType<lib.TypeGuard<symbol>>(lib.symbol);
+expectType<typeof symbol>(isSymbol);
+expectType<TypeGuard<symbol>>(symbol);
 
 // Template literal
-expectType<typeof lib.templateLiteral>(lib.isTemplateLiteralOf);
-expectType<lib.TypeGuard<''>>(lib.templateLiteral([]));
-expectType<lib.TypeGuard<''>>(lib.templateLiteral(['']));
-expectType<lib.TypeGuard<'0'>>(lib.templateLiteral([0]));
-expectType<lib.TypeGuard<'false'>>(lib.templateLiteral([false]));
-expectType<lib.TypeGuard<'false' | 'true'>>(lib.templateLiteral([lib.boolean]));
-expectType<lib.TypeGuard<string>>(lib.templateLiteral([lib.string]));
-expectType<lib.TypeGuard<`${number}`>>(lib.templateLiteral([lib.number]));
-expectType<lib.TypeGuard<`${string}false` | `${string}true`>>(
-	lib.templateLiteral([lib.string, lib.boolean])
+expectType<typeof templateLiteral>(isTemplateLiteralOf);
+expectType<TypeGuard<''>>(templateLiteral([]));
+expectType<TypeGuard<''>>(templateLiteral(['']));
+expectType<TypeGuard<'0'>>(templateLiteral([0]));
+expectType<TypeGuard<'false'>>(templateLiteral([false]));
+expectType<TypeGuard<'false' | 'true'>>(templateLiteral([boolean]));
+expectType<TypeGuard<string>>(templateLiteral([string]));
+expectType<TypeGuard<`${number}`>>(templateLiteral([number]));
+expectType<TypeGuard<`${string}false` | `${string}true`>>(
+	templateLiteral([string, boolean])
 );
-expectType<lib.TypeGuard<`${string}-false` | `${string}-true`>>(
-	lib.templateLiteral([lib.string, '-', lib.boolean])
+expectType<TypeGuard<`${string}-false` | `${string}-true`>>(
+	templateLiteral([string, '-', boolean])
 );
 
 // Tuple
-expectType<typeof lib.tuple>(lib.isTupleOf);
-expectType<typeof lib.tupleRest>(lib.isTupleRestOf);
-expectType<lib.TypeGuard<[]>>(lib.tuple([]));
-expectType<lib.TypeGuard<[[]]>>(lib.tuple([lib.tuple([])]));
-expectType<lib.TypeGuard<[string]>>(lib.tuple([lib.string]));
-expectType<lib.TypeGuard<[[string]]>>(lib.tuple([lib.tuple([lib.string])]));
-expectType<lib.RestTypeGuard<string>>(lib.tupleRest(lib.string));
+expectType<typeof tuple>(isTupleOf);
+expectType<typeof tupleRest>(isTupleRestOf);
+expectType<TypeGuard<[]>>(tuple([]));
+expectType<TypeGuard<[[]]>>(tuple([tuple([])]));
+expectType<TypeGuard<[string]>>(tuple([string]));
+expectType<TypeGuard<[[string]]>>(tuple([tuple([string])]));
+expectType<RestTypeGuard<string>>(tupleRest(string));
 
-expectType<lib.TypeGuard<string[]>>(lib.tuple([lib.tupleRest(lib.string)]));
-expectType<lib.TypeGuard<[string, ...string[]]>>(
-	lib.tuple([lib.string, lib.tupleRest(lib.string)])
+expectType<TypeGuard<string[]>>(tuple([tupleRest(string)]));
+expectType<TypeGuard<[string, ...string[]]>>(
+	tuple([string, tupleRest(string)])
 );
-expectType<lib.TypeGuard<[...string[], string]>>(
-	lib.tuple([lib.tupleRest(lib.string), lib.string])
+expectType<TypeGuard<[...string[], string]>>(
+	tuple([tupleRest(string), string])
 );
-expectType<lib.TypeGuard<[string?, ...string[]]>>(
-	lib.tuple([lib.optional(lib.string), lib.tupleRest(lib.string)])
+expectType<TypeGuard<[string?, ...string[]]>>(
+	tuple([optional(string), tupleRest(string)])
 );
-expectType<lib.TypeGuard<[string, string?, ...string[]]>>(
-	lib.tuple([lib.string, lib.optional(lib.string), lib.tupleRest(lib.string)])
+expectType<TypeGuard<[string, string?, ...string[]]>>(
+	tuple([string, optional(string), tupleRest(string)])
 );
 
 // Undefined
-expectType<typeof lib.undef>(lib.isUndefined);
-expectType<lib.TypeGuard<undefined>>(lib.undef);
+expectType<typeof undef>(isUndefined);
+expectType<TypeGuard<undefined>>(undef);
 
 // Union
-expectType<typeof lib.union>(lib.isUnionOf);
-expectType<lib.TypeGuard<string | number>>(lib.union([lib.string, lib.number]));
+expectType<typeof union>(isUnionOf);
+expectType<TypeGuard<string | number>>(union([string, number]));
 
 // Object + Optional
-expectType<lib.TypeGuard<{ a?: string }>>(
-	lib.object({ a: lib.optional(lib.string) })
-);
-expectType<lib.TypeGuard<{ a?: string | undefined }>>(
-	lib.object({ a: lib.optionalUndef(lib.string) })
-);
-
-// Object + Record
-expectType<lib.TypeGuard<{ [x: string]: string; a: string }>>(
-	lib.object({ a: lib.string }, lib.record(lib.string, lib.string))
+expectType<TypeGuard<{ a?: string }>>(object({ a: optional(string) }));
+expectType<TypeGuard<{ a?: string | undefined }>>(
+	object({ a: optionalUndef(string) })
 );
 
 // Tuple + Optional
-expectType<lib.TypeGuard<[string?]>>(lib.tuple([lib.optional(lib.string)]));
-expectType<lib.TypeGuard<[(string | undefined)?]>>(
-	lib.tuple([lib.optionalUndef(lib.string)])
-);
+expectType<TypeGuard<[string?]>>(tuple([optional(string)]));
+expectType<TypeGuard<[(string | undefined)?]>>(tuple([optionalUndef(string)]));
 
 // Get type
-expectType<lib.TransformFunction<string>>(lib.getType(lib.string, ''));
+expectType<TransformFunction<string>>(getType(string, ''));
 
 // Parse type
-expectType<lib.TransformFunction<string>>(lib.parseType(lib.string));
+expectType<TransformFunction<string>>(parseType(string));
