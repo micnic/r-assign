@@ -3,7 +3,9 @@ import type { InferLiterals, Literal, Literals, TypeGuard } from 'r-assign';
 /**
  * Check for literal values
  */
-export declare function isLiteral<L extends Literal>(literal: L): TypeGuard<L>;
+export declare function isLiteral<L extends Literal = undefined>(
+	literal?: L
+): TypeGuard<L>;
 
 /**
  * Check for union of literal values
