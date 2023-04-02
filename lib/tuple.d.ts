@@ -1,6 +1,5 @@
 import type {
 	BaseTypeGuard,
-	CompositeTypeGuard,
 	InferTuple,
 	InferTypeGuard,
 	RestTypeGuard,
@@ -13,7 +12,7 @@ import type {
  */
 export declare function isTupleOf<T extends Tuple>(
 	tuple: T
-): CompositeTypeGuard<InferTuple<T>>;
+): TypeGuard<InferTuple<T>>;
 
 /**
  * Check for tuple rest
