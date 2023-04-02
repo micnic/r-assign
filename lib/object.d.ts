@@ -10,10 +10,9 @@ export declare function isKeyOf<R extends Record<keyof any, any>>(
 /**
  * Check for object values
  */
-export declare function isObjectOf<
-	S extends Shape,
-	M extends TypeGuard<Record<keyof any, any>> | undefined = undefined
->(shape: S, mapping?: M): TypeGuard<InferShape<S, M>>;
+export declare function isObjectOf<S extends Shape>(
+	shape: S
+): TypeGuard<InferShape<S>>;
 
 /**
  * Check for a subset object value by omitting the provided keys
