@@ -3,20 +3,22 @@ import type {
 	Intersection,
 	Literal,
 	OptionalTypeGuard,
+	RestTypeGuard,
 	Tuple,
 	TypeGuard,
 	Union
 } from 'r-assign';
 
-type ShapeEntries = [string, TypeGuard][];
 type StringifiedTemplateLiteral<L extends Literal> = (TypeGuard<L> | string)[];
 type ReducibleTemplateLiteral<S extends string> = (TypeGuard<S> | S)[];
 
 type AnyTypeGuardMeta = {
+	check: TypeGuard;
 	classification: 'any';
 };
 
 type ArrayTypeGuardMeta = {
+	check: TypeGuard<any[]>;
 	child: TypeGuardMeta;
 	classification: 'array';
 	same: boolean;
@@ -24,6 +26,7 @@ type ArrayTypeGuardMeta = {
 };
 
 type FunctionTypeGuardMeta = {
+	check: TypeGuard<(...args: any[]) => any>;
 	children: [TypeGuardMeta, TypeGuardMeta];
 	classification: 'function';
 	types: [TypeGuard<any[] | []>, TypeGuard | undefined];
@@ -31,80 +34,97 @@ type FunctionTypeGuardMeta = {
 
 type InstanceTypeGuardMeta = {
 	builder: Constructor;
+	check: TypeGuard;
 	classification: 'instance';
 };
 
 type IntersectionTypeGuardMeta = {
+	check: TypeGuard;
 	children: TypeGuardMeta[];
 	classification: 'intersection';
 	types: Intersection;
 };
 
 type LiteralTypeGuardMeta = {
+	check: TypeGuard<Literal>;
 	classification: 'literal';
 	literal: Literal;
 };
 
 type LiteralsTypeGuardMeta = {
+	check: TypeGuard<Literal>;
 	classification: 'literals';
 	literals: Literal[];
 };
 
 type NeverTypeGuardMeta = {
+	check: TypeGuard<never>;
 	classification: 'never';
 };
 
 type ObjectTypeGuardMeta = {
+	all: Map<string, TypeGuardMeta>;
+	check: TypeGuard<Record<keyof any, any>>;
 	classification: 'object';
 	keys: string[];
-	mapping?: TypeGuard<Record<keyof any, any>> | undefined;
-	optional: ShapeEntries;
-	required: ShapeEntries;
+	optional: Map<string, OptionalTypeGuardMeta>;
+	required: Map<string, Exclude<TypeGuardMeta, OptionalTypeGuardMeta>>;
 	same: boolean;
 	strict: boolean;
 };
 
 type OptionalTypeGuardMeta = {
+	check: OptionalTypeGuard;
 	child: TypeGuardMeta;
 	classification: 'optional';
-	main: OptionalTypeGuard;
+	def?: any | (() => any);
 	type: TypeGuard;
 	undef: boolean;
 };
 
 type PrimitiveTypeGuardMeta = {
+	check: TypeGuard<bigint | boolean | number | string | symbol>;
 	classification: 'primitive';
-} & (
-	| { primitive: 'bigint' | 'boolean' | 'string' | 'symbol' }
-	| { primitive: 'number'; finite: boolean }
-);
+	primitive: 'bigint' | 'boolean' | 'number' | 'string' | 'symbol';
+};
 
 type PromiseTypeGuardMeta = {
+	check: TypeGuard<Promise<any>>;
 	child: TypeGuardMeta;
 	classification: 'promise';
 	type: TypeGuard | undefined;
 };
 
 type RecordTypeGuardMeta = {
+	check: TypeGuard<Record<keyof any, any>>;
+	children: [TypeGuardMeta, TypeGuardMeta, ObjectTypeGuardMeta | undefined];
 	classification: 'record';
-	keys: TypeGuard<keyof any>;
+	numeric: boolean;
 	same: boolean;
-	values: TypeGuard;
+	types: [
+		TypeGuard<keyof any>,
+		TypeGuard,
+		TypeGuard<Record<string, any>> | undefined
+	];
 };
 
 type RestTypeGuardMeta = {
+	check: RestTypeGuard;
 	child: TypeGuardMeta;
 	classification: 'rest';
 	type: TypeGuard;
 };
 
 type TemplateLiteralTypeGuardMeta = {
+	check: TypeGuard<string>;
 	classification: 'template-literal';
 	regexp: RegExp;
 	template: StringifiedTemplateLiteral<any>;
 };
 
 type TupleTypeGuardMeta = {
+	check: TypeGuard<any[] | []>;
+	children: TypeGuardMeta[];
 	classification: 'tuple';
 	indexes: {
 		optional: number;
@@ -116,12 +136,14 @@ type TupleTypeGuardMeta = {
 };
 
 type UnionTypeGuardMeta = {
+	check: TypeGuard;
 	children: TypeGuardMeta[];
 	classification: 'union';
 	union: Union;
 };
 
 type VoidTypeGuardMeta = {
+	check: TypeGuard<void>;
 	classification: 'void';
 };
 
@@ -163,15 +185,15 @@ export type {
 	OptionalTypeGuardMeta,
 	OptionalTypeGuardMeta as OLTGM,
 	PrimitiveTypeGuardMeta,
-	PrimitiveTypeGuardMeta as PTGM,
+	PrimitiveTypeGuardMeta as PVTGM,
+	PromiseTypeGuardMeta,
+	PromiseTypeGuardMeta as PSTGM,
 	RecordTypeGuardMeta,
 	RecordTypeGuardMeta as RDTGM,
 	ReducibleTemplateLiteral,
 	ReducibleTemplateLiteral as RTL,
 	RestTypeGuardMeta,
 	RestTypeGuardMeta as RTTGM,
-	ShapeEntries,
-	ShapeEntries as SE,
 	StringifiedTemplateLiteral,
 	StringifiedTemplateLiteral as STL,
 	TemplateLiteralTypeGuardMeta,
@@ -183,5 +205,7 @@ export type {
 	TypeClassification,
 	TypeClassification as TC,
 	UnionTypeGuardMeta,
-	UnionTypeGuardMeta as UTGM
+	UnionTypeGuardMeta as UTGM,
+	VoidTypeGuardMeta,
+	VoidTypeGuardMeta as VTGM
 };
