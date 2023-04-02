@@ -1,5 +1,5 @@
 import { test, equal, notOk, ok, throws } from 'tap';
-import {
+import rAssign, {
 	isNull,
 	isNullable,
 	isNullish,
@@ -15,7 +15,19 @@ test('isNull', ({ end }) => {
 	equal(isNull, nulled);
 
 	ok(isNull(null));
+
 	notOk(isNull());
+
+	end();
+});
+
+test('assign isNull', ({ end }) => {
+
+	equal(null, rAssign(isNull, null));
+
+	throws(() => {
+		rAssign(isNull);
+	});
 
 	end();
 });
@@ -28,6 +40,7 @@ test('isNullable', ({ end }) => {
 
 	ok(isNullableString(null));
 	ok(isNullableString(''));
+
 	notOk(isNullableString());
 
 	throws(() => {
@@ -43,6 +56,18 @@ test('isNullable', ({ end }) => {
 	end();
 });
 
+test('assign isNullable', ({ end }) => {
+
+	equal(null, rAssign(isNullable(isString), null));
+	equal('', rAssign(isNullable(isString), ''));
+
+	throws(() => {
+		rAssign(isNullable(isString));
+	});
+
+	end();
+});
+
 test('isNullish', ({ end }) => {
 
 	const isNullishString = isNullish(isString);
@@ -52,6 +77,7 @@ test('isNullish', ({ end }) => {
 	ok(isNullishString(null));
 	ok(isNullishString());
 	ok(isNullishString(''));
+
 	notOk(isNullishString(true));
 
 	throws(() => {
@@ -63,6 +89,20 @@ test('isNullish', ({ end }) => {
 		// @ts-expect-error
 		isNullish(isOptional(isString));
 	}, TypeError('Optional type cannot be used in union declaration'));
+
+	end();
+});
+
+test('assign isNullish', ({ end }) => {
+
+	equal(undefined, rAssign(isNullish(isString)));
+	equal(undefined, rAssign(isNullish(isString), undefined));
+	equal(null, rAssign(isNullish(isString), null));
+	equal('', rAssign(isNullish(isString), ''));
+
+	throws(() => {
+		rAssign(isNullish(isString), true);
+	});
 
 	end();
 });

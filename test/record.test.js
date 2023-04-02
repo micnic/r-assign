@@ -75,6 +75,7 @@ test('isRecordOf', ({ end }) => {
 	notOk(isRecordOf(isString)(null));
 	notOk(isRecordOf(isNumber, isString)({ a: 'abc' }));
 	notOk(isRecordOf(isUnionOf([isLiteral(1), isString]), isString)({}));
+
 	notOk(
 		isRecordOf(isUnionOf([isLiteral(1), isString, isSymbol]), isString)({})
 	);
@@ -97,7 +98,7 @@ test('isRecordOf', ({ end }) => {
 	throws(() => {
 		// @ts-expect-error
 		isRecordOf(isBoolean, isString);
-	}, TypeError('Invalid type guard for record keys'));
+	}, TypeError('Invalid type for record keys'));
 
 	end();
 });

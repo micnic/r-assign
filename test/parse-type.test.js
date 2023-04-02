@@ -1,4 +1,4 @@
-import { test, equal, match, notSame, same, throws } from 'tap';
+import { test, equal, match, notSame, same, rejects, throws } from 'tap';
 import rAssign, {
 	isAny,
 	isArrayOf,
@@ -529,7 +529,6 @@ test('parseType: [T, T?]', ({ end }) => {
 	const parseTuple = parseType(isTupleOf([isString, isOptional(isNumber)]));
 
 	match(parseTuple(['a', 1]), ['a', 1]);
-
 	match(parseTuple(['a']), ['a']);
 
 	throws(() => {
@@ -628,38 +627,6 @@ test('parseType: { a: T; b?: T }', ({ end }) => {
 
 	throws(() => {
 		parseObject({ a: 'a', b: 'b' });
-	});
-
-	end();
-});
-
-test('parseType: { [key: K]: V; a: T }', ({ end }) => {
-
-	const parseObject = parseType(isObjectOf({
-		a: isString
-	}, isRecordOf(isString, isString)));
-
-	match(parseObject({ a: 'a' }), { a: 'a' });
-	match(parseObject({ a: 'a', b: 'b' }), { a: 'a', b: 'b' });
-
-	throws(() => {
-		parseObject({ a: 'a', b: 1 });
-	});
-
-	end();
-});
-
-test('parseType: { [key: K]: V; a: T; b: T }', ({ end }) => {
-
-	const parseObject = parseType(isObjectOf({
-		a: isString
-	}, isObjectOf({ b: isString }, isRecordOf(isString, isString))));
-
-	match(parseObject({ a: 'a', b: 'b' }), { a: 'a', b: 'b' });
-	match(parseObject({ a: 'a', b: 'b', c: 'c' }), { a: 'a', b: 'b', c: 'c' });
-
-	throws(() => {
-		parseObject({ a: 'a', b: 'b', c: 1 });
 	});
 
 	end();
@@ -909,8 +876,8 @@ test('parseType: Promise<void>', async ({ end, resolveMatch }) => {
 
 	await resolveMatch(parsePromise(Promise.resolve()), undefined);
 
-	throws(() => {
-		parsePromise();
+	rejects(async () => {
+		await parsePromise();
 	});
 
 	end();
@@ -922,8 +889,8 @@ test('parseType: Promise<string>', async ({ end, resolveMatch }) => {
 
 	await resolveMatch(parsePromise(Promise.resolve('')), '');
 
-	throws(() => {
-		parsePromise();
+	rejects(async () => {
+		await parsePromise();
 	});
 
 	end();

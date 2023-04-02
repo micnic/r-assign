@@ -1,9 +1,8 @@
 import { test, match, throws } from 'tap';
-import rAssign, { isString } from 'r-assign';
+import rAssign, { isAny } from 'r-assign';
 
 const expectedFunction = 'expected to be a function';
 const invalidProperty = 'Invalid property type';
-const invalidValue = 'Invalid value type';
 
 test('No arguments', ({ end }) => {
 	throws(() => {
@@ -24,20 +23,21 @@ test('Invalid type guard schema', ({ end }) => {
 test('Invalid object schema', ({ end }) => {
 	throws(() => {
 		// @ts-expect-error
-		rAssign({ data: null }, null);
+		rAssign({ data: null }, {});
 	}, TypeError(`${invalidProperty}, "data" property ${expectedFunction}`));
 	end();
 });
 
-test('Type guard schema with with invalid input', ({ end }) => {
+test('Invalid source object', ({ end }) => {
 	throws(() => {
-		rAssign(isString, null);
-	}, TypeError(`${invalidValue}, expected a string value but received null`));
+		// @ts-expect-error
+		rAssign({ data: null }, null);
+	}, TypeError('Invalid source argument type, object expected'));
 	end();
 });
 
 test('Type guard schema with with valid input', ({ end }) => {
-	match(rAssign(isString, 'data'), 'data');
+	match(rAssign(isAny, 'data'), 'data');
 	end();
 });
 
@@ -64,13 +64,6 @@ test('Schema with object applied', ({ end }) => {
 	match(rAssign({
 		data: (value) => value
 	}, { data: 'data' }), { data: 'data' });
-	end();
-});
-
-test('Schema with null applied', ({ end }) => {
-	match(rAssign({
-		data: (value) => value
-	}, null), {});
 	end();
 });
 

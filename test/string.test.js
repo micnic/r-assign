@@ -1,5 +1,5 @@
-import { test, equal, notOk, ok } from 'tap';
-import { asString, isString, string } from 'r-assign';
+import { test, equal, notOk, ok, throws } from 'tap';
+import rAssign, { asString, isString, string } from 'r-assign';
 
 test('asString', ({ end }) => {
 
@@ -14,7 +14,20 @@ test('isString', ({ end }) => {
 
 	equal(isString, string);
 
-	notOk(isString());
 	ok(isString(''));
+
+	notOk(isString());
+
+	end();
+});
+
+test('assign isString', ({ end }) => {
+
+	equal('', rAssign(isString, ''));
+
+	throws(() => {
+		rAssign(isString);
+	});
+
 	end();
 });

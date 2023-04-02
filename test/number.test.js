@@ -1,7 +1,8 @@
 import { test, equal, notOk, ok, throws } from 'tap';
-import { asNumber, isNumber, number } from 'r-assign';
+import rAssign, { asNumber, isNumber, number } from 'r-assign';
 
 test('asNumber', ({ end }) => {
+
 	equal(asNumber(0), 0);
 	equal(asNumber(''), 0);
 
@@ -13,6 +14,7 @@ test('asNumber', ({ end }) => {
 });
 
 test('isNumber', ({ end }) => {
+
 	equal(isNumber, number);
 
 	ok(isNumber(0));
@@ -21,6 +23,29 @@ test('isNumber', ({ end }) => {
 	notOk(isNumber(NaN));
 	notOk(isNumber(Infinity));
 	notOk(isNumber(-Infinity));
+
+	end();
+});
+
+test('assign isNumber', ({ end }) => {
+
+	equal(0, rAssign(isNumber, 0));
+
+	throws(() => {
+		rAssign(isNumber);
+	});
+
+	throws(() => {
+		rAssign(isNumber, NaN);
+	});
+
+	throws(() => {
+		rAssign(isNumber, Infinity);
+	});
+
+	throws(() => {
+		rAssign(isNumber, -Infinity);
+	});
 
 	end();
 });

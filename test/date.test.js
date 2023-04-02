@@ -1,5 +1,5 @@
 import { test, equal, notOk, ok, throws } from 'tap';
-import { asDate, date, isDate } from 'r-assign';
+import rAssign, { asDate, date, isDate } from 'r-assign';
 
 test('asDate', ({ end }) => {
 
@@ -26,6 +26,23 @@ test('isDate', ({ end }) => {
 
 	notOk(isDate(new Date(NaN)));
 	notOk(isDate(0));
+
+	end();
+});
+
+test('assign isDate', ({ end }) => {
+
+	const value = new Date();
+
+	equal(value, rAssign(isDate, value));
+
+	throws(() => {
+		rAssign(isDate);
+	});
+
+	throws(() => {
+		rAssign(isDate, new Date(NaN));
+	});
 
 	end();
 });

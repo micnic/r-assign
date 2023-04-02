@@ -6,12 +6,10 @@ import {
 	isOptional,
 	isOptionalUndefined,
 	isPickFrom,
-	isRecordOf,
 	isString,
 	keyof,
 	object,
 	omit,
-	parseType,
 	pick,
 	setStrict,
 	strict
@@ -19,7 +17,6 @@ import {
 
 const expectedKeys = 'expected strings or array of strings';
 const invalidKeysType = `Invalid keys provided, ${expectedKeys}`;
-const invalidMapping = 'Invalid object mapping provided';
 const invalidShape = 'Invalid shape provided';
 const onlyObjectAllowed = 'only object type is allowed';
 
@@ -54,9 +51,6 @@ test('isObjectOf', ({ end }) => {
 	ok(isObjectOf({ a: isOptionalUndefined(isString) })({}));
 	notOk(isObjectOf({ a: isOptionalUndefined(isString) })({ a: null }));
 
-	ok(isObjectOf({}, isRecordOf(isString, isString))({}));
-	ok(isObjectOf({}, isRecordOf(isString, isString))({ a: 'a' }));
-
 	throws(() => {
 		// @ts-expect-error
 		isObjectOf();
@@ -66,19 +60,6 @@ test('isObjectOf', ({ end }) => {
 		// @ts-expect-error
 		isObjectOf(null);
 	}, TypeError(invalidShape));
-
-	throws(() => {
-		// @ts-expect-error
-		isObjectOf({}, isString);
-	}, TypeError(invalidMapping));
-
-	throws(() => {
-		isObjectOf({}, setStrict(isObjectOf({})));
-	}, TypeError(invalidMapping));
-
-	throws(() => {
-		parseType(isObjectOf({}, isObjectOf({ a: isString })))({});
-	});
 
 	end();
 });

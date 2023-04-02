@@ -1,5 +1,5 @@
-import { test, equal, notOk, ok } from 'tap';
-import { isSymbol, symbol } from 'r-assign';
+import { test, equal, notOk, ok, throws } from 'tap';
+import rAssign, { isSymbol, symbol } from 'r-assign';
 
 test('isSymbol', ({ end }) => {
 
@@ -7,6 +7,19 @@ test('isSymbol', ({ end }) => {
 
 	notOk(isSymbol());
 	ok(isSymbol(Symbol()));
+
+	end();
+});
+
+test('assign isSymbol', ({ end }) => {
+
+	const value = Symbol();
+
+	equal(value, rAssign(isSymbol, value));
+
+	throws(() => {
+		rAssign(isSymbol);
+	});
 
 	end();
 });

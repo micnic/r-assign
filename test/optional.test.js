@@ -1,5 +1,5 @@
 import { test, equal, notOk, ok, throws } from 'tap';
-import {
+import rAssign, {
 	isOptional,
 	isOptionalUndefined,
 	isString,
@@ -14,6 +14,7 @@ test('isOptional', ({ end }) => {
 	equal(isOptional, optional);
 
 	ok(isOptionalString(''));
+
 	notOk(isOptionalString());
 	notOk(isOptionalString(null));
 
@@ -30,6 +31,16 @@ test('isOptional', ({ end }) => {
 	end();
 });
 
+test('assign isOptional', ({ end }) => {
+
+	throws(() => {
+		// @ts-expect-error
+		rAssign(isOptional(isString));
+	});
+
+	end();
+});
+
 test('isOptionalUndefined', ({ end }) => {
 
 	const isOptionalString = isOptionalUndefined(isString);
@@ -38,6 +49,7 @@ test('isOptionalUndefined', ({ end }) => {
 
 	ok(isOptionalString());
 	ok(isOptionalString(''));
+
 	notOk(isOptionalString(null));
 
 	throws(() => {
@@ -49,6 +61,16 @@ test('isOptionalUndefined', ({ end }) => {
 		// @ts-expect-error
 		isOptionalUndefined(isOptionalUndefined(isString));
 	}, TypeError('Invalid use of optional type'));
+
+	end();
+});
+
+test('assign isOptionalUndefined', ({ end }) => {
+
+	throws(() => {
+		// @ts-expect-error
+		rAssign(isOptionalUndefined(isString));
+	});
 
 	end();
 });
