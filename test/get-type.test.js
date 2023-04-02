@@ -175,7 +175,7 @@ test('getType: () => string', ({ end }) => {
 	end();
 });
 
-test('getType: Promise<void>', async ({ end, rejects, resolveMatch }) => {
+test('getType: Promise<void>', async ({ rejects, resolveMatch }) => {
 
 	// @ts-expect-error
 	const getPromise = getType(isPromiseOf(), () => Promise.resolve(null));
@@ -183,11 +183,9 @@ test('getType: Promise<void>', async ({ end, rejects, resolveMatch }) => {
 	await resolveMatch(getPromise(Promise.resolve()), undefined);
 
 	await rejects(() => getPromise());
-
-	end();
 });
 
-test('getType: Promise<string>', async ({ end, rejects, resolveMatch }) => {
+test('getType: Promise<string>', async ({ rejects, resolveMatch }) => {
 
 	// @ts-expect-error
 	const getPromise = getType(isPromiseOf(isString), () =>
@@ -197,6 +195,4 @@ test('getType: Promise<string>', async ({ end, rejects, resolveMatch }) => {
 	await resolveMatch(getPromise(Promise.resolve('')), '');
 
 	await rejects(() => getPromise());
-
-	end();
 });

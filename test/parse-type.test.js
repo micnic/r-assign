@@ -870,7 +870,7 @@ test('parseType: () => Promise<string>', async ({
 	end();
 });
 
-test('parseType: Promise<void>', async ({ end, rejects, resolveMatch }) => {
+test('parseType: Promise<void>', async ({ rejects, resolveMatch }) => {
 
 	const parsePromise = parseType(isPromiseOf());
 
@@ -879,11 +879,9 @@ test('parseType: Promise<void>', async ({ end, rejects, resolveMatch }) => {
 	await rejects(async () => {
 		await parsePromise();
 	});
-
-	end();
 });
 
-test('parseType: Promise<string>', async ({ end, rejects, resolveMatch }) => {
+test('parseType: Promise<string>', async ({ rejects, resolveMatch }) => {
 
 	const parsePromise = parseType(isPromiseOf(isString));
 
@@ -892,8 +890,6 @@ test('parseType: Promise<string>', async ({ end, rejects, resolveMatch }) => {
 	await rejects(async () => {
 		await parsePromise();
 	});
-
-	end();
 });
 
 test('parseType: string | number', ({ end }) => {
