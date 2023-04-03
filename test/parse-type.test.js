@@ -1,4 +1,4 @@
-import { test, equal, match, notSame, same, rejects, throws } from 'tap';
+import { test, equal, match, not, throws } from 'tap';
 import rAssign, {
 	isAny,
 	isArrayOf,
@@ -47,20 +47,20 @@ test('parseType', ({ end }) => {
 
 	const any0 = { unreconized: true };
 
-	same(parseType(isAny)(any0), any0);
+	equal(parseType(isAny)(any0), any0);
 
 	/** @type {[]} */
 	const array0 = [];
 
-	same(parseType(isArrayOf(isString))(array0), array0);
+	equal(parseType(isArrayOf(isString))(array0), array0);
 
 	const array1 = ['a', 'b', 'c'];
 
-	same(parseType(isArrayOf(isString))(array1), array1);
+	equal(parseType(isArrayOf(isString))(array1), array1);
 
 	const array2 = ['a', 'b', { value: 'c' }];
 
-	same(
+	equal(
 		parseType(
 			isArrayOf(isUnionOf([isObjectOf({ value: isString }), isString]))
 		)(array2),
@@ -69,7 +69,7 @@ test('parseType', ({ end }) => {
 
 	const array3 = ['a', 'b', { unreconized: true, value: 'c' }];
 
-	notSame(
+	not(
 		parseType(
 			isArrayOf(isUnionOf([isObjectOf({ value: isString }), isString]))
 		)(array3),
@@ -85,7 +85,7 @@ test('parseType', ({ end }) => {
 
 	const object0 = {};
 
-	same(parseType(isObjectOf({}))(object0), object0);
+	equal(parseType(isObjectOf({}))(object0), object0);
 
 	const object1 = {
 		a: 'a',
@@ -93,7 +93,7 @@ test('parseType', ({ end }) => {
 		c: 'c'
 	};
 
-	same(
+	equal(
 		parseType(isObjectOf({ a: isString, b: isString, c: isString }))(
 			object1
 		),
@@ -107,7 +107,7 @@ test('parseType', ({ end }) => {
 		unrecognized: true
 	};
 
-	notSame(
+	not(
 		parseType(isObjectOf({ a: isString, b: isString, c: isString }))(
 			object2
 		),
@@ -127,7 +127,7 @@ test('parseType', ({ end }) => {
 		c: { value: 'c' }
 	};
 
-	same(
+	equal(
 		parseType(
 			isObjectOf({
 				a: isString,
@@ -144,7 +144,7 @@ test('parseType', ({ end }) => {
 		c: { unreconized: true, value: 'c' }
 	};
 
-	notSame(
+	not(
 		parseType(
 			isObjectOf({
 				a: isString,
@@ -169,15 +169,15 @@ test('parseType', ({ end }) => {
 	/** @type {[]} */
 	const tuple0 = [];
 
-	same(parseType(isTupleOf([]))(tuple0), tuple0);
+	equal(parseType(isTupleOf([]))(tuple0), tuple0);
 
 	const tuple1 = ['a', 'b', 'c'];
 
-	same(parseType(isTupleOf([isString, isString, isString]))(tuple1), tuple1);
+	equal(parseType(isTupleOf([isString, isString, isString]))(tuple1), tuple1);
 
 	const tuple2 = ['a', 'b', { value: 'c' }];
 
-	same(
+	equal(
 		parseType(
 			isTupleOf([isString, isString, isObjectOf({ value: isString })])
 		)(tuple2),
@@ -186,7 +186,7 @@ test('parseType', ({ end }) => {
 
 	const tuple3 = ['a', 'b', { unreconized: true, value: 'c' }];
 
-	notSame(
+	not(
 		parseType(
 			isTupleOf([isString, isString, isObjectOf({ value: isString })])
 		)(tuple3),
@@ -202,7 +202,7 @@ test('parseType', ({ end }) => {
 
 	const tuple4 = ['a', 'b', 'c', 'd', { value: 'e' }];
 
-	same(
+	equal(
 		parseType(
 			isTupleOf([
 				isString,
@@ -215,7 +215,7 @@ test('parseType', ({ end }) => {
 
 	const tuple5 = ['a', 'b', 'c', 'd', { unreconized: true, value: 'e' }];
 
-	notSame(
+	not(
 		parseType(
 			isTupleOf([
 				isString,
@@ -239,7 +239,7 @@ test('parseType', ({ end }) => {
 
 	const tuple6 = ['a', 'b', 'c', { value: 'd' }, { value: 'e' }];
 
-	same(
+	equal(
 		parseType(
 			isTupleOf([
 				isString,
@@ -259,7 +259,7 @@ test('parseType', ({ end }) => {
 		{ unreconized: true, value: 'e' }
 	];
 
-	notSame(
+	not(
 		parseType(
 			isTupleOf([
 				isString,
@@ -285,7 +285,7 @@ test('parseType', ({ end }) => {
 
 	const tuple8 = ['a', { value: 'b' }, { value: 'c' }, { value: 'd' }, 'e'];
 
-	same(
+	equal(
 		parseType(
 			isTupleOf([
 				isString,
@@ -304,7 +304,7 @@ test('parseType', ({ end }) => {
 		'e'
 	];
 
-	notSame(
+	not(
 		parseType(
 			isTupleOf([
 				isString,
@@ -870,26 +870,26 @@ test('parseType: () => Promise<string>', async ({
 	end();
 });
 
-test('parseType: Promise<void>', async ({ end, resolveMatch }) => {
+test('parseType: Promise<void>', async ({ end, rejects, resolveMatch }) => {
 
 	const parsePromise = parseType(isPromiseOf());
 
 	await resolveMatch(parsePromise(Promise.resolve()), undefined);
 
-	rejects(async () => {
+	await rejects(async () => {
 		await parsePromise();
 	});
 
 	end();
 });
 
-test('parseType: Promise<string>', async ({ end, resolveMatch }) => {
+test('parseType: Promise<string>', async ({ end, rejects, resolveMatch }) => {
 
 	const parsePromise = parseType(isPromiseOf(isString));
 
 	await resolveMatch(parsePromise(Promise.resolve('')), '');
 
-	rejects(async () => {
+	await rejects(async () => {
 		await parsePromise();
 	});
 
