@@ -21,7 +21,6 @@ type ArrayTypeGuardMeta = {
 	check: TypeGuard<any[]>;
 	child: TypeGuardMeta;
 	classification: 'array';
-	same: boolean;
 	type: TypeGuard;
 };
 
@@ -69,7 +68,6 @@ type ObjectTypeGuardMeta = {
 	keys: string[];
 	optional: Map<string, OptionalTypeGuardMeta>;
 	required: Map<string, Exclude<TypeGuardMeta, OptionalTypeGuardMeta>>;
-	same: boolean;
 	strict: boolean;
 };
 
@@ -100,7 +98,6 @@ type RecordTypeGuardMeta = {
 	children: [TypeGuardMeta, TypeGuardMeta, ObjectTypeGuardMeta | undefined];
 	classification: 'record';
 	numeric: boolean;
-	same: boolean;
 	types: [
 		TypeGuard<keyof any>,
 		TypeGuard,
@@ -131,7 +128,6 @@ type TupleTypeGuardMeta = {
 		required: number;
 		rest: number;
 	};
-	same: boolean;
 	tuple: Tuple;
 };
 

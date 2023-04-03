@@ -270,7 +270,6 @@ export * from './lib/partial.js';
 export * from './lib/promise.js';
 export * from './lib/record.js';
 export * from './lib/required.js';
-export * from './lib/same.js';
 export * from './lib/string.js';
 export * from './lib/symbol.js';
 export * from './lib/template-literal.js';

@@ -67,7 +67,6 @@
 		"./promise": "./lib/promise.js",
 		"./record": "./lib/record.js",
 		"./required": "./lib/required.js",
-		"./same": "./lib/same.js",
 		"./string": "./lib/string.js",
 		"./symbol": "./lib/symbol.js",
 		"./template-literal": "./lib/template-literal.js",

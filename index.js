@@ -141,7 +141,6 @@ export * from 'r-assign/partial';
 export * from 'r-assign/promise';
 export * from 'r-assign/record';
 export * from 'r-assign/required';
-export * from 'r-assign/same';
 export * from 'r-assign/string';
 export * from 'r-assign/symbol';
 export * from 'r-assign/template-literal';

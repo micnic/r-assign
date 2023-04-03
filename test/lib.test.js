@@ -74,8 +74,6 @@ const methods = [
 	'promise',
 	'record',
 	'required',
-	'same',
-	'setSame',
 	'setStrict',
 	'strict',
 	'string',
