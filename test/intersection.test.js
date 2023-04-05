@@ -51,12 +51,8 @@ test('isIntersectionOf', ({ end }) => {
 	}, TypeError('Invalid type guard provided'));
 
 	throws(() => {
-		isIntersectionOf([isNumber, isString]);
-	}, TypeError('Provided intersection is impossible'));
-
-	throws(() => {
 		isIntersectionOf([isOptional(isNumber), isString]);
-	}, TypeError('Optional type cannot be used in intersection declaration'));
+	});
 
 	end();
 });

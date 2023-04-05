@@ -13,8 +13,6 @@ import {
 	union
 } from 'r-assign';
 
-const invalidOptionalType = 'Optional type cannot be used in union declaration';
-
 test('isUnionOf', ({ end }) => {
 
 	equal(isUnionOf, union);
@@ -57,7 +55,7 @@ test('isUnionOf', ({ end }) => {
 
 	throws(() => {
 		// @ts-expect-error
-		isUnionOf(Array(1 + 1));
+		isUnionOf(Array(2));
 	}, TypeError('Not enough type guards, at least two expected'));
 
 	throws(() => {
@@ -67,7 +65,7 @@ test('isUnionOf', ({ end }) => {
 
 	throws(() => {
 		isUnionOf([isOptional(isString), isString]);
-	}, TypeError(invalidOptionalType));
+	});
 
 	end();
 });

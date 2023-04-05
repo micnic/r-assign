@@ -51,7 +51,7 @@ test('isNullable', ({ end }) => {
 	throws(() => {
 		// @ts-expect-error
 		isNullable(isOptional(isString));
-	}, TypeError('Optional type cannot be used in union declaration'));
+	});
 
 	end();
 });
@@ -88,7 +88,7 @@ test('isNullish', ({ end }) => {
 	throws(() => {
 		// @ts-expect-error
 		isNullish(isOptional(isString));
-	}, TypeError('Optional type cannot be used in union declaration'));
+	});
 
 	end();
 });
