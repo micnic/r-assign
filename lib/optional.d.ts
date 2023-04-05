@@ -1,6 +1,6 @@
 import type {
 	BaseTypeGuard,
-	InferTypeGuard,
+	InferType,
 	OptionalTypeGuard,
 	OptionalDefaultTypeGuard,
 	TypeGuard
@@ -12,7 +12,7 @@ import type {
  */
 export declare function isOptional<T extends TypeGuard>(
 	type: BaseTypeGuard<T>
-): OptionalTypeGuard<InferTypeGuard<T>>;
+): OptionalTypeGuard<InferType<T>>;
 
 /**
  * Check for strict optional values with default value
@@ -20,8 +20,8 @@ export declare function isOptional<T extends TypeGuard>(
  */
 export declare function isOptional<T extends TypeGuard>(
 	type: BaseTypeGuard<T>,
-	def?: InferTypeGuard<T> | (() => InferTypeGuard<T>)
-): OptionalDefaultTypeGuard<InferTypeGuard<T>>;
+	def?: InferType<T> | (() => InferType<T>)
+): OptionalDefaultTypeGuard<InferType<T>>;
 
 /**
  * Check for optional or undefined values
@@ -29,7 +29,7 @@ export declare function isOptional<T extends TypeGuard>(
  */
 export declare function isOptionalUndefined<T extends TypeGuard>(
 	type: BaseTypeGuard<T>
-): OptionalTypeGuard<InferTypeGuard<T> | undefined>;
+): OptionalTypeGuard<InferType<T> | undefined>;
 
 /**
  * Check for optional or undefined values with default value
@@ -37,8 +37,8 @@ export declare function isOptionalUndefined<T extends TypeGuard>(
  */
 export declare function isOptionalUndefined<T extends TypeGuard>(
 	type: BaseTypeGuard<T>,
-	def?: InferTypeGuard<T> | (() => InferTypeGuard<T>)
-): OptionalDefaultTypeGuard<InferTypeGuard<T> | undefined>;
+	def?: InferType<T> | (() => InferType<T>)
+): OptionalDefaultTypeGuard<InferType<T> | undefined>;
 
 export {
 	isOptional as optional,

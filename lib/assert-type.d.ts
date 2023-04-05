@@ -1,4 +1,4 @@
-import type { BaseTypeGuard, InferTypeGuard, TypeGuard } from 'r-assign';
+import type { BaseTypeGuard, InferType, TypeGuard } from 'r-assign';
 
 /**
  * Asserts that the provided value is of the provided type
@@ -8,4 +8,4 @@ export declare function assertType<T extends TypeGuard>(
 	type: BaseTypeGuard<T>,
 	value: unknown,
 	message?: string
-): asserts value is InferTypeGuard<T>;
+): asserts value is InferType<T>;

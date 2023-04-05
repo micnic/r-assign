@@ -1,7 +1,7 @@
 import type {
 	BaseTypeGuard,
 	InferShape,
-	InferTypeGuard,
+	InferType,
 	Shape,
 	TypeGuard
 } from 'r-assign';
@@ -11,7 +11,7 @@ import type {
  */
 export declare function isRecordOf<V extends TypeGuard>(
 	values: BaseTypeGuard<V>
-): TypeGuard<Record<string, InferTypeGuard<V>>>;
+): TypeGuard<Record<string, InferType<V>>>;
 
 /**
  * Check for record values
@@ -19,7 +19,7 @@ export declare function isRecordOf<V extends TypeGuard>(
 export declare function isRecordOf<V extends TypeGuard, S extends Shape>(
 	values: BaseTypeGuard<V>,
 	shape: S
-): TypeGuard<Record<string, InferTypeGuard<V>> & InferShape<S>>;
+): TypeGuard<Record<string, InferType<V>> & InferShape<S>>;
 
 /**
  * Check for record values
@@ -30,7 +30,7 @@ export declare function isRecordOf<
 >(
 	keys: K,
 	values: BaseTypeGuard<V>
-): TypeGuard<Record<InferTypeGuard<K>, InferTypeGuard<V>>>;
+): TypeGuard<Record<InferType<K>, InferType<V>>>;
 
 /**
  * Check for record values
@@ -43,6 +43,6 @@ export declare function isRecordOf<
 	keys: K,
 	values: BaseTypeGuard<V>,
 	shape: S
-): TypeGuard<Record<InferTypeGuard<K>, InferTypeGuard<V>> & InferShape<S>>;
+): TypeGuard<Record<InferType<K>, InferType<V>> & InferShape<S>>;
 
 export { isRecordOf as record };

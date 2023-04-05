@@ -1,7 +1,7 @@
 import type { TransformFunction } from 'r-assign';
 import type {
 	BaseTypeGuard,
-	InferTypeGuard,
+	InferType,
 	RefineFunction,
 	TypeGuard
 } from 'r-assign';
@@ -12,6 +12,6 @@ import type {
  */
 export declare function getType<T extends TypeGuard>(
 	type: BaseTypeGuard<T>,
-	def: InferTypeGuard<T> | (() => InferTypeGuard<T>),
-	refine?: RefineFunction<InferTypeGuard<T>>
-): TransformFunction<InferTypeGuard<T>>;
+	def: InferType<T> | (() => InferType<T>),
+	refine?: RefineFunction<InferType<T>>
+): TransformFunction<InferType<T>>;

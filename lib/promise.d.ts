@@ -1,4 +1,4 @@
-import type { BaseTypeGuard, InferTypeGuard, TypeGuard } from 'r-assign';
+import type { BaseTypeGuard, InferType, TypeGuard } from 'r-assign';
 
 /**
  * Check for promise values
@@ -6,6 +6,6 @@ import type { BaseTypeGuard, InferTypeGuard, TypeGuard } from 'r-assign';
  */
 export declare function isPromiseOf<T extends TypeGuard = TypeGuard<void>>(
 	type?: BaseTypeGuard<T>
-): TypeGuard<Promise<InferTypeGuard<T>>>;
+): TypeGuard<Promise<InferType<T>>>;
 
 export { isPromiseOf as promise };

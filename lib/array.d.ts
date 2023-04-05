@@ -1,4 +1,4 @@
-import type { BaseTypeGuard, InferTypeGuard, TypeGuard } from 'r-assign';
+import type { BaseTypeGuard, InferType, TypeGuard } from 'r-assign';
 
 /**
  * Check for array values
@@ -6,6 +6,6 @@ import type { BaseTypeGuard, InferTypeGuard, TypeGuard } from 'r-assign';
  */
 export declare function isArrayOf<T extends TypeGuard>(
 	type: BaseTypeGuard<T>
-): TypeGuard<InferTypeGuard<T>[]>;
+): TypeGuard<InferType<T>[]>;
 
 export { isArrayOf as array };

@@ -11,7 +11,7 @@ import { pickValue } from './lib/internal/pick-value.js';
 
 /**
  * @template {TransformSchema} S
- * @typedef {import('r-assign').InferType<S>} InferType
+ * @typedef {import('r-assign').InferTransform<S>} InferTransform
  */
 
 /**
@@ -26,7 +26,7 @@ import { pickValue } from './lib/internal/pick-value.js';
 
 /**
  * @template {TypeGuard} T
- * @typedef {import('r-assign').InferTG<T>} InferTypeGuard
+ * @typedef {import('r-assign').InferT<T>} InferType
  */
 
 const { assign, entries } = Object;
@@ -69,7 +69,7 @@ const invalidSchemaProperty = (key) =>
  * @template {TypeGuard | TransformSchema} S
  * @param {S extends TypeGuard ? BaseTypeGuard<S> : S} schema
  * @param {S extends TypeGuard ? [unknown] : unknown[]} sources
- * @returns {S extends TypeGuard ? InferTypeGuard<S> : InferType<S>}
+ * @returns {S extends TypeGuard ? InferType<S> : InferTransform<S>}
  */
 const rAssign = (schema, ...sources) => {
 

@@ -1,4 +1,4 @@
-import type { BaseTypeGuard, InferTypeGuard, TypeGuard } from 'r-assign';
+import type { BaseTypeGuard, InferType, TypeGuard } from 'r-assign';
 
 /**
  * Check for values that have all properties required
@@ -6,6 +6,6 @@ import type { BaseTypeGuard, InferTypeGuard, TypeGuard } from 'r-assign';
  */
 export declare function isRequired<
 	T extends TypeGuard<Record<keyof any, any> | any[]>
->(type: BaseTypeGuard<T>): TypeGuard<Required<InferTypeGuard<T>>>;
+>(type: BaseTypeGuard<T>): TypeGuard<Required<InferType<T>>>;
 
 export { isRequired as required };

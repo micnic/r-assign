@@ -1,7 +1,7 @@
 import type {
 	BaseTypeGuard,
 	InferTuple,
-	InferTypeGuard,
+	InferType,
 	RestTypeGuard,
 	Tuple,
 	TypeGuard
@@ -19,7 +19,7 @@ export declare function isTupleOf<T extends Tuple>(
  */
 export declare function isTupleRestOf<T extends TypeGuard>(
 	type: BaseTypeGuard<T>
-): RestTypeGuard<InferTypeGuard<T>>;
+): RestTypeGuard<InferType<T>>;
 
 export { isTupleOf as tuple, isTupleRestOf as tupleRest };
 

@@ -1,6 +1,6 @@
 import type {
 	BaseTypeGuard,
-	InferTypeGuard,
+	InferType,
 	PartialUndefined,
 	TypeGuard
 } from 'r-assign';
@@ -11,7 +11,7 @@ import type {
  */
 export declare function isPartial<
 	T extends TypeGuard<Record<keyof any, any> | any[]>
->(type: BaseTypeGuard<T>): TypeGuard<Partial<InferTypeGuard<T>>>;
+>(type: BaseTypeGuard<T>): TypeGuard<Partial<InferType<T>>>;
 
 /**
  * Check for values that have all properties optional or undefined
@@ -21,7 +21,7 @@ export declare function isPartialUndefined<
 	T extends TypeGuard<Record<keyof any, any> | any[]>
 >(
 	type: BaseTypeGuard<T>
-): TypeGuard<PartialUndefined<InferTypeGuard<T>>>;
+): TypeGuard<PartialUndefined<InferType<T>>>;
 
 export { isPartial as partial, isPartialUndefined as partialUndef };
 
