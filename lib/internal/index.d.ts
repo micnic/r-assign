@@ -9,59 +9,80 @@ import type {
 	Union
 } from 'r-assign';
 
-type StringifiedTemplateLiteral<L extends Literal> = (TypeGuard<L> | string)[];
-type ReducibleTemplateLiteral<S extends string> = (TypeGuard<S> | S)[];
+export type StringifiedTemplateLiteral<L extends Literal> =
+	(TypeGuard<L> | string)[];
 
-type AnyTypeGuardMeta = {
+export { type StringifiedTemplateLiteral as STL };
+
+export type ReducibleTemplateLiteral<S extends string> = (TypeGuard<S> | S)[];
+export { type ReducibleTemplateLiteral as RTL };
+
+export type AnyTypeGuardMeta = {
 	check: TypeGuard;
 	classification: 'any';
 };
 
-type ArrayTypeGuardMeta = {
+export { type AnyTypeGuardMeta as ATGM };
+
+export type ArrayTypeGuardMeta = {
 	check: TypeGuard<any[]>;
 	child: TypeGuardMeta;
 	classification: 'array';
 	type: TypeGuard;
 };
 
-type FunctionTypeGuardMeta = {
+export { type ArrayTypeGuardMeta as ARTGM };
+
+export type FunctionTypeGuardMeta = {
 	check: TypeGuard<(...args: any[]) => any>;
 	children: [TypeGuardMeta, TypeGuardMeta];
 	classification: 'function';
 	types: [TypeGuard<any[] | []>, TypeGuard | undefined];
 };
 
-type InstanceTypeGuardMeta = {
+export { type FunctionTypeGuardMeta as FTGM };
+
+export type InstanceTypeGuardMeta = {
 	builder: Constructor;
 	check: TypeGuard;
 	classification: 'instance';
 };
 
-type IntersectionTypeGuardMeta = {
+export { type InstanceTypeGuardMeta as INTGM };
+
+export type IntersectionTypeGuardMeta = {
 	check: TypeGuard;
 	children: TypeGuardMeta[];
 	classification: 'intersection';
 	types: Intersection;
 };
 
-type LiteralTypeGuardMeta = {
+export { type IntersectionTypeGuardMeta as ITGM };
+
+export type LiteralTypeGuardMeta = {
 	check: TypeGuard<Literal>;
 	classification: 'literal';
 	literal: Literal;
 };
 
-type LiteralsTypeGuardMeta = {
+export { type LiteralTypeGuardMeta as LTGM };
+
+export type LiteralsTypeGuardMeta = {
 	check: TypeGuard<Literal>;
 	classification: 'literals';
 	literals: Literal[];
 };
 
-type NeverTypeGuardMeta = {
+export { type LiteralsTypeGuardMeta as LSTGM };
+
+export type NeverTypeGuardMeta = {
 	check: TypeGuard<never>;
 	classification: 'never';
 };
 
-type ObjectTypeGuardMeta = {
+export { type NeverTypeGuardMeta as NTGM };
+
+export type ObjectTypeGuardMeta = {
 	all: Map<string, TypeGuardMeta>;
 	check: TypeGuard<Record<keyof any, any>>;
 	classification: 'object';
@@ -71,7 +92,9 @@ type ObjectTypeGuardMeta = {
 	strict: boolean;
 };
 
-type OptionalTypeGuardMeta = {
+export { type ObjectTypeGuardMeta as OTGM };
+
+export type OptionalTypeGuardMeta = {
 	check: OptionalTypeGuard;
 	child: TypeGuardMeta;
 	classification: 'optional';
@@ -80,20 +103,26 @@ type OptionalTypeGuardMeta = {
 	undef: boolean;
 };
 
-type PrimitiveTypeGuardMeta = {
+export { type OptionalTypeGuardMeta as OPTGM };
+
+export type PrimitiveTypeGuardMeta = {
 	check: TypeGuard<bigint | boolean | number | string | symbol>;
 	classification: 'primitive';
 	primitive: 'bigint' | 'boolean' | 'number' | 'string' | 'symbol';
 };
 
-type PromiseTypeGuardMeta = {
+export { type PrimitiveTypeGuardMeta as PTGM };
+
+export type PromiseTypeGuardMeta = {
 	check: TypeGuard<Promise<any>>;
 	child: TypeGuardMeta;
 	classification: 'promise';
 	type: TypeGuard | undefined;
 };
 
-type RecordTypeGuardMeta = {
+export { type PromiseTypeGuardMeta as PRTGM };
+
+export type RecordTypeGuardMeta = {
 	check: TypeGuard<Record<keyof any, any>>;
 	children: [TypeGuardMeta, TypeGuardMeta, ObjectTypeGuardMeta | undefined];
 	classification: 'record';
@@ -105,21 +134,27 @@ type RecordTypeGuardMeta = {
 	];
 };
 
-type RestTypeGuardMeta = {
+export { type RecordTypeGuardMeta as RTGM };
+
+export type RestTypeGuardMeta = {
 	check: RestTypeGuard;
 	child: TypeGuardMeta;
 	classification: 'rest';
 	type: TypeGuard;
 };
 
-type TemplateLiteralTypeGuardMeta = {
+export { type RestTypeGuardMeta as RETGM };
+
+export type TemplateLiteralTypeGuardMeta = {
 	check: TypeGuard<string>;
 	classification: 'template-literal';
 	regexp: RegExp;
 	template: StringifiedTemplateLiteral<any>;
 };
 
-type TupleTypeGuardMeta = {
+export { type TemplateLiteralTypeGuardMeta as TLTGM };
+
+export type TupleTypeGuardMeta = {
 	check: TypeGuard<any[] | []>;
 	children: TypeGuardMeta[];
 	classification: 'tuple';
@@ -131,19 +166,25 @@ type TupleTypeGuardMeta = {
 	tuple: Tuple;
 };
 
-type UnionTypeGuardMeta = {
+export { type TupleTypeGuardMeta as TTGM };
+
+export type UnionTypeGuardMeta = {
 	check: TypeGuard;
 	children: TypeGuardMeta[];
 	classification: 'union';
 	union: Union;
 };
 
-type VoidTypeGuardMeta = {
+export { type UnionTypeGuardMeta as UTGM };
+
+export type VoidTypeGuardMeta = {
 	check: TypeGuard<void>;
 	classification: 'void';
 };
 
-type TypeGuardMeta =
+export { type VoidTypeGuardMeta as VTGM };
+
+export type TypeGuardMeta =
 	| AnyTypeGuardMeta
 	| ArrayTypeGuardMeta
 	| FunctionTypeGuardMeta
@@ -163,45 +204,7 @@ type TypeGuardMeta =
 	| UnionTypeGuardMeta
 	| VoidTypeGuardMeta;
 
-type TypeClassification = TypeGuardMeta['classification'];
+export { type TypeGuardMeta as TGM };
 
-export type {
-	ArrayTypeGuardMeta,
-	ArrayTypeGuardMeta as ATGM,
-	FunctionTypeGuardMeta,
-	FunctionTypeGuardMeta as FTGM,
-	LiteralTypeGuardMeta,
-	LiteralTypeGuardMeta as LTGM,
-	LiteralsTypeGuardMeta,
-	LiteralsTypeGuardMeta as LsTGM,
-	NeverTypeGuardMeta,
-	NeverTypeGuardMeta as NTGM,
-	ObjectTypeGuardMeta,
-	ObjectTypeGuardMeta as OTTGM,
-	OptionalTypeGuardMeta,
-	OptionalTypeGuardMeta as OLTGM,
-	PrimitiveTypeGuardMeta,
-	PrimitiveTypeGuardMeta as PVTGM,
-	PromiseTypeGuardMeta,
-	PromiseTypeGuardMeta as PSTGM,
-	RecordTypeGuardMeta,
-	RecordTypeGuardMeta as RDTGM,
-	ReducibleTemplateLiteral,
-	ReducibleTemplateLiteral as RTL,
-	RestTypeGuardMeta,
-	RestTypeGuardMeta as RTTGM,
-	StringifiedTemplateLiteral,
-	StringifiedTemplateLiteral as STL,
-	TemplateLiteralTypeGuardMeta,
-	TemplateLiteralTypeGuardMeta as TLTGM,
-	TupleTypeGuardMeta,
-	TupleTypeGuardMeta as TTGM,
-	TypeGuardMeta,
-	TypeGuardMeta as TGM,
-	TypeClassification,
-	TypeClassification as TC,
-	UnionTypeGuardMeta,
-	UnionTypeGuardMeta as UTGM,
-	VoidTypeGuardMeta,
-	VoidTypeGuardMeta as VTGM
-};
+export type TypeClassification = TypeGuardMeta['classification'];
+export { type TypeClassification as TC };
