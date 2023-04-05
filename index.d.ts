@@ -276,9 +276,11 @@ export type InferShape<S extends Shape> = OptionalShape<
 
 export { type InferShape as InferS };
 
-export type Union = [TypeGuard, TypeGuard, ...TypeGuard[]];
+export type Union = TypeGuard[];
 
-export type InferUnion<T extends Union> = T extends TypeGuard<infer U>[]
+export type InferUnion<T extends Union> = T extends []
+	? never
+	: T extends TypeGuard<infer U>[]
 	? U
 	: never;
 
