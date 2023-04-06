@@ -10,15 +10,12 @@ import {
 	keyof,
 	object,
 	omit,
-	pick,
-	setStrict,
-	strict
+	pick
 } from 'r-assign';
 
 const expectedKeys = 'expected strings or array of strings';
 const invalidKeysType = `Invalid keys provided, ${expectedKeys}`;
 const invalidShape = 'Invalid shape provided';
-const onlyObjectAllowed = 'only object type is allowed';
 
 test('isKeyOf', ({ end }) => {
 	equal(isKeyOf, keyof);
@@ -88,9 +85,7 @@ test('isOmitFrom', ({ end }) => {
 	);
 	ok(
 		isOmitFrom(
-			setStrict(
-				isObjectOf({ abc: isString, def: isString, ghi: isString })
-			),
+			isObjectOf({ abc: isString, def: isString, ghi: isString }, true),
 			'abc'
 		)({
 			def: 'def',
@@ -99,9 +94,7 @@ test('isOmitFrom', ({ end }) => {
 	);
 	notOk(
 		isOmitFrom(
-			setStrict(
-				isObjectOf({ abc: isString, def: isString, ghi: isString })
-			),
+			isObjectOf({ abc: isString, def: isString, ghi: isString }, true),
 			'abc'
 		)({
 			abc: 'abc',
@@ -127,9 +120,7 @@ test('isOmitFrom', ({ end }) => {
 	);
 	ok(
 		isOmitFrom(
-			setStrict(
-				isObjectOf({ abc: isString, def: isString, ghi: isString })
-			),
+			isObjectOf({ abc: isString, def: isString, ghi: isString }, true),
 			['abc', 'def']
 		)({
 			ghi: 'ghi'
@@ -137,9 +128,7 @@ test('isOmitFrom', ({ end }) => {
 	);
 	notOk(
 		isOmitFrom(
-			setStrict(
-				isObjectOf({ abc: isString, def: isString, ghi: isString })
-			),
+			isObjectOf({ abc: isString, def: isString, ghi: isString }, true),
 			['abc', 'def']
 		)({
 			abc: 'abc'
@@ -186,9 +175,7 @@ test('isPickFrom', ({ end }) => {
 	);
 	ok(
 		isPickFrom(
-			setStrict(
-				isObjectOf({ abc: isString, def: isString, ghi: isString })
-			),
+			isObjectOf({ abc: isString, def: isString, ghi: isString }, true),
 			'abc'
 		)({
 			abc: 'abc'
@@ -196,9 +183,7 @@ test('isPickFrom', ({ end }) => {
 	);
 	notOk(
 		isPickFrom(
-			setStrict(
-				isObjectOf({ abc: isString, def: isString, ghi: isString })
-			),
+			isObjectOf({ abc: isString, def: isString, ghi: isString }, true),
 			'abc'
 		)({
 			def: 'def'
@@ -224,9 +209,7 @@ test('isPickFrom', ({ end }) => {
 	);
 	ok(
 		isPickFrom(
-			setStrict(
-				isObjectOf({ abc: isString, def: isString, ghi: isString })
-			),
+			isObjectOf({ abc: isString, def: isString, ghi: isString }, true),
 			['abc', 'def']
 		)({
 			abc: 'abc',
@@ -235,9 +218,7 @@ test('isPickFrom', ({ end }) => {
 	);
 	notOk(
 		isPickFrom(
-			setStrict(
-				isObjectOf({ abc: isString, def: isString, ghi: isString })
-			),
+			isObjectOf({ abc: isString, def: isString, ghi: isString }, true),
 			['abc', 'def']
 		)({
 			abc: 'abc'
@@ -258,41 +239,6 @@ test('isPickFrom', ({ end }) => {
 		// @ts-expect-error
 		isPickFrom(isObjectOf({ abc: isString }), [0]);
 	}, TypeError(invalidKeysType));
-
-	end();
-});
-
-test('setStrict', ({ end }) => {
-
-	equal(setStrict, strict);
-
-	ok(setStrict(isObjectOf({ a: isString }))({ a: 'abc' }));
-	ok(setStrict(isObjectOf({ a: isOptional(isString) }))({ a: 'abc' }));
-	ok(setStrict(isObjectOf({ a: isOptional(isString) }))({}));
-	ok(
-		setStrict(isObjectOf({ a: isOptionalUndefined(isString) }))({
-			a: 'abc'
-		})
-	);
-	ok(setStrict(isObjectOf({ a: isOptionalUndefined(isString) }))({
-		a: undefined
-	}));
-	ok(setStrict(isObjectOf({ a: isOptionalUndefined(isString) }))({}));
-	notOk(setStrict(isObjectOf({ a: isString }))({ a: 'abc', b: 'def' }));
-	notOk(setStrict(isObjectOf({ a: isOptional(isString) }))({ a: undefined }));
-	notOk(
-		setStrict(isObjectOf({ a: isOptionalUndefined(isString) }))({ a: null })
-	);
-
-	throws(() => {
-		// @ts-expect-error
-		setStrict();
-	});
-
-	throws(() => {
-		// @ts-expect-error
-		setStrict(isString);
-	}, TypeError(`Invalid type for "setStrict()", ${onlyObjectAllowed}`));
 
 	end();
 });

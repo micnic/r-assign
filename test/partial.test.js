@@ -10,8 +10,7 @@ import {
 	isString,
 	isTupleOf,
 	partial,
-	partialUndef,
-	setStrict
+	partialUndef
 } from 'r-assign';
 
 test('isPartial', ({ end }) => {
@@ -31,14 +30,14 @@ test('isPartial', ({ end }) => {
 	ok(isPartial(isObjectOf({ a: isString }))({ b: 'def' }));
 	notOk(isPartial(isObjectOf({ a: isString }))({ a: undefined }));
 
-	ok(isPartial(setStrict(isObjectOf({ a: isString })))({}));
-	ok(isPartial(setStrict(isObjectOf({ a: isOptional(isString) })))({}));
+	ok(isPartial(isObjectOf({ a: isString }, true))({}));
+	ok(isPartial(isObjectOf({ a: isOptional(isString) }, true))({}));
 	ok(
-		isPartial(setStrict(isObjectOf({ a: isOptionalUndefined(isString) })))(
+		isPartial(isObjectOf({ a: isOptionalUndefined(isString) }, true))(
 			{}
 		)
 	);
-	ok(isPartial(setStrict(isObjectOf({ a: isString })))({ a: 'abc' }));
+	ok(isPartial(isObjectOf({ a: isString }, true))({ a: 'abc' }));
 	// NotOk(
 	// 	IsPartial(setStrict(isObjectOf({ a: isString })))({
 	// 		A: 'abc',
@@ -46,7 +45,7 @@ test('isPartial', ({ end }) => {
 	// 	})
 	// );
 	// NotOk(isPartial(setStrict(isObjectOf({ a: isString })))({ b: 'def' }));
-	notOk(isPartial(setStrict(isObjectOf({ a: isString })))({ a: undefined }));
+	notOk(isPartial(isObjectOf({ a: isString }, true))({ a: undefined }));
 
 	ok(isPartial(isRecordOf(isString))({}));
 
@@ -83,22 +82,22 @@ test('isPartialUndefined', ({ end }) => {
 	ok(isPartialUndefined(isObjectOf({ a: isString }))({ b: 'def' }));
 	ok(isPartialUndefined(isObjectOf({ a: isString }))({ a: undefined }));
 
-	ok(isPartialUndefined(setStrict(isObjectOf({ a: isString })))({}));
+	ok(isPartialUndefined(isObjectOf({ a: isString }, true))({}));
 	ok(
-		isPartialUndefined(setStrict(isObjectOf({ a: isOptional(isString) })))(
+		isPartialUndefined(isObjectOf({ a: isOptional(isString) }, true))(
 			{}
 		)
 	);
 	ok(
 		isPartialUndefined(
-			setStrict(isObjectOf({ a: isOptionalUndefined(isString) }))
+			isObjectOf({ a: isOptionalUndefined(isString) }, true)
 		)({})
 	);
 	ok(
-		isPartialUndefined(setStrict(isObjectOf({ a: isString })))({ a: 'abc' })
+		isPartialUndefined(isObjectOf({ a: isString }, true))({ a: 'abc' })
 	);
 	ok(
-		isPartialUndefined(setStrict(isObjectOf({ a: isString })))({
+		isPartialUndefined(isObjectOf({ a: isString }, true))({
 			a: undefined
 		})
 	);

@@ -65,8 +65,6 @@ import {
 	promise,
 	record,
 	required,
-	setStrict,
-	strict,
 	string,
 	symbol,
 	templateLiteral,
@@ -185,9 +183,7 @@ expectType<TransformFunction<number>>(asNumber);
 expectType<typeof object>(isObjectOf);
 expectType<typeof pick>(isPickFrom);
 expectType<typeof omit>(isOmitFrom);
-expectType<typeof strict>(setStrict);
 expectType<TypeGuard<{ a: string }>>(object({ a: string }));
-expectType<TypeGuard<{ a: string }>>(strict(object({ a: string })));
 expectType<TypeGuard<{ a: string }>>(
 	pick(object({ a: string, b: string }), 'a')
 );

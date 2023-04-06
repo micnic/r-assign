@@ -20,8 +20,7 @@ import rAssign, {
 	isTupleOf,
 	isTupleRestOf,
 	isUnionOf,
-	parseType,
-	setStrict
+	parseType
 } from 'r-assign';
 
 const emptyArray = 'an empty array []';
@@ -635,12 +634,10 @@ test('parseType: { a: T; b?: T }', ({ end }) => {
 test('parseType: strict object', ({ end }) => {
 
 	const parseObject = parseType(
-		setStrict(
-			isObjectOf({
-				a: isString,
-				b: isNumber
-			})
-		)
+		isObjectOf({
+			a: isString,
+			b: isNumber
+		}, true)
 	);
 
 	match(parseObject({ a: 'a', b: 1 }), { a: 'a', b: 1 });

@@ -11,7 +11,8 @@ export declare function isKeyOf<R extends Record<keyof any, any>>(
  * Check for object values
  */
 export declare function isObjectOf<S extends Shape>(
-	shape: S
+	shape: S,
+	strict?: boolean
 ): TypeGuard<InferShape<S>>;
 
 /**
@@ -30,20 +31,11 @@ export declare function isPickFrom<
 	K extends keyof R
 >(object: TypeGuard<R>, keys: K | K[] | TypeGuard<K>): TypeGuard<Pick<R, K>>;
 
-/**
- * Set strict flag for the provided object type guard
- */
-export declare function setStrict<T extends TypeGuard<Record<keyof any, any>>>(
-	type: T,
-	value?: boolean
-): T;
-
 export {
 	isKeyOf as keyof,
 	isObjectOf as object,
 	isOmitFrom as omit,
-	isPickFrom as pick,
-	setStrict as strict
+	isPickFrom as pick
 };
 
 export type { InferShape, Shape };
