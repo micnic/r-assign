@@ -7,7 +7,6 @@ export declare const isNull: TypeGuard<null>;
 
 /**
  * Check for nullable values
- * @note Does not accept `isOptional*` type guard as it is invalid syntax
  */
 export declare function isNullable<T extends TypeGuard>(
 	type: BaseTypeGuard<T>
@@ -15,7 +14,6 @@ export declare function isNullable<T extends TypeGuard>(
 
 /**
  * Check for nullish values
- * @note Does not accept `isOptional*` type guard as it is invalid syntax
  */
 export declare function isNullish<T extends TypeGuard>(
 	type: BaseTypeGuard<T>

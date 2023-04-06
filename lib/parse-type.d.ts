@@ -8,7 +8,6 @@ import type {
 
 /**
  * Extract and validate values based on provided type guard
- * @note Does not accept `isOptional*` type guard as it is invalid syntax
  */
 export declare function parseType<T extends TypeGuard>(
 	type: BaseTypeGuard<T>,

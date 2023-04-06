@@ -8,7 +8,6 @@ import type {
 
 /**
  * Extract values based on provided type guard and default value
- * @note Does not accept `isOptional*` type guard as it is invalid syntax
  */
 export declare function getType<T extends TypeGuard>(
 	type: BaseTypeGuard<T>,
