@@ -6,6 +6,7 @@ import {
 	isOptionalUndefined,
 	isPartial,
 	isPartialUndefined,
+	isRecordOf,
 	isString,
 	isTupleOf,
 	partial,
@@ -46,6 +47,8 @@ test('isPartial', ({ end }) => {
 	// );
 	// NotOk(isPartial(setStrict(isObjectOf({ a: isString })))({ b: 'def' }));
 	notOk(isPartial(setStrict(isObjectOf({ a: isString })))({ a: undefined }));
+
+	ok(isPartial(isRecordOf(isString))({}));
 
 	ok(isPartial(isTupleOf([isString]))([]));
 	ok(isPartial(isTupleOf([isOptional(isString)]))([]));
