@@ -54,7 +54,7 @@ export type IntersectionTypeGuardMeta = {
 	check: TypeGuard;
 	children: TypeGuardMeta[];
 	classification: 'intersection';
-	types: Intersection;
+	intersection: Intersection;
 };
 
 export { type IntersectionTypeGuardMeta as ITGM };
