@@ -9,6 +9,10 @@ import type {
 	Union
 } from 'r-assign';
 
+export type RemapObject<T> = T extends any[] | Function
+	? T
+	: { [K in keyof T]: T[K] };
+
 export type StringifiedTemplateLiteral<L extends Literal> =
 	(TypeGuard<L> | string)[];
 
@@ -26,7 +30,7 @@ export { type AnyTypeGuardMeta as ATGM };
 
 export type ArrayTypeGuardMeta = {
 	check: TypeGuard<any[]>;
-	child: TypeGuardMeta;
+	child: BaseTypeGuardMeta;
 	classification: 'array';
 	type: TypeGuard;
 };
@@ -35,7 +39,7 @@ export { type ArrayTypeGuardMeta as ARTGM };
 
 export type FunctionTypeGuardMeta = {
 	check: TypeGuard<(...args: any[]) => any>;
-	children: [TypeGuardMeta, TypeGuardMeta];
+	children: [ArrayTypeGuardMeta | TupleTypeGuardMeta, BaseTypeGuardMeta];
 	classification: 'function';
 	types: [TypeGuard<any[] | []>, TypeGuard | undefined];
 };
@@ -50,9 +54,27 @@ export type InstanceTypeGuardMeta = {
 
 export { type InstanceTypeGuardMeta as INTGM };
 
+export type IntersectionChild =
+	| ArrayTypeGuardMeta
+	| FunctionTypeGuardMeta
+	| InstanceTypeGuardMeta
+	| LiteralTypeGuardMeta
+	| LiteralsTypeGuardMeta
+	| NeverTypeGuardMeta
+	| ObjectTypeGuardMeta
+	| PrimitiveTypeGuardMeta
+	| PromiseTypeGuardMeta
+	| RecordTypeGuardMeta
+	| TemplateLiteralTypeGuardMeta
+	| TupleTypeGuardMeta
+	| UnionTypeGuardMeta
+	| VoidTypeGuardMeta;
+
+export { type IntersectionChild as IC };
+
 export type IntersectionTypeGuardMeta = {
 	check: TypeGuard;
-	children: TypeGuardMeta[];
+	children: IntersectionChild[];
 	classification: 'intersection';
 	intersection: Intersection;
 };
@@ -83,12 +105,12 @@ export type NeverTypeGuardMeta = {
 export { type NeverTypeGuardMeta as NTGM };
 
 export type ObjectTypeGuardMeta = {
-	all: Map<string, TypeGuardMeta>;
+	all: Map<string, Exclude<TypeGuardMeta, RestTypeGuardMeta>>;
 	check: TypeGuard<Record<keyof any, any>>;
 	classification: 'object';
 	keys: string[];
 	optional: Map<string, OptionalTypeGuardMeta>;
-	required: Map<string, Exclude<TypeGuardMeta, OptionalTypeGuardMeta>>;
+	required: Map<string, BaseTypeGuardMeta>;
 	strict: boolean;
 };
 
@@ -105,26 +127,54 @@ export type OptionalTypeGuardMeta = {
 
 export { type OptionalTypeGuardMeta as OPTGM };
 
-export type PrimitiveTypeGuardMeta = {
+export type PrimitiveType =
+	| 'bigint'
+	| 'boolean'
+	| 'number'
+	| 'string'
+	| 'symbol';
+
+export { type PrimitiveType as PT };
+
+export type PrimitiveTypeGuardMeta<T extends PrimitiveType = PrimitiveType> = {
 	check: TypeGuard<bigint | boolean | number | string | symbol>;
 	classification: 'primitive';
-	primitive: 'bigint' | 'boolean' | 'number' | 'string' | 'symbol';
+	primitive: T;
 };
 
 export { type PrimitiveTypeGuardMeta as PTGM };
 
 export type PromiseTypeGuardMeta = {
 	check: TypeGuard<Promise<any>>;
-	child: TypeGuardMeta;
+	child: BaseTypeGuardMeta;
 	classification: 'promise';
 	type: TypeGuard | undefined;
 };
 
 export { type PromiseTypeGuardMeta as PRTGM };
 
+export type RecordKeyChild =
+	| AnyTypeGuardMeta
+	| LiteralTypeGuardMeta
+	| LiteralsTypeGuardMeta
+	| PrimitiveTypeGuardMeta<'number' | 'string' | 'symbol'>
+	| TemplateLiteralTypeGuardMeta
+	| UnionTypeGuardMeta<
+			| LiteralTypeGuardMeta
+			| LiteralsTypeGuardMeta
+			| PrimitiveTypeGuardMeta<'number' | 'string' | 'symbol'>
+			| TemplateLiteralTypeGuardMeta
+	>;
+
+export { type RecordKeyChild as RKC };
+
 export type RecordTypeGuardMeta = {
 	check: TypeGuard<Record<keyof any, any>>;
-	children: [TypeGuardMeta, TypeGuardMeta, ObjectTypeGuardMeta | undefined];
+	children: [
+		RecordKeyChild,
+		BaseTypeGuardMeta,
+		ObjectTypeGuardMeta | undefined
+	];
 	classification: 'record';
 	numeric: boolean;
 	types: [
@@ -168,9 +218,26 @@ export type TupleTypeGuardMeta = {
 
 export { type TupleTypeGuardMeta as TTGM };
 
-export type UnionTypeGuardMeta = {
+export type UnionChild =
+	| ArrayTypeGuardMeta
+	| FunctionTypeGuardMeta
+	| InstanceTypeGuardMeta
+	| IntersectionTypeGuardMeta
+	| LiteralTypeGuardMeta
+	| LiteralsTypeGuardMeta
+	| ObjectTypeGuardMeta
+	| PrimitiveTypeGuardMeta
+	| PromiseTypeGuardMeta
+	| RecordTypeGuardMeta
+	| TemplateLiteralTypeGuardMeta
+	| TupleTypeGuardMeta
+	| VoidTypeGuardMeta;
+
+export { type UnionChild as UC };
+
+export type UnionTypeGuardMeta<T extends UnionChild = UnionChild> = {
 	check: TypeGuard;
-	children: TypeGuardMeta[];
+	children: T[];
 	classification: 'union';
 	union: Union;
 };
@@ -205,6 +272,13 @@ export type TypeGuardMeta =
 	| VoidTypeGuardMeta;
 
 export { type TypeGuardMeta as TGM };
+
+export type BaseTypeGuardMeta = Exclude<
+	TypeGuardMeta,
+	OptionalTypeGuardMeta | RestTypeGuardMeta
+>;
+
+export { type BaseTypeGuardMeta as BTGM };
 
 export type TypeClassification = TypeGuardMeta['classification'];
 export { type TypeClassification as TC };

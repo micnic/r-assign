@@ -1,5 +1,5 @@
 import {
-	assertBaseTypeGuard,
+	assertBaseClassification,
 	getTypeGuardMeta
 } from './lib/internal/type-guard-meta.js';
 import { pickValue } from './lib/internal/pick-value.js';
@@ -81,7 +81,7 @@ const rAssign = (schema, ...sources) => {
 		const meta = getTypeGuardMeta(schema);
 
 		// Assert for base type guard
-		assertBaseTypeGuard(meta.classification);
+		assertBaseClassification(meta.classification);
 
 		return pickValue(source, meta);
 	}

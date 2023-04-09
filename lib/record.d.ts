@@ -5,6 +5,7 @@ import type {
 	Shape,
 	TypeGuard
 } from 'r-assign';
+import { RemapObject } from './internal/index.js';
 
 /**
  * Check for record values
@@ -19,7 +20,7 @@ export declare function isRecordOf<V extends TypeGuard>(
 export declare function isRecordOf<V extends TypeGuard, S extends Shape>(
 	values: BaseTypeGuard<V>,
 	shape: S
-): TypeGuard<Record<string, InferType<V>> & InferShape<S>>;
+): TypeGuard<RemapObject<Record<string, InferType<V>> & InferShape<S>>>;
 
 /**
  * Check for record values
@@ -43,6 +44,6 @@ export declare function isRecordOf<
 	keys: K,
 	values: BaseTypeGuard<V>,
 	shape: S
-): TypeGuard<Record<InferType<K>, InferType<V>> & InferShape<S>>;
+): TypeGuard<RemapObject<Record<InferType<K>, InferType<V>> & InferShape<S>>>;
 
 export { isRecordOf as record };

@@ -1,3 +1,5 @@
+import { RemapObject } from './lib/internal/index.js';
+
 type UndefinedKeys<T> = {
 	[K in keyof T]: undefined extends T[K] ? K : never;
 }[keyof T];
@@ -87,11 +89,10 @@ export interface RestTypeGuard<T = any> extends TypeGuard<(T | unknown)[]> {
 
 export { type RestTypeGuard as RTG };
 
-export type BaseTypeGuard<T extends TypeGuard> = T extends
-	| OptionalTypeGuard
-	| RestTypeGuard
-	? never
-	: T;
+export type BaseTypeGuard<T extends TypeGuard> = Exclude<
+	T,
+	OptionalTypeGuard | RestTypeGuard
+>;
 
 export { type BaseTypeGuard as BTG };
 
@@ -107,8 +108,6 @@ export type InferRestTypeGuard<G extends RestTypeGuard> =
 	G extends RestTypeGuard<infer T> ? T[] : never;
 
 export type Intersection = [TypeGuard, TypeGuard, ...TypeGuard[]];
-
-type RemapObject<T> = T extends any[] | Function ? T : { [K in keyof T]: T[K] };
 
 export type InferIntersection<T extends Intersection> =
 	T extends [infer F, infer S]

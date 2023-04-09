@@ -18,6 +18,27 @@ test('isRecordOf', ({ end }) => {
 
 	equal(isRecordOf, record);
 
+	ok(isRecordOf(isUnionOf([isString, isLiteral(1)]), isString)({
+		1: 'abc'
+	}));
+
+	ok(isRecordOf(isUnionOf([isString, isLiteralOf([1, 2])]), isString)({
+		1: 'abc',
+		2: 'def'
+	}));
+
+	ok(isRecordOf(isString, {
+		a: isString
+	})({
+		a: 'abc'
+	}));
+
+	ok(isRecordOf(isString, isString, {
+		a: isString
+	})({
+		a: 'abc'
+	}));
+
 	ok(isRecordOf(isString)({}));
 	ok(isRecordOf(isString)({ abc: 'def' }));
 	ok(isRecordOf(isSymbol, isString)({ [Symbol()]: 'abc' }));
