@@ -116,9 +116,27 @@ export type ObjectTypeGuardMeta = {
 
 export { type ObjectTypeGuardMeta as OTGM };
 
+type OptionalChild =
+	| AnyTypeGuardMeta
+	| ArrayTypeGuardMeta
+	| FunctionTypeGuardMeta
+	| InstanceTypeGuardMeta
+	| IntersectionTypeGuardMeta
+	| LiteralTypeGuardMeta
+	| LiteralsTypeGuardMeta
+	| NeverTypeGuardMeta
+	| ObjectTypeGuardMeta
+	| PrimitiveTypeGuardMeta
+	| PromiseTypeGuardMeta
+	| RecordTypeGuardMeta
+	| TemplateLiteralTypeGuardMeta
+	| TupleTypeGuardMeta
+	| UnionTypeGuardMeta
+	| VoidTypeGuardMeta;
+
 export type OptionalTypeGuardMeta = {
 	check: OptionalTypeGuard;
-	child: TypeGuardMeta;
+	child: OptionalChild;
 	classification: 'optional';
 	def?: any | (() => any);
 	type: TypeGuard;
@@ -186,9 +204,27 @@ export type RecordTypeGuardMeta = {
 
 export { type RecordTypeGuardMeta as RTGM };
 
+type RestChild =
+	| AnyTypeGuardMeta
+	| ArrayTypeGuardMeta
+	| FunctionTypeGuardMeta
+	| InstanceTypeGuardMeta
+	| IntersectionTypeGuardMeta
+	| LiteralTypeGuardMeta
+	| LiteralsTypeGuardMeta
+	| NeverTypeGuardMeta
+	| ObjectTypeGuardMeta
+	| PrimitiveTypeGuardMeta
+	| PromiseTypeGuardMeta
+	| RecordTypeGuardMeta
+	| TemplateLiteralTypeGuardMeta
+	| TupleTypeGuardMeta
+	| UnionTypeGuardMeta
+	| VoidTypeGuardMeta;
+
 export type RestTypeGuardMeta = {
 	check: RestTypeGuard;
-	child: TypeGuardMeta;
+	child: RestChild;
 	classification: 'rest';
 	type: TypeGuard;
 };
