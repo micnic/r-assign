@@ -280,6 +280,18 @@ test('isTupleOf', ({ end }) => {
 		]);
 	}, TypeError('A required element cannot follow an optional element'));
 
+	throws(() => {
+		isTupleOf([
+			isOptional(isString, '')
+		]);
+	}, TypeError('Tuple optional type cannot have default values'));
+
+	throws(() => {
+		isTupleOf([
+			isOptionalUndefined(isString, '')
+		]);
+	}, TypeError('Tuple optional type cannot have default values'));
+
 	end();
 });
 

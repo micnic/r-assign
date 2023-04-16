@@ -1,5 +1,5 @@
-import { test, equal, notOk, ok, throws } from 'tap';
-import {
+import { test, equal, match, notOk, ok, throws } from 'tap';
+import rAssign, {
 	isKeyOf,
 	isObjectOf,
 	isOmitFrom,
@@ -57,6 +57,55 @@ test('isObjectOf', ({ end }) => {
 		// @ts-expect-error
 		isObjectOf(null);
 	}, TypeError(invalidShape));
+
+	throws(() => {
+		isObjectOf({
+			a: isOptional(isString, '')
+		})();
+	});
+
+	end();
+});
+
+test('assign isObjectOf', ({ end }) => {
+
+	match(rAssign(isObjectOf({
+		a: isString
+	}), { a: 'abc' }), { a: 'abc' });
+
+	match(rAssign(isObjectOf({
+		a: isOptional(isString)
+	}), { a: 'abc' }), { a: 'abc' });
+
+	match(rAssign(isObjectOf({
+		a: isOptional(isString)
+	}), {}), {});
+
+	match(rAssign(isObjectOf({
+		a: isOptional(isString, 'abc')
+	}), { a: 'abc' }), { a: 'abc' });
+
+	match(rAssign(isObjectOf({
+		a: isOptional(isString, 'abc')
+	}), {}), { a: 'abc' });
+
+	match(rAssign(isObjectOf({
+		a: isOptional(isString, () => 'abc')
+	}), {}), { a: 'abc' });
+
+	throws(() => {
+		match(rAssign(isObjectOf({
+			// @ts-expect-error
+			a: isOptional(isString, null)
+		}), {}), { a: 'abc' });
+	});
+
+	throws(() => {
+		match(rAssign(isObjectOf({
+			// @ts-expect-error
+			a: isOptional(isString, () => null)
+		}), {}), { a: 'abc' });
+	});
 
 	end();
 });

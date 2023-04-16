@@ -1,4 +1,4 @@
-import { test, equal, notOk, ok, throws } from 'tap';
+import { test, equal, throws } from 'tap';
 import rAssign, {
 	isOptional,
 	isOptionalUndefined,
@@ -9,14 +9,7 @@ import rAssign, {
 
 test('isOptional', ({ end }) => {
 
-	const isOptionalString = isOptional(isString);
-
 	equal(isOptional, optional);
-
-	ok(isOptionalString(''));
-
-	notOk(isOptionalString());
-	notOk(isOptionalString(null));
 
 	throws(() => {
 		// @ts-expect-error
@@ -27,6 +20,10 @@ test('isOptional', ({ end }) => {
 		// @ts-expect-error
 		isOptional(isOptional(isString));
 	}, TypeError('Invalid use of optional type'));
+
+	throws(() => {
+		isOptional(isString, '')();
+	}, TypeError);
 
 	end();
 });
@@ -43,14 +40,7 @@ test('assign isOptional', ({ end }) => {
 
 test('isOptionalUndefined', ({ end }) => {
 
-	const isOptionalString = isOptionalUndefined(isString);
-
 	equal(isOptionalUndefined, optionalUndef);
-
-	ok(isOptionalString());
-	ok(isOptionalString(''));
-
-	notOk(isOptionalString(null));
 
 	throws(() => {
 		// @ts-expect-error
