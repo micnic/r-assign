@@ -96,9 +96,11 @@ export type BaseTypeGuard<T extends TypeGuard> = Exclude<
 
 export { type BaseTypeGuard as BTG };
 
-export type InferType<G extends TypeGuard> = G extends
-	| TypeGuard<infer T>
-	| OptionalTypeGuard<infer T>
+export type InferType<G extends TypeGuard> = G extends OptionalDefaultTypeGuard<
+	infer T
+>
+	? Exclude<T, undefined>
+	: G extends TypeGuard<infer T> | OptionalTypeGuard<infer T>
 	? T
 	: never;
 
@@ -270,7 +272,10 @@ type OptionalShape<S extends Shape, K extends keyof S> = {
 
 export type InferShape<S extends Shape> = OptionalShape<
 	S,
-	KeysOfType<S, OptionalTypeGuard>
+	Exclude<
+		KeysOfType<S, OptionalTypeGuard>,
+		KeysOfType<S, OptionalDefaultTypeGuard>
+	>
 >;
 
 export { type InferShape as InferS };
