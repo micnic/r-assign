@@ -343,6 +343,10 @@ test('parseType', ({ end }) => {
 	}, TypeError(`${invalidValue}, ${expected} but received ${nestedArray}`));
 
 	throws(() => {
+		parseType(isString)(['', 0]);
+	}, TypeError);
+
+	throws(() => {
 		// @ts-expect-error
 		parseType(isOptional(isString));
 	}, TypeError('Invalid use of optional type'));

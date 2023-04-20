@@ -13,7 +13,8 @@ import {
 	isOptional,
 	isString,
 	isSymbol,
-	isUndefined
+	isUndefined,
+	isUnionOf
 } from 'r-assign';
 
 test('isIntersectionOf', ({ end }) => {
@@ -44,6 +45,16 @@ test('isIntersectionOf', ({ end }) => {
 	equal(isIntersectionOf([isAny, isUndefined]), isAny);
 
 	ok(isIntersectionOf([isBoolean, isNumber, isAny])(''));
+
+	ok(
+		isIntersectionOf([
+			isString,
+			isIntersectionOf([
+				isUnionOf([isString, isNumber]),
+				isUnionOf([isNumber, isString])
+			])
+		])
+	);
 
 	ok(isIntersectionOf([isObjectOf({
 		number: isNumber

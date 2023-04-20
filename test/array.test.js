@@ -56,5 +56,9 @@ test('assign isArrayOf', ({ end }) => {
 		rAssign(isArrayOf(isString), sparseArray);
 	});
 
+	throws(() => {
+		rAssign(isArrayOf(isString), ['', 0]);
+	});
+
 	end();
 });

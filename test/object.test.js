@@ -94,17 +94,23 @@ test('assign isObjectOf', ({ end }) => {
 	}), {}), { a: 'abc' });
 
 	throws(() => {
-		match(rAssign(isObjectOf({
-			// @ts-expect-error
-			a: isOptional(isString, null)
-		}), {}), { a: 'abc' });
+		rAssign(isObjectOf({
+			a: isString
+		}), { a: { b: new Date() } });
 	});
 
 	throws(() => {
-		match(rAssign(isObjectOf({
+		rAssign(isObjectOf({
+			// @ts-expect-error
+			a: isOptional(isString, null)
+		}), {});
+	});
+
+	throws(() => {
+		rAssign(isObjectOf({
 			// @ts-expect-error
 			a: isOptional(isString, () => null)
-		}), {}), { a: 'abc' });
+		}), {});
 	});
 
 	end();
