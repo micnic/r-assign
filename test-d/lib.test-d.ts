@@ -73,6 +73,7 @@ import {
 	undef,
 	union,
 	OptionalTypeGuard,
+	OptionalDefaultTypeGuard,
 	RestTypeGuard,
 	TransformFunction,
 	TypeGuard
@@ -195,7 +196,11 @@ expectType<TypeGuard<{ b: string }>>(
 expectType<typeof optional>(isOptional);
 expectType<typeof optionalUndef>(isOptionalUndefined);
 expectType<OptionalTypeGuard<string>>(optional(string));
+expectType<OptionalDefaultTypeGuard<string>>(optional(string, ''));
 expectType<OptionalTypeGuard<string | undefined>>(optionalUndef(string));
+expectType<OptionalDefaultTypeGuard<string | undefined>>(
+	optionalUndef(string, '')
+);
 
 // Partial
 expectType<typeof partial>(isPartial);
@@ -279,9 +284,11 @@ expectType<TypeGuard<string | number>>(union([string, number]));
 
 // Object + Optional
 expectType<TypeGuard<{ a?: string }>>(object({ a: optional(string) }));
+expectType<TypeGuard<{ a: string }>>(object({ a: optional(string, '') }));
 expectType<TypeGuard<{ a?: string | undefined }>>(
 	object({ a: optionalUndef(string) })
 );
+expectType<TypeGuard<{ a: string }>>(object({ a: optionalUndef(string, '') }));
 
 // Tuple + Optional
 expectType<TypeGuard<[string?]>>(tuple([optional(string)]));
