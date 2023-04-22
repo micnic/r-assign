@@ -118,7 +118,7 @@
 		"require-atomic-updates": "off",
 		"require-await": "error",
 		"semi": ["error", "always"],
-		"semi-spacing": ["error", { "after": false, "before": false }],
+		"semi-spacing": ["error", { "after": true, "before": false }],
 		"sort-keys": "error",
 		"space-in-parens": "error",
 		"space-infix-ops": "error",
