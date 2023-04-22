@@ -1,10 +1,11 @@
-import { test, equal, notOk, ok, throws } from 'tap';
-import {
+import { test, equal, match, notOk, ok, throws } from 'tap';
+import rAssign, {
 	isAny,
 	isBoolean,
 	isLiteral,
 	isLiteralOf,
 	isNumber,
+	isObjectOf,
 	isOptional,
 	isRecordOf,
 	isString,
@@ -18,26 +19,40 @@ test('isRecordOf', ({ end }) => {
 
 	equal(isRecordOf, record);
 
-	ok(isRecordOf(isUnionOf([isString, isLiteral(1)]), isString)({
-		1: 'abc'
-	}));
+	ok(
+		isRecordOf(
+			isUnionOf([isString, isLiteral(1)]),
+			isString
+		)({
+			1: 'abc'
+		})
+	);
 
-	ok(isRecordOf(isUnionOf([isString, isLiteralOf([1, 2])]), isString)({
-		1: 'abc',
-		2: 'def'
-	}));
+	ok(
+		isRecordOf(
+			isUnionOf([isString, isLiteralOf([1, 2])]),
+			isString
+		)({
+			1: 'abc',
+			2: 'def'
+		})
+	);
 
-	ok(isRecordOf(isString, {
-		a: isString
-	})({
-		a: 'abc'
-	}));
+	ok(
+		isRecordOf(isString, {
+			a: isString
+		})({
+			a: 'abc'
+		})
+	);
 
-	ok(isRecordOf(isString, isString, {
-		a: isString
-	})({
-		a: 'abc'
-	}));
+	ok(
+		isRecordOf(isString, isString, {
+			a: isString
+		})({
+			a: 'abc'
+		})
+	);
 
 	ok(isRecordOf(isString)({}));
 	ok(isRecordOf(isString)({ abc: 'def' }));
@@ -120,6 +135,85 @@ test('isRecordOf', ({ end }) => {
 		// @ts-expect-error
 		isRecordOf(isBoolean, isString);
 	}, TypeError('Invalid type for record keys'));
+
+	end();
+});
+
+test('assign isRecordOf', ({ end }) => {
+
+	const obj = {
+		a: 'abc'
+	};
+
+	const objSymbol = {
+		[Symbol()]: 'abc'
+	};
+
+	equal(rAssign(isRecordOf(isString), obj), obj);
+	equal(
+		rAssign(
+			isRecordOf(isString, {
+				a: isString
+			}),
+			obj
+		),
+		obj
+	);
+	equal(
+		rAssign(
+			isRecordOf(isString, isString, {
+				a: isString
+			}),
+			obj
+		),
+		obj
+	);
+	equal(rAssign(isRecordOf(isSymbol, isString), objSymbol), objSymbol);
+
+	const objNumber = { 1: 'abc' };
+
+	equal(rAssign(isRecordOf(isNumber, isString), objNumber), objNumber);
+
+	const objobj = { key: { a: 'abc' } };
+
+	equal(rAssign(isRecordOf(isObjectOf({ a: isString })), objobj), objobj);
+
+	match(
+		rAssign(isRecordOf(isObjectOf({ a: isString })), {
+			key: { a: 'abc', b: 'def' }
+		}),
+		objobj
+	);
+
+	throws(() => {
+		rAssign(isRecordOf(isString), { a: 0 });
+	}, TypeError);
+
+	throws(() => {
+		rAssign(
+			isRecordOf(isString, {
+				a: isString
+			}),
+			{ a: 0 }
+		);
+	}, TypeError);
+
+	throws(() => {
+		rAssign(isRecordOf(isString, isString), { a: 0 });
+	}, TypeError);
+
+	throws(() => {
+		rAssign(
+			isRecordOf(isString, isString, {
+				a: isString
+			}),
+			{ a: 0 }
+		);
+	}, TypeError);
+
+	throws(() => {
+		rAssign(isRecordOf(isSymbol, isString), { a: 0 });
+	}, TypeError);
 
 	end();
 });

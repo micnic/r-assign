@@ -96,7 +96,28 @@ test('assign isObjectOf', ({ end }) => {
 	throws(() => {
 		rAssign(isObjectOf({
 			a: isString
+		}), { a: 0 });
+	});
+
+	throws(() => {
+		rAssign(isObjectOf({
+			a: isString
+		}, true), { a: '', b: '' });
+	});
+
+	throws(() => {
+		rAssign(isObjectOf({
+			a: isString
 		}), { a: { b: new Date() } });
+	});
+
+	throws(() => {
+		rAssign(
+			isObjectOf({
+				a: isOptional(isString)
+			}),
+			{ a: undefined }
+		);
 	});
 
 	throws(() => {

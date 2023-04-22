@@ -1,7 +1,8 @@
-import { test, equal, notOk, ok, throws } from 'tap';
+import { test, equal, match, notOk, ok, throws } from 'tap';
 import rAssign, {
 	array,
 	isArrayOf,
+	isObjectOf,
 	isOptional,
 	isString
 } from 'r-assign';
@@ -48,6 +49,23 @@ test('assign isArrayOf', ({ end }) => {
 
 	equal(value, rAssign(isArrayOf(isString), value));
 
+	const objArray = [{ a: '' }];
+
+	equal(rAssign(isArrayOf(isObjectOf({ a: isString })), objArray), objArray);
+
+	match(
+		rAssign(isArrayOf(isObjectOf({ a: isString })), [{ a: '', b: '' }]),
+		objArray
+	);
+
+	match(
+		rAssign(isArrayOf(isObjectOf({ a: isString })), [
+			{ a: '', b: '' },
+			{ a: '' }
+		]),
+		[{ a: '' }, { a: '' }]
+	);
+
 	throws(() => {
 		rAssign(isArrayOf(isString));
 	});
@@ -58,6 +76,10 @@ test('assign isArrayOf', ({ end }) => {
 
 	throws(() => {
 		rAssign(isArrayOf(isString), ['', 0]);
+	});
+
+	throws(() => {
+		rAssign(isArrayOf(isArrayOf(isString)), ['']);
 	});
 
 	end();

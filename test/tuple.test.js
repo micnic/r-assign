@@ -1,6 +1,7 @@
-import { test, equal, notOk, ok, throws } from 'tap';
-import {
+import { test, equal, match, notOk, ok, throws } from 'tap';
+import rAssign, {
 	isBoolean,
+	isObjectOf,
 	isOptional,
 	isOptionalUndefined,
 	isString,
@@ -291,6 +292,149 @@ test('isTupleOf', ({ end }) => {
 			isOptionalUndefined(isString, '')
 		]);
 	}, TypeError('Tuple optional type cannot have default values'));
+
+	end();
+});
+
+test('assign isTupleOf', ({ end }) => {
+
+	/** @type {[]} */
+	const emptyTuple = [];
+
+	const oneStringTuple = [''];
+	const twoStringsTuple = ['', ''];
+
+	equal(rAssign(isTupleOf([]), emptyTuple), emptyTuple);
+	equal(rAssign(isTupleOf([isString]), oneStringTuple), oneStringTuple);
+	equal(rAssign(isTupleOf([isOptional(isString)]), emptyTuple), emptyTuple);
+	equal(
+		rAssign(isTupleOf([isOptional(isString)]), oneStringTuple),
+		oneStringTuple
+	);
+	equal(
+		rAssign(isTupleOf([isString, isOptional(isString)]), oneStringTuple),
+		oneStringTuple
+	);
+	equal(
+		rAssign(isTupleOf([isString, isOptional(isString)]), twoStringsTuple),
+		twoStringsTuple
+	);
+
+	match(
+		rAssign(
+			isTupleOf([
+				isObjectOf({
+					a: isString
+				})
+			]),
+			[{ a: '', b: '' }]
+		),
+		[{ a: '' }]
+	);
+
+	match(
+		rAssign(
+			isTupleOf([
+				isOptional(
+					isObjectOf({
+						a: isString
+					})
+				)
+			]),
+			[{ a: '', b: '' }]
+		),
+		[{ a: '' }]
+	);
+
+	match(
+		rAssign(
+			isTupleOf([
+				isObjectOf({
+					a: isString
+				}),
+				isString
+			]),
+			[{ a: '', b: '' }, '']
+		),
+		[{ a: '' }, '']
+	);
+
+	match(
+		rAssign(
+			isTupleOf([
+				isObjectOf({
+					a: isString
+				}),
+				isOptional(isString)
+			]),
+			[{ a: '', b: '' }, '']
+		),
+		[{ a: '' }, '']
+	);
+
+	match(
+		rAssign(
+			isTupleOf([
+				isObjectOf({
+					a: isString
+				}),
+				isOptional(isString)
+			]),
+			[{ a: '', b: '' }]
+		),
+		[{ a: '' }]
+	);
+
+	match(
+		rAssign(
+			isTupleOf([
+				isObjectOf({
+					a: isString
+				}),
+				isOptionalUndefined(isString)
+			]),
+			[{ a: '', b: '' }, undefined]
+		),
+		[{ a: '' }, undefined]
+	);
+
+	throws(() => {
+		rAssign(isTupleOf([]), null);
+	});
+
+	throws(() => {
+		rAssign(isTupleOf([]), oneStringTuple);
+	});
+
+	throws(() => {
+		rAssign(isTupleOf([isString]), emptyTuple);
+	});
+
+	throws(() => {
+		rAssign(isTupleOf([isString]), twoStringsTuple);
+	});
+
+	throws(() => {
+		rAssign(isTupleOf([isString, isOptional(isString)]), ['', 0]);
+	});
+
+	throws(() => {
+		rAssign(isTupleOf([isOptional(isString)]), [undefined]);
+	});
+
+	throws(() => {
+		rAssign(isTupleOf([isTupleRestOf(isString), isString]), []);
+	});
+
+	throws(() => {
+		rAssign(
+			isTupleOf([
+				isTupleRestOf(isString),
+				isString
+			]),
+			['', 0]
+		);
+	});
 
 	end();
 });

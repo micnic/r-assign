@@ -1,5 +1,5 @@
-import { test, equal, notOk, ok, throws } from 'tap';
-import {
+import { test, equal, match, notOk, ok, throws } from 'tap';
+import rAssign, {
 	intersection,
 	isAny,
 	isBigInt,
@@ -93,6 +93,45 @@ test('isIntersectionOf', ({ end }) => {
 	throws(() => {
 		isIntersectionOf([isOptional(isNumber), isString]);
 	});
+
+	end();
+});
+
+test('assign isIntersectionOf', ({ end }) => {
+
+	const obj = {
+		number: 0,
+		string: ''
+	};
+
+	match(
+		rAssign(
+			isIntersectionOf([
+				isObjectOf({
+					number: isNumber
+				}),
+				isObjectOf({
+					string: isString
+				})
+			]),
+			obj
+		),
+		obj
+	);
+
+	throws(() => {
+		rAssign(
+			isIntersectionOf([
+				isObjectOf({
+					number: isNumber
+				}),
+				isObjectOf({
+					string: isString
+				})
+			]),
+			{ boolean: false }
+		);
+	}, TypeError);
 
 	end();
 });
