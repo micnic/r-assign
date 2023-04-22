@@ -138,7 +138,7 @@ export type OptionalTypeGuardMeta = {
 	check: OptionalTypeGuard;
 	child: OptionalChild;
 	classification: 'optional';
-	def?: any | (() => any);
+	def?: () => any;
 	type: TypeGuard;
 	undef: boolean;
 };
