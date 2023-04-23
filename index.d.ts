@@ -52,7 +52,7 @@ export type InferConstructor<T extends Constructor> = T extends Constructor<
 export { type InferConstructor as InferC };
 
 export type Literal = bigint | boolean | null | number | string | undefined;
-export type Literals<L extends Literal> = [L, ...L[]];
+export type Literals<L extends Literal> = L[];
 
 export type InferLiterals<
 	L extends Literal,

@@ -1,5 +1,11 @@
 import { test, equal, notOk, ok, throws } from 'tap';
-import rAssign, { isLiteral, isLiteralOf, literal, literals } from 'r-assign';
+import rAssign, {
+	isLiteral,
+	isLiteralOf,
+	isNever,
+	literal,
+	literals
+} from 'r-assign';
 
 test('isLiteral', ({ end }) => {
 
@@ -47,6 +53,8 @@ test('isLiteralOf', ({ end }) => {
 
 	equal(isLiteralOf, literals);
 
+	equal(isLiteralOf([]), isNever);
+
 	ok(isLiteralOf([0])(0));
 	ok(isLiteralOf([0, 1])(0));
 
@@ -56,15 +64,6 @@ test('isLiteralOf', ({ end }) => {
 		// @ts-expect-error
 		isLiteralOf();
 	}, TypeError('Invalid literals provided'));
-
-	throws(() => {
-		// @ts-expect-error
-		isLiteralOf([]);
-	}, TypeError('Not enough literals, at least one expected'));
-
-	throws(() => {
-		isLiteralOf([0, 0]);
-	}, TypeError('Duplicate literal provided'));
 
 	end();
 });
