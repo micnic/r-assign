@@ -13,7 +13,7 @@ export type RemapObject<T> = T extends any[] | Function
 	? T
 	: { [K in keyof T]: T[K] };
 
-export type StringifiedTemplateLiteral<L extends Literal> =
+export type StringifiedTemplateLiteral<L extends Literal = any> =
 	(TypeGuard<L> | string)[];
 
 export { type StringifiedTemplateLiteral as STL };
@@ -235,7 +235,7 @@ export type TemplateLiteralTypeGuardMeta = {
 	check: TypeGuard<string>;
 	classification: 'template-literal';
 	regexp: RegExp;
-	template: StringifiedTemplateLiteral<any>;
+	template: StringifiedTemplateLiteral;
 };
 
 export { type TemplateLiteralTypeGuardMeta as TLTGM };
