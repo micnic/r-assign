@@ -36,6 +36,7 @@ test('isTemplateLiteralOf', ({ end }) => {
 	ok(isTemplateLiteralOf([isLiteralOf(['a', 'b']), '-', isNumber])('a-0'));
 	ok(isTemplateLiteralOf([isUnionOf([isBigInt, isString, isNumber])])('0'));
 	ok(isTemplateLiteralOf([isUnionOf([isLiteral('a'), isLiteral('b')])])('a'));
+	ok(isTemplateLiteralOf([isUnionOf([isLiteral('a'), isNumber])])('1'));
 	ok(
 		isTemplateLiteralOf([isUnionOf([isNumber, isLiteralOf(['a', 'b'])])])(
 			'a'
