@@ -268,13 +268,15 @@ type OptionalShape<S extends Shape, K extends keyof S> = {
 			? never
 			: InferType<S[P]>
 		: never;
-} & {};
+};
 
-export type InferShape<S extends Shape> = OptionalShape<
-	S,
-	Exclude<
-		KeysOfType<S, OptionalTypeGuard>,
-		KeysOfType<S, OptionalDefaultTypeGuard>
+export type InferShape<S extends Shape> = RemapObject<
+	OptionalShape<
+		S,
+		Exclude<
+			KeysOfType<S, OptionalTypeGuard>,
+			KeysOfType<S, OptionalDefaultTypeGuard>
+		>
 	>
 >;
 
