@@ -1,8 +1,10 @@
 import { RemapObject } from './lib/internal/index.js';
 
-type UndefinedKeys<T> = {
-	[K in keyof T]: undefined extends T[K] ? K : never;
-}[keyof T];
+type KeysOfType<O, T> = {
+	[K in keyof O]: O[K] extends T ? K : never;
+}[keyof O];
+
+type UndefinedKeys<T> = KeysOfType<T, undefined>;
 
 type OptionalObject<T> = Omit<T, UndefinedKeys<T>> &
 	Partial<Pick<T, UndefinedKeys<T>>> extends infer R
@@ -111,12 +113,18 @@ export type InferRestTypeGuard<G extends RestTypeGuard> =
 
 export type Intersection = [TypeGuard, TypeGuard, ...TypeGuard[]];
 
-export type InferIntersection<T extends Intersection> =
-	T extends [infer F, infer S]
+export type InferIntersection<
+	T extends Intersection,
+	A extends boolean = false
+> = T extends [infer F, infer S]
 	? F extends TypeGuard
 		? S extends TypeGuard
-			? InferType<F> & InferType<S> extends infer I
-				? RemapObject<I>
+			? RemapObject<InferType<F> & InferType<S>> extends infer I
+				? A extends true
+					? I extends never
+						? never
+						: any & I
+					: I
 				: never
 			: never
 		: never
@@ -124,12 +132,30 @@ export type InferIntersection<T extends Intersection> =
 	? F extends TypeGuard
 		? S extends TypeGuard
 			? R extends TypeGuard[]
-				? [
+				? unknown extends InferType<F>
+					? unknown extends InferType<S>
+						? R extends [TypeGuard]
+							? any
+							: R extends Intersection
+							? InferIntersection<R, true>
+							: never
+						: [S, ...R] extends infer I
+						? I extends Intersection
+							? InferIntersection<I, true>
+							: never
+						: never
+					: unknown extends InferType<S>
+					? [F, ...R] extends infer I
+						? I extends Intersection
+							? InferIntersection<I, true>
+							: never
+						: never
+					: [
 						TypeGuard<InferType<F> & InferType<S>>,
 						...R
-				] extends infer I
+					] extends infer I
 					? I extends Intersection
-						? InferIntersection<I>
+						? InferIntersection<I, A>
 						: never
 					: never
 				: never
@@ -257,10 +283,6 @@ export type InferAsyncFunction<T extends Tuple, R extends TypeGuard> = ((
 export { type InferAsyncFunction as InferAF };
 
 export type Shape = Record<string, TypeGuard>;
-
-type KeysOfType<T, U> = {
-	[K in keyof T]: T[K] extends U ? K : never;
-}[keyof T];
 
 type OptionalShape<S extends Shape, K extends keyof S> = {
 	[P in keyof (Omit<S, K> & Partial<Pick<S, K>>)]: P extends keyof S

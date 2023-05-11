@@ -145,6 +145,25 @@ expectType<TypeGuard<{ a: string; b: string; c: string }>>(
 expectType<TypeGuard<string>>(
 	intersection([string, union([string, number]), union([string, boolean])])
 );
+expectType<TypeGuard<any>>(
+	intersection([any, object({ a: string }), object({ b: number })])
+);
+expectType<TypeGuard<any>>(
+	intersection([object({ a: string }), any, object({ b: number })])
+);
+expectType<TypeGuard<any>>(
+	intersection([object({ a: string }), object({ b: number }), any])
+);
+expectType<TypeGuard<never>>(intersection([any, string, number]));
+expectType<TypeGuard<never>>(intersection([string, any, number]));
+expectType<TypeGuard<never>>(intersection([string, number, any]));
+
+expectType<TypeGuard<never>>(intersection([any, any, string, number]));
+expectType<TypeGuard<never>>(intersection([any, string, any, number]));
+expectType<TypeGuard<never>>(intersection([any, string, number, any]));
+expectType<TypeGuard<never>>(intersection([string, any, number, any]));
+expectType<TypeGuard<never>>(intersection([string, number, any, any]));
+expectType<TypeGuard<never>>(intersection([string, any, any, number]));
 
 // Literal
 expectType<typeof literal>(isLiteral);
